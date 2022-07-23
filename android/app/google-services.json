@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "802200022491",
+    "project_id": "aljuneid-e9ea8",
+    "storage_bucket": "aljuneid-e9ea8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:802200022491:android:1939d3a876bbbc65e24bfe",
+        "android_client_info": {
+          "package_name": "tech.aljunied.aljunied"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "802200022491-dut8gd129bhh15vql842tkm896igkk9k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCSzoa6n09cWoRhoaO_1CbE84w3v5fsaJY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "802200022491-dut8gd129bhh15vql842tkm896igkk9k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
