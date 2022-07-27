@@ -4,6 +4,7 @@ import 'package:aljunied/Models/department.dart';
 import 'package:aljunied/Utils/extension.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -106,11 +107,13 @@ class Utils{
   static Future<void> logout() async {
 
     FirebaseMessaging fcm = FirebaseMessaging.instance;
-    fcm.unsubscribeFromTopic(TopicKey.allUsers);
-    fcm.unsubscribeFromTopic(TopicKey.citizens);
-    fcm.unsubscribeFromTopic(TopicKey.employee);
-    if(CurrentUser.department!=null){
-      fcm.unsubscribeFromTopic(CurrentUser.department!.id!);
+    if(!kIsWeb) {
+      fcm.unsubscribeFromTopic(TopicKey.allUsers);
+      fcm.unsubscribeFromTopic(TopicKey.citizens);
+      fcm.unsubscribeFromTopic(TopicKey.employee);
+      if (CurrentUser.department != null) {
+        fcm.unsubscribeFromTopic(CurrentUser.department!.id!);
+      }
     }
 
     SharedPreferences preferences;

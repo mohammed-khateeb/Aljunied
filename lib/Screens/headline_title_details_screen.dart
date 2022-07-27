@@ -20,7 +20,8 @@ class HeadlineTitleDetailsScreen extends StatelessWidget {
       appBar: CustomAppBar(
         titleColor: Colors.white,
         arrowColor: Colors.white,
-        title: headline!=null?headline!.label:titleLine!.label!,
+        title: headline!=null?Localizations.localeOf(context).languageCode=="ar"?headline!.labelAr:headline!.labelEn??headline!.labelAr!
+            :Localizations.localeOf(context).languageCode=="ar"?titleLine!.labelAr:titleLine!.labelEn??titleLine!.labelAr,
       ),
       body: Container(
         width: size.width,

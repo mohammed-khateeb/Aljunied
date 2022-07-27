@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!--
+    If you are serving your web app in a path other than the root, change the
+    href value below to reflect the base path you are serving from.
+    The path provided below has to start and end with a slash "/" in order for
+    it to work correctly.
+    Fore more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+  -->
+  <base href="/">
+
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="Welcome To Cashaty.">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="chat">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>Aljunied</title>
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+<!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
+
+<!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.4/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.7/firebase-analytics.js";
+
+
+ const firebaseConfig = {
+  apiKey: "AIzaSyACWyD8HMXIoBS9oWH5XHzMYOvVuDeKue0",
+  authDomain: "aljuneid-e9ea8.firebaseapp.com",
+  projectId: "aljuneid-e9ea8",
+  storageBucket: "aljuneid-e9ea8.appspot.com",
+  messagingSenderId: "802200022491",
+  appId: "1:802200022491:web:cf6978155f12025de24bfe",
+  measurementId: "G-7ZH0TH6J89"
+};
+
+
+  firebase.initializeApp(firebaseConfig);
+</script>
+
+<script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('flutter-first-frame', function () {
+        navigator.serviceWorker.register('flutter_service_worker.js');
+      });
+    }
+
+</script>
+
+<script src="main.dart.js" type="application/javascript"></script>
+</body>
+</html>

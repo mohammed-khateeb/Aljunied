@@ -1,5 +1,6 @@
 import 'package:aljunied/Widgets/custom_app_bar.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:show_up_animation/show_up_animation.dart';
@@ -230,8 +231,10 @@ class _LoginScreenState extends State<LoginScreen> {
   initUserData(UserApp userApp){
     userApp.token = PushNotificationServices.fcmToken;
     context.read<UserController>().login(userApp: userApp);
-    _messaging.subscribeToTopic(TopicKey.allUsers);
-    if(userApp.department!=null) {
+    if(!kIsWeb) {
+      _messaging.subscribeToTopic(TopicKey.allUsers);
+    }
+    if(userApp.department!=null&&!kIsWeb) {
       _messaging.subscribeToTopic(TopicKey.employee);
       _messaging.subscribeToTopic(userApp.department!.id!);
     }

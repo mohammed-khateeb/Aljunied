@@ -1,4 +1,3 @@
-import 'package:aljunied/Constants/constants.dart';
 import 'package:aljunied/Models/headline.dart';
 import 'package:flutter/material.dart';
 import '../../Utils/util.dart';
@@ -19,7 +18,9 @@ class AddEditTitleScreen extends StatefulWidget {
 }
 
 class _AddEditTitleScreenState extends State<AddEditTitleScreen> {
-  final TextEditingController titleController = TextEditingController();
+  final TextEditingController titleArController = TextEditingController();
+  final TextEditingController titleEnController = TextEditingController();
+
   final TextEditingController desController = TextEditingController();
   TitleLine titleLine = TitleLine(subTitles: []);
   final _formKey = GlobalKey<FormState>();
@@ -28,7 +29,8 @@ class _AddEditTitleScreenState extends State<AddEditTitleScreen> {
   void initState() {
     if(widget.titleLine!=null) {
       titleLine = widget.titleLine!;
-      titleController.text = widget.titleLine!.label!;
+      titleArController.text = widget.titleLine!.labelAr!;
+      titleEnController.text = widget.titleLine!.labelEn??"";
       desController.text = widget.titleLine!.des??"";
     }
     super.initState();
@@ -53,9 +55,16 @@ class _AddEditTitleScreenState extends State<AddEditTitleScreen> {
                 CustomTextField(
                   height: size.height*0.05,
                   borderRadius: size.height*0.01,
-                  controller: titleController,
-                  hintText: translate(context, "subTitle"),
+                  controller: titleArController,
+                  hintText: translate(context, "subTitle")+" (${translate(context, "arabic")})",
                   withValidation: true,
+                ),
+                SizedBox(height: size.height*0.02,),
+                CustomTextField(
+                  height: size.height*0.05,
+                  borderRadius: size.height*0.01,
+                  controller: titleEnController,
+                  hintText: translate(context, "subTitle")+" (${translate(context, "english")})",
                 ),
                 SizedBox(height: size.height*0.02,),
                 CustomTextField(
@@ -110,7 +119,7 @@ class _AddEditTitleScreenState extends State<AddEditTitleScreen> {
                           onTap: (){
                             FocusScope.of(context).unfocus();
 
-                            openNewPage(context, AddEditSubTitleScreen(subTitle: titleLine.subTitles![index],titleAppBar: titleController.text)).then((value) {
+                            openNewPage(context, AddEditSubTitleScreen(subTitle: titleLine.subTitles![index],titleAppBar: titleArController.text)).then((value) {
                               if(value!=null&&value is SubTitle){
                                 setState(() {
                                   titleLine.subTitles![index] = value;
@@ -169,7 +178,8 @@ class _AddEditTitleScreenState extends State<AddEditTitleScreen> {
 
     else{
       FocusScope.of(context).unfocus();
-      titleLine.label = titleController.text;
+      titleLine.labelAr = titleArController.text;
+      titleLine.labelEn = titleEnController.text.isNotEmpty?titleEnController.text:null;
       titleLine.des = desController.text;
       Navigator.pop(context, titleLine);
     }

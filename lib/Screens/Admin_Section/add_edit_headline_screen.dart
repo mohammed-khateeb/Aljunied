@@ -20,7 +20,8 @@ class AddEditHeadlineScreen extends StatefulWidget {
 }
 
 class _AddEditHeadlineScreenState extends State<AddEditHeadlineScreen> {
-  final TextEditingController titleController = TextEditingController();
+  final TextEditingController titleArController = TextEditingController();
+  final TextEditingController titleEnController = TextEditingController();
   final TextEditingController orderController = TextEditingController();
 
   final TextEditingController desController = TextEditingController();
@@ -31,7 +32,8 @@ class _AddEditHeadlineScreenState extends State<AddEditHeadlineScreen> {
   void initState() {
     if(widget.headline!=null) {
       headline = widget.headline!;
-      titleController.text = widget.headline!.label!;
+      titleEnController.text = widget.headline!.labelEn??"";
+      titleArController.text = widget.headline!.labelAr!;
       desController.text = widget.headline!.des??"";
       orderIndex = widget.headline!.orderIndex;
       orderController.text = widget.headline!.orderIndex.toString();
@@ -56,9 +58,17 @@ class _AddEditHeadlineScreenState extends State<AddEditHeadlineScreen> {
                 CustomTextField(
                   height: size.height*0.05,
                   borderRadius: size.height*0.01,
-                  controller: titleController,
-                  hintText: translate(context, "mainTitle"),
+                  controller: titleArController,
+                  hintText: translate(context, "mainTitle")+" (${translate(context, "arabic")})",
                   withValidation: true,
+
+                ),
+                SizedBox(height: size.height*0.02,),
+                CustomTextField(
+                  height: size.height*0.05,
+                  borderRadius: size.height*0.01,
+                  controller: titleEnController,
+                  hintText: translate(context, "mainTitle")+" (${translate(context, "english")})",
 
                 ),
                 SizedBox(height: size.height*0.02,),
@@ -102,7 +112,7 @@ class _AddEditHeadlineScreenState extends State<AddEditHeadlineScreen> {
                       onTap: (){
                         FocusScope.of(context).unfocus();
 
-                        openNewPage(context, AddEditTitleScreen(titleAppBar: titleController.text,)).then((value) {
+                        openNewPage(context, AddEditTitleScreen(titleAppBar: titleArController.text,)).then((value) {
                           if(value!=null&&value is TitleLine) {
                             setState(() {
                             headline.titles!.add(value);
@@ -129,7 +139,7 @@ class _AddEditHeadlineScreenState extends State<AddEditHeadlineScreen> {
                         child: ListTile(
                           onTap: (){
                             FocusScope.of(context).unfocus();
-                            openNewPage(context, AddEditTitleScreen(titleLine: headline.titles![index],titleAppBar: titleController.text)).then((value) {
+                            openNewPage(context, AddEditTitleScreen(titleLine: headline.titles![index],titleAppBar: titleArController.text)).then((value) {
                               if(value!=null&&value is TitleLine){
                                 setState(() {
                                   headline.titles![index] = value;
@@ -163,7 +173,7 @@ class _AddEditHeadlineScreenState extends State<AddEditHeadlineScreen> {
                             ),
                           ),
                           title: Text(
-                            headline.titles![index].label!,
+                            Localizations.localeOf(context).languageCode=="ar"?headline.titles![index].labelAr!:headline.titles![index].labelEn??headline.titles![index].labelAr!,
                             style: TextStyle(fontSize: size.height*0.018, fontWeight: FontWeight.w500),
                           ),
 
@@ -188,7 +198,8 @@ class _AddEditHeadlineScreenState extends State<AddEditHeadlineScreen> {
       return;
     }
      FocusScope.of(context).unfocus();
-     headline.label = titleController.text;
+     headline.labelAr = titleArController.text;
+     headline.labelEn = titleEnController.text.isNotEmpty?titleEnController.text:null;
      headline.des = desController.text;
      if(widget.headline==null) {
        headline.orderIndex = widget.orderIndex;

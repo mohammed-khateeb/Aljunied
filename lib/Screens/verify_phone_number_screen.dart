@@ -8,6 +8,7 @@ import 'package:aljunied/Widgets/waiting_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sms_autofill/sms_autofill.dart';
@@ -44,7 +45,7 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
   @override
   void initState() {
     listenOtp();
-    WidgetsBinding.instance.addObserver(this);
+   // WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
 
@@ -57,7 +58,7 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
+    //WidgetsBinding.instance.removeObserver(this);
     SmsAutoFill().unregisterListener();
     super.dispose();
   }
@@ -179,8 +180,10 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
   initUserData(UserApp userApp){
     userApp.token = PushNotificationServices.fcmToken;
     context.read<UserController>().login(userApp: userApp,isRegister: widget.userApp==null);
-    _messaging.subscribeToTopic(TopicKey.allUsers);
-    if(userApp.department!=null) {
+    if(!kIsWeb) {
+      _messaging.subscribeToTopic(TopicKey.allUsers);
+    }
+    if(userApp.department!=null&&!kIsWeb) {
       _messaging.subscribeToTopic(TopicKey.employee);
       _messaging.subscribeToTopic(userApp.department!.id!);
     }
@@ -216,7 +219,9 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> with CodeAutoFill {
   void initState() {
     // TODO: implement initState
     super.initState();
-    listenOtp();
+    if(!kIsWeb) {
+      listenOtp();
+    }
   }
 
   void listenOtp() async {
@@ -228,7 +233,9 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> with CodeAutoFill {
 
   @override
   void dispose() {
-    SmsAutoFill().unregisterListener();
+    if(!kIsWeb) {
+      SmsAutoFill().unregisterListener();
+    }
     print("unregisterListener");
     super.dispose();
   }

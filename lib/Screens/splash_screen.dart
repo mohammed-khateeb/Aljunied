@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:aljunied/Models/department.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:launch_review/launch_review.dart';
@@ -55,7 +56,10 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void checkAppVersion() async {
-    newUpdate = await GeneralApi.checkUpdateForApp();
+
+    if(!kIsWeb) {
+      newUpdate = await GeneralApi.checkUpdateForApp();
+    }
 
     if (newUpdate) {
       setState(() {});
@@ -131,12 +135,16 @@ class _SplashScreenState extends State<SplashScreen> {
         await Utils.fetchUserInformationFromSharedToSingletonClass();
 
         await updateUserInformation();
-        _messaging.subscribeToTopic(TopicKey.allUsers);
+        if(!kIsWeb) {
+          _messaging.subscribeToTopic(TopicKey.allUsers);
+        }
 
         if(CurrentUser.department!=null){
+          if(!kIsWeb) {
           _messaging.subscribeToTopic(TopicKey.employee);
           _messaging.subscribeToTopic(CurrentUser.department!.id!);
-          NavigatorUtils.navigateToHomeEmployeeScreen(context);
+        }
+        NavigatorUtils.navigateToHomeEmployeeScreen(context);
         }
         else{
           NavigatorUtils.navigateToHomeScreen(context);

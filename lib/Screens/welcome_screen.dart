@@ -1,7 +1,6 @@
 import 'package:aljunied/Constants/constants.dart';
 import 'package:aljunied/Utils/navigator_utils.dart';
 import 'package:flutter/material.dart';
-
 import '../Utils/util.dart';
 import '../Widgets/custom_button.dart';
 
@@ -11,7 +10,6 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(

@@ -1,14 +1,17 @@
 
 class Headline {
   String? id;
-  String? label;
+  String? labelAr;
+  String? labelEn;
+
   String? des;
   List<TitleLine>? titles;
   int? orderIndex;
 
   Headline(
       {this.id,
-        this.label,
+        this.labelAr,
+        this.labelEn,
         this.des,
         this.orderIndex,
         this.titles,
@@ -16,7 +19,8 @@ class Headline {
 
   Headline.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    label = json['label'];
+    labelAr = json['labelAr'];
+    labelEn = json['labelEn'];
     des = json['des'];
     orderIndex = json['orderIndex'];
     if (json['titles'] != null) {
@@ -30,7 +34,8 @@ class Headline {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
-    data['label'] = label;
+    data['labelAr'] = labelAr;
+    data['labelEn'] = labelEn;
     data['des'] = des;
     data['orderIndex'] = orderIndex;
 
@@ -41,19 +46,24 @@ class Headline {
 
 
   class TitleLine {
-  String? label;
+  String? labelAr;
+  String? labelEn;
+
   String? des;
   List<SubTitle>? subTitles;
 
   TitleLine(
       {
-        this.label,
+        this.labelAr,
+        this.labelEn,
         this.des,
         this.subTitles,
       });
 
   TitleLine.fromJson(Map<String, dynamic> json) {
-    label = json['label'];
+    labelAr = json['labelAr'];
+    labelEn = json['labelEn'];
+
     des = json['des'];
     if (json['subTitles'] != null) {
       subTitles = [];
@@ -65,7 +75,9 @@ class Headline {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['label'] = label;
+    data['labelAr'] = labelAr;
+
+    data['labelEn'] = labelEn;
     data['des'] = des;
     data['subTitles'] = subTitles!=null? subTitles!.map((v) => v.toJson()).toList():null;
     return data;

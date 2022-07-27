@@ -66,9 +66,12 @@ class _HeadlinesScreenState extends State<HeadlinesScreen> {
                         children: [
                           ListTile(
                             title: Text(
-                                headlineController.headlines![index].label!,
+                               Localizations.localeOf(context).languageCode=="ar"
+                                   ? headlineController.headlines![index].labelAr!
+                                   :headlineController.headlines![index].labelEn!=null&&headlineController.headlines![index].labelEn!=""?headlineController.headlines![index].labelEn!+"lko":headlineController.headlines![index].labelAr!,
                               style: TextStyle(
-                                fontSize: size.height*0.018
+                                fontSize: size.height*0.018,
+                                color: Colors.red
                               ),
                             ),
                             leading: IconButton(

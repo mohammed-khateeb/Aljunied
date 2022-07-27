@@ -8,6 +8,7 @@ import 'package:aljunied/Controller/news_controller.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -30,17 +31,19 @@ void main() async {
   tz.initializeTimeZones();
   WidgetsFlutterBinding.ensureInitialized();
 
+  if(!kIsWeb) {
+    await Firebase.initializeApp();
+    if (Platform.isIOS) FirebaseMessaging.instance.requestPermission();
 
-  await Firebase.initializeApp();
+    await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: false,
+      sound: true,
+    );
+
+  }
 
 
-  if (Platform.isIOS) FirebaseMessaging.instance.requestPermission();
-
-  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-    alert: true,
-    badge: false,
-    sound: true,
-  );
 
 
 
@@ -137,7 +140,9 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     PushNotificationServices.initLocalNotification();
-    initFirebaseMessaging();
+    if(!kIsWeb) {
+      initFirebaseMessaging();
+    }
     super.initState();
   }
 

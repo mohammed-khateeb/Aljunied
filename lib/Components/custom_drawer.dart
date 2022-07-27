@@ -75,10 +75,16 @@ class CustomDrawer extends StatelessWidget {
                                     collapseIcon: Icons.remove,
                                   ),
                                   header: Text(
-                                    context
+                                    Localizations.localeOf(context).languageCode=="ar"?context
                                         .watch<HeadlineController>()
                                         .headlines![index]
-                                        .label!,
+                                        .labelAr!:context
+                                        .watch<HeadlineController>()
+                                        .headlines![index]
+                                        .labelEn??context
+                                        .watch<HeadlineController>()
+                                        .headlines![index]
+                                        .labelAr!,
                                     style: TextStyle(
                                         fontSize: size.height * 0.018,
                                         color: Colors.white),
@@ -108,11 +114,19 @@ class CustomDrawer extends StatelessWidget {
                                             crossAxisAlignment: CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                context
+                                                Localizations.localeOf(context).languageCode=="ar"?context
                                                     .watch<HeadlineController>()
                                                     .headlines![index]
                                                     .titles![subIndex]
-                                                    .label!,
+                                                    .labelAr!:context
+                                                    .watch<HeadlineController>()
+                                                    .headlines![index]
+                                                    .titles![subIndex]
+                                                    .labelEn??context
+                                                    .watch<HeadlineController>()
+                                                    .headlines![index]
+                                                    .titles![subIndex]
+                                                    .labelAr!,
                                                 style: TextStyle(
                                                     fontSize: size.height * 0.018,
                                                     color: Colors.white),
@@ -143,10 +157,16 @@ class CustomDrawer extends StatelessWidget {
                                     height: size.height * 0.04,
                                     color: Colors.transparent,
                                     child: Text(
-                                      context
+                                      Localizations.localeOf(context).languageCode=="ar"? context
                                           .watch<HeadlineController>()
                                           .headlines![index]
-                                          .label!,
+                                          .labelAr!:context
+                                          .watch<HeadlineController>()
+                                          .headlines![index]
+                                          .labelEn??context
+                                        .watch<HeadlineController>()
+                                        .headlines![index]
+                                        .labelAr!,
                                       style: TextStyle(
                                           fontSize: size.height * 0.018,
                                           color: Colors.white,
