@@ -1,4 +1,5 @@
 import 'package:aljunied/Components/custom_drawer.dart';
+import 'package:aljunied/Constants/constants.dart';
 import 'package:aljunied/Controller/admin_controller.dart';
 import 'package:aljunied/Controller/area_controller.dart';
 import 'package:aljunied/Controller/bid_controller.dart';
@@ -9,13 +10,21 @@ import 'package:aljunied/Utils/navigator_utils.dart';
 import 'package:aljunied/Utils/util.dart';
 import 'package:aljunied/Widgets/custom_app_bar.dart';
 import 'package:aljunied/Widgets/custom_inkwell.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../Components/Home_Components/activities_and_areas.dart';
 import '../Components/Home_Components/banners.dart';
 import '../Components/Home_Components/bids_component.dart';
+import '../Components/Home_Components/download_app_section.dart';
 import '../Components/Home_Components/tracking_widget.dart';
+import '../Components/Home_Components/web_header.dart';
+import '../Components/app_bar_web.dart';
+import '../Components/bottom_bar_web.dart';
+import '../Controller/transaction_controller.dart';
+import '../Widgets/custom_button.dart';
+import '../Widgets/custom_text_field.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -48,7 +57,27 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-      return Scaffold(
+      return kIsWeb&&size.width>520
+          ?Scaffold(
+       body: SingleChildScrollView(
+         child: Column(
+           children: const [
+             AppBarWeb(),
+             WebHeader(),
+             SizedBox(height: 20,),
+             Banners(),
+             SizedBox(height: 20,),
+             BidsComponent(),
+             SizedBox(height: 20,),
+             ActivitiesAndAreas(),
+             SizedBox(height: 30,),
+             DownloadAppSection(),
+             BottomBarWeb(),
+           ],
+         ),
+       ),
+      )
+          :Scaffold(
         key: scaffoldKey,
         drawer: CustomDrawer(),
         appBar: CustomAppBar(

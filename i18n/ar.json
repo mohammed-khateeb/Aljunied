@@ -454,6 +454,8 @@
   "dateOfBirth": "تاريخ الولادة",
   "BuTBeforeWeWantYourHelpHaveAMoreJoyfulExperience": "ولكن قبل أن نرغب في مساعدتك ،\n تمتع بتجربة أكثر بهجة",
   "firstName": "الإسم الاول",
+  "orderStatusTracking": "تتبع حالة الطلب",
+  "downloadOurApp": "قم بتنزيل تطبيقنا",
   "joined": "تم الانضمام",
   "itsInTheCart": "في السلة",
   "english": "الانجليزية",
@@ -534,6 +536,8 @@
   "dateOfOrder": "تاريخ الطلب",
   "status": "الحالة",
   "orderId": "رقم الطلب",
+  "aboutTheMunicipality": "عن البلدية",
+
   "total": "المجموع الكلي: ",
   "subTotal": "المجموع الجزئي: ",
   "totalOfRecipe": "/المجموع",

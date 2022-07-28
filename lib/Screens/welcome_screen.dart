@@ -1,5 +1,7 @@
+import 'package:aljunied/Components/custom_scaffold_web.dart';
 import 'package:aljunied/Constants/constants.dart';
 import 'package:aljunied/Utils/navigator_utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../Utils/util.dart';
 import '../Widgets/custom_button.dart';
@@ -10,7 +12,55 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
+    return kIsWeb&&size.width>520
+        ?CustomScaffoldWeb(
+      title: "بلدية الجنيد",
+      subTitle: "نص شكلي بمعنى أن الغاية هي الشكل \nوليس المحتوى",
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            translate(context,"welcome"),
+            style: const TextStyle(
+              fontSize: 20,
+              fontFamily: "ArabFontSemiBold",
+            ),
+          ),
+
+          SizedBox(
+            height: 240,
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                  vertical: size.height*0.02
+              ),
+              child: Image.asset(
+                "images/national.png",
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          const SizedBox(height: 20,),
+
+          CustomButton(
+            label: translate(context, "start"),
+            onPress: ()=>NavigatorUtils.navigateToLoginScreen(context),
+          ),
+          SizedBox(height: size.height*0.02,),
+          CustomButton(
+            borderWidth: 1.5,
+            borderColor: kPrimaryColor,
+            color: Colors.transparent,
+            textColor: kPrimaryColor,
+            label: translate(context, "skip"),
+            onPress: ()=>NavigatorUtils.navigateToHomeScreen(context),
+          ),
+          SizedBox(height: size.height*0.08,width: size.width,),
+
+        ],
+      ),
+    )
+        :Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
         children: [

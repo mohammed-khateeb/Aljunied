@@ -4,6 +4,7 @@ import 'package:aljunied/Shimmers/areas_shimmer.dart';
 import 'package:aljunied/Utils/util.dart';
 import 'package:aljunied/Widgets/reusable_cache_network_image.dart';
 import 'package:aljunied/Widgets/waiting_widget.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -17,7 +18,7 @@ class ActivitiesAndAreas extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return SizedBox(
-      height: size.height*0.3,
+      height: kIsWeb?280: size.height*0.3,
       child: Consumer<AreaController>(
           builder: (context, areaController, child) {
           return !areaController.waiting
@@ -29,7 +30,7 @@ class ActivitiesAndAreas extends StatelessWidget {
                     child: Text(
                       translate(context, "touristAreasAndActivities"),
                       style: TextStyle(
-                        fontSize: size.height*0.02,
+                        fontSize:kIsWeb?15: size.height*0.02,
                         fontFamily: "ArabFontBold",
                       ),
                     ),
@@ -37,10 +38,13 @@ class ActivitiesAndAreas extends StatelessWidget {
                   Expanded(
                     child: ListView.builder(
                       padding: EdgeInsets.symmetric(horizontal: size.width*0.05),
-            itemCount: areaController.areas!.length,
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (_,index){
-                    return AreaContainer(area: areaController.areas![index],);
+                      itemCount: areaController.areas!.length,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (_,index){
+                    return Padding(
+                      padding: EdgeInsetsDirectional.only(end: kIsWeb?15:0),
+                      child: AreaContainer(area: areaController.areas![index],),
+                    );
             },
           ),
                   ),

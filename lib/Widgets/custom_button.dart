@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../Constants/constants.dart';
@@ -28,13 +29,13 @@ class CustomButton extends StatelessWidget {
         onPress();
       },
       child: Container(
-        height: height??size.height*0.06,
+        height: height!=null?height:kIsWeb?40:size.height*0.06,
         width: width??size.width*0.9,
         decoration: BoxDecoration(
             color: color??kPrimaryColor,
             borderRadius: BorderRadius.circular(size.height*0.005),
             border:borderColor!=null? Border.all(color: borderColor!,width:borderWidth?? 0.5):null,
-            boxShadow: [
+            boxShadow: kIsWeb&&size.width>520?[]:[
               BoxShadow(
                 color:withShadow? Colors.grey.withOpacity(0.3):Colors.white,
                 spreadRadius: 2,
@@ -58,7 +59,7 @@ class CustomButton extends StatelessWidget {
             Text(
               label,
               style: TextStyle(
-                  fontSize:textSize?? size.height*0.02,
+                  fontSize:kIsWeb?15:textSize?? size.height*0.02,
                   color: textColor??Colors.white,
                   fontWeight: FontWeight.w500
               ),

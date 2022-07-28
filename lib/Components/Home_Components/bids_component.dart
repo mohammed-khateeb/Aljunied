@@ -4,6 +4,7 @@ import 'package:aljunied/Controller/admin_controller.dart';
 import 'package:aljunied/Controller/bid_controller.dart';
 import 'package:aljunied/Shimmers/bids_shimmer.dart';
 import 'package:aljunied/Widgets/custom_inkwell.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -20,7 +21,7 @@ class BidsComponent extends StatelessWidget {
       return !bidController.waiting
           ? bidController.bids!.isNotEmpty
               ? SizedBox(
-                  height: size.height * 0.25,
+                  height:kIsWeb?270 :size.height * 0.25,
                   child: Column(
                     children: [
                       Padding(
@@ -30,7 +31,7 @@ class BidsComponent extends StatelessWidget {
                               context.watch<AdminController>().bidTypes!.map((e) {
                             return Padding(
                               padding: EdgeInsetsDirectional.only(
-                                  end: size.width * 0.03),
+                                  end: kIsWeb?10:size.width * 0.03),
                               child: CustomInkwell(
                                 onTap: () {
                                   context
@@ -40,7 +41,7 @@ class BidsComponent extends StatelessWidget {
                                 child: Text(
                                   e.name!,
                                   style: TextStyle(
-                                      fontSize: size.height * 0.017,
+                                      fontSize:kIsWeb?15: size.height * 0.017,
                                       color: e ==
                                               context
                                                   .read<AdminController>()
@@ -54,7 +55,7 @@ class BidsComponent extends StatelessWidget {
                         ),
                       ),
                       SizedBox(
-                        height: size.height * 0.01,
+                        height:kIsWeb?7: size.height * 0.01,
                       ),
                       Row(
                           children: [
@@ -62,18 +63,18 @@ class BidsComponent extends StatelessWidget {
                         CustomInkwell(
                           onTap: ()=>bidController.changeForwarded(false),
                           child: Container(
-                            height: size.height * 0.04,
+                            height:kIsWeb?30: size.height * 0.04,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(3),
                                 color:bidController.forwarded?Colors.grey[200]: kPrimaryColor),
                             child: Center(
                               child: Padding(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: size.width * 0.01),
+                                    horizontal:kIsWeb?7: size.width * 0.01),
                                 child: Text(
                                   translate(context, "availableBids"),
                                   style: TextStyle(
-                                      fontSize: size.height * 0.015,
+                                      fontSize:kIsWeb?14: size.height * 0.015,
                                       color:bidController.forwarded?Colors.grey[700]: Colors.white),
                                 ),
                               ),
@@ -81,23 +82,23 @@ class BidsComponent extends StatelessWidget {
                           ),
                         ),
                         SizedBox(
-                          width: size.width * 0.02,
+                          width:kIsWeb?25: size.width * 0.02,
                         ),
                         CustomInkwell(
                           onTap: ()=>bidController.changeForwarded(true),
                           child: Container(
-                            height: size.height * 0.04,
+                            height:kIsWeb?30: size.height * 0.04,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(3),
                                 color:!bidController.forwarded?Colors.grey[200]: kPrimaryColor),
                             child: Center(
                               child: Padding(
                                 padding: EdgeInsets.symmetric(
-                                    horizontal: size.width * 0.01),
+                                    horizontal:kIsWeb?7: size.width * 0.01),
                                 child: Text(
                                   translate(context, "submittedBids"),
                                   style: TextStyle(
-                                      fontSize: size.height * 0.015,
+                                      fontSize:kIsWeb?14: size.height * 0.015,
                                       color:!bidController.forwarded?Colors.grey[700]: Colors.white),
                                 ),
                               ),
@@ -106,7 +107,7 @@ class BidsComponent extends StatelessWidget {
                         ),
                       ]),
                       SizedBox(
-                        height: size.height * 0.01,
+                        height:kIsWeb?15: size.height * 0.01,
                       ),
                       if (context.watch<AdminController>().selectedType != null)
                         Expanded(
@@ -125,8 +126,8 @@ class BidsComponent extends StatelessWidget {
                                   gridDelegate:
                                       SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 1,
-                                    mainAxisExtent: size.width * 0.5,
-                                    mainAxisSpacing: size.width * 0.02,
+                                    mainAxisExtent:kIsWeb?260: size.width * 0.5,
+                                    mainAxisSpacing:kIsWeb?15: size.width * 0.02,
                                   ),
                                   itemCount: bidController.bids!
                                       .where((element) =>

@@ -1,6 +1,7 @@
 import 'package:aljunied/Models/area.dart';
 import 'package:aljunied/Utils/util.dart';
 import 'package:aljunied/Widgets/custom_inkwell.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../Constants/constants.dart';
@@ -17,14 +18,14 @@ class AreaContainer extends StatelessWidget {
 
     return Card(
       child: SizedBox(
-        width: size.width*0.38,
+        width:kIsWeb?240: size.width*0.38,
 
         child: CustomInkwell(
           onTap: ()=>NavigatorUtils.navigateToNewsDetailsScreen(context, area:area),
           child: Column(
             children: [
               ReusableCachedNetworkImage(
-                height: size.height*0.16,
+                height:kIsWeb?175: size.height*0.16,
                 borderRadius: BorderRadius.vertical(
                   top: Radius.circular(5)
                 ),
@@ -35,7 +36,7 @@ class AreaContainer extends StatelessWidget {
               Text(
                 area.name!,
                 style: TextStyle(
-                  fontSize: size.height*0.016,
+                  fontSize:kIsWeb?14: size.height*0.016,
                   fontFamily: "ArabFontBold",
 
                 ),
@@ -45,7 +46,7 @@ class AreaContainer extends StatelessWidget {
               Text(
                 area.des!,
                 style: TextStyle(
-                  fontSize: size.height*0.011,
+                  fontSize:kIsWeb?11: size.height*0.011,
                   color: kSubTitleColor,
                 ),
                 maxLines: 1,
@@ -57,7 +58,7 @@ class AreaContainer extends StatelessWidget {
                 child: Text(
                   translate(context, "location"),
                   style: TextStyle(
-                      fontSize: size.height*0.011,
+                      fontSize:kIsWeb?11: size.height*0.011,
                       color: kPrimaryColor
                   ),
                   maxLines: 1,

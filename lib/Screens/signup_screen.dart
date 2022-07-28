@@ -1,9 +1,11 @@
 import 'package:aljunied/Apis/general_api.dart';
+import 'package:aljunied/Components/custom_scaffold_web.dart';
 import 'package:aljunied/Screens/verify_phone_number_screen.dart';
 import 'package:aljunied/Utils/extension.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
+import 'package:flutter/foundation.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
@@ -60,7 +62,179 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
+    return kIsWeb&&size.width>520
+        ?CustomScaffoldWeb(
+      body:  Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: size.height*0.03,),
+
+            CustomAnimationUp(
+              millisecond: 300,
+              child: Text(
+                translate(context,"welcomeToTheJuniedApp"),
+                style: TextStyle(
+                  fontSize: 30,
+                  fontFamily: "ArabFontSemiBold",
+                ),
+              ),
+            ),
+            SizedBox(height: size.height*0.01,),
+            CustomAnimationUp(
+              millisecond: 400,
+              child: Text(
+                translate(context,"andEnjoyFollowingYourTransactionsWhileYouAreAtHome"),
+                style: TextStyle(
+                    fontSize: 17,
+                    color: kSubTitleColor
+                ),
+              ),
+            ),
+            SizedBox(height: size.height*0.06,),
+            CustomAnimationUp(
+              millisecond: 600,
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: size.height*0.012),
+                child: CustomTextField(
+                  labelText: translate(context, "userName"),
+                  controller: nameController,
+                  suffixIcon: Image.asset(
+                    "icons/profile.png",
+                    color: Colors.grey[700],
+
+                    height: size.height*0.001,
+                  ),
+                  validator: (str){
+                    if(str!.isEmpty){
+                      return translate(context, "pleaseEnterYourName");
+                    }
+                    return null;
+                  },
+                ),
+              ),
+            ),
+
+            CustomAnimationUp(
+              millisecond: 700,
+              child: Padding(
+                padding: EdgeInsets.symmetric(vertical: size.height*0.012),
+                child: CustomTextField(
+                  labelText: translate(context, "mobileNumber"),
+                  controller: mobileController,
+                  keyboardType: TextInputType.number,
+                  suffixIcon: Image.asset(
+                    "icons/call.png",
+                    color: Colors.grey[700],
+                    height: size.height*0.001,
+                  ),
+                  validator: (str){
+                    if(str!.isEmpty){
+                      return translate(context, "pleaseEnterYourMobileNumber");
+                    }
+
+                    return null;
+                  },
+                ),
+              ),
+            ),
+            SizedBox(height: size.height*0.03,),
+            CustomAnimationUp(
+              millisecond: 800,
+              child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: size.height*0.012),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(
+                        Icons.check_circle_rounded,
+                        color: kPrimaryColor,
+                        size: size.height*0.025,
+                      ),
+                      SizedBox(width: size.width*0.03,),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+
+                        children: [
+                          Text(
+                            translate(context,"byCreatingAnAccountYouAgreeTo"),
+                            style: const TextStyle(
+                                fontSize:14,
+                                color: kSubTitleColor
+                            ),
+                          ),
+                          CustomInkwell(
+                            onTap: ()=>NavigatorUtils.navigateToTermsConditionsScreen(context),
+                            child: Text(
+                              translate(context,"termsAndConditionsAndPrivacyPolicy"),
+                              style: const TextStyle(
+                                  fontSize:14,
+                                  color: kPrimaryColor
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  )
+              ),
+            ),
+
+            SizedBox(height: size.height*0.1,),
+            CustomAnimationUp(
+              direction: Direction.horizontal,
+              millisecond: 900,
+              child: Column(
+                children: [
+                  CustomButton(
+                    label: translate(context, "signUp"),
+                    onPress: ()=>signUp(),
+
+                  ),
+                  SizedBox(height: size.height*0.025,),
+                  CustomButton(
+                    label: translate(context, "registerWithGoogle"),
+                    color: Colors.transparent,
+                    borderColor: kSubTitleColor,
+                    imagePath: "icons/google.png",
+                    textColor: Colors.grey[850],
+                    onPress: (){
+                      signWithGoogle(register: true);
+                    },
+                  ),
+                  SizedBox(height: size.height*0.02,),
+                  Center(
+                    child: CustomInkwell(
+                      onTap: (){
+                        Navigator.pop(context);
+                      },
+                      child: RichText(
+                        text: TextSpan(
+                          text: translate(context, "alreadyHaveAnAccount"),
+                          style: TextStyle(
+                            fontFamily: "ArabFontSemiBold",
+                            fontSize: 15,
+                            color: Colors.grey[600],
+                          ),
+                          children:  <TextSpan>[
+                            TextSpan(text: translate(context, "signIn"), style: const TextStyle(fontWeight: FontWeight.bold,color: kPrimaryColor)),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            SizedBox(height: size.height*0.1,),
+
+          ],
+        ),
+      ),
+    )
+        :Scaffold(
         appBar: CustomAppBar(
           title: translate(context, "signUp"),
           action: Center(

@@ -1,6 +1,7 @@
 import 'package:aljunied/Models/news.dart';
 import 'package:aljunied/Utils/navigator_utils.dart';
 import 'package:aljunied/Utils/util.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../Widgets/custom_inkwell.dart';
@@ -16,11 +17,11 @@ class NewsContainer extends StatelessWidget {
     return CustomInkwell(
       onTap: ()=>NavigatorUtils.navigateToNewsDetailsScreen(context, news: news),
       child: SizedBox(
-        height: size.height*0.2,
+        height:kIsWeb?200: size.height*0.2,
         child: Stack(
           children: [
             ReusableCachedNetworkImage(
-              height: size.height*0.2,
+              height:kIsWeb?200: size.height*0.2,
               width: size.width,
               fit: BoxFit.cover,
               borderRadius: BorderRadius.circular(5),
@@ -31,8 +32,8 @@ class NewsContainer extends StatelessWidget {
               child: Container(
                 width: size.width,
                 padding: EdgeInsets.symmetric(
-                    horizontal: size.width*0.03,
-                    vertical: size.height*0.005
+                    horizontal:kIsWeb?10: size.width*0.03,
+                    vertical:kIsWeb?2: size.height*0.005
                 ),
                 decoration: const BoxDecoration(
                     borderRadius: BorderRadius.vertical(bottom: Radius.circular(5)),
@@ -52,14 +53,14 @@ class NewsContainer extends StatelessWidget {
                     Text(
                       news.title!,
                       style: TextStyle(
-                          fontSize: size.height*0.015,
+                          fontSize:kIsWeb?12: size.height*0.015,
                           color: Colors.white
                       ),
                     ),
                     Text(
                       Utils.getDateAndTimeString(news.createAt!.toDate()),
                       style: TextStyle(
-                          fontSize: size.height*0.01,
+                          fontSize:kIsWeb?9: size.height*0.01,
                           color: Colors.grey[200]
                       ),
                     )

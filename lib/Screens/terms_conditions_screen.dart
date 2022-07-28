@@ -1,4 +1,6 @@
+import 'package:aljunied/Components/custom_scaffold_web.dart';
 import 'package:aljunied/Widgets/waiting_widget.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../Apis/admin_services.dart';
@@ -31,7 +33,17 @@ class _TermsConditionsScreenState extends State<TermsConditionsScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
+    return kIsWeb&&size.width>520
+        ?CustomScaffoldWeb(
+      title: translate(context, "termsAndConditions"),
+      body:terms!=null? Text(
+        terms!.terms!,
+        style: TextStyle(
+          fontSize: 17,
+        ),
+      ):const WaitingWidget(),
+    )
+        :Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: CustomAppBar(
         titleColor: Colors.white,

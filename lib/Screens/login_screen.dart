@@ -1,3 +1,4 @@
+import 'package:aljunied/Components/custom_scaffold_web.dart';
 import 'package:aljunied/Widgets/custom_app_bar.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
@@ -43,7 +44,115 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     AppLanguage language = Provider.of<AppLanguage>(context);
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
+    return kIsWeb&&size.width>520
+        ?CustomScaffoldWeb(
+      body: Form(
+        key: _formKey,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: size.height*0.03,),
+
+              CustomAnimationUp(
+                millisecond: 200,
+                child: Text(
+                  translate(context,"LetsGetIn"),
+                  style: const TextStyle(
+                    fontSize: 30,
+                    fontFamily: "ArabFontSemiBold",
+                  ),
+                ),
+              ),
+              SizedBox(height: size.height*0.02,),
+              CustomAnimationUp(
+                millisecond: 300,
+                child: Text(
+                  translate(context,"welcomeBackAgain"),
+                  style: const TextStyle(
+                      fontSize:17,
+                      color: kSubTitleColor
+                  ),
+                ),
+              ),
+              SizedBox(height: size.height*0.06,),
+
+              CustomAnimationUp(
+                millisecond: 400,
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: size.height*0.012),
+                  child: CustomTextField(
+                    labelText: translate(context, "mobileNumber"),
+                    controller: mobileNumberController,
+                    keyboardType: TextInputType.phone,
+                    suffixIcon: Image.asset(
+                      "icons/call.png",
+                      height: size.height*0.001,
+                    ),
+                    validator: (str){
+                      if(str!.isEmpty){
+                        return translate(context, "pleaseEnterYourMobileNumber");
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+              ),
+
+              SizedBox(height: size.height*0.2,),
+              CustomAnimationUp(
+                millisecond: 500,
+                direction: Direction.horizontal,
+                child: Column(
+                  children: [
+                    SizedBox(height: size.height*0.06,),
+                    CustomButton(
+                      label: translate(context, "signIn"),
+                      onPress: ()=>login(),
+
+                    ),
+                    SizedBox(height: size.height*0.025,),
+                    CustomButton(
+                      label: translate(context, "loginWithGoogle"),
+                      color: Colors.transparent,
+                      borderColor: kSubTitleColor,
+                      imagePath: "icons/google.png",
+                      textColor: Colors.grey[850],
+                      onPress:()=> signWithGoogle(),
+                    ),
+                    SizedBox(height: size.height*0.03,),
+                    Center(
+                      child: CustomInkwell(
+                        onTap: (){
+                          NavigatorUtils.navigateToSignupScreen(context);
+                        },
+                        child: RichText(
+                          text: TextSpan(
+                            text: translate(context, "dontHaveAnAccount"),
+                            style: TextStyle(
+                              fontFamily: "ArabFontSemiBold",
+                              fontSize: 15,
+                              color: Colors.grey[600],
+                            ),
+                            children:  <TextSpan>[
+                              TextSpan(text: translate(context, "signUp"), style: const TextStyle(fontWeight: FontWeight.bold,color: kPrimaryColor)),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: size.height*0.01,),
+
+                  ],
+                ),
+              ),
+
+            ],
+          ),
+        ),
+      ),
+    )
+        :Scaffold(
       appBar: CustomAppBar(
         title: translate(context, "signIn"),
         action: Center(

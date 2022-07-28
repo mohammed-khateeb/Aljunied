@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:aljunied/Apis/general_api.dart';
+import 'package:aljunied/Components/custom_scaffold_web.dart';
 import 'package:aljunied/Models/user_app.dart';
 import 'package:aljunied/Utils/util.dart';
 import 'package:aljunied/Widgets/custom_button.dart';
@@ -44,7 +45,9 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
 
   @override
   void initState() {
-    listenOtp();
+    if(!kIsWeb) {
+      listenOtp();
+    }
    // WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
@@ -59,7 +62,9 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
   @override
   void dispose() {
     //WidgetsBinding.instance.removeObserver(this);
-    SmsAutoFill().unregisterListener();
+    if(!kIsWeb) {
+      SmsAutoFill().unregisterListener();
+    }
     super.dispose();
   }
 
@@ -215,35 +220,93 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> with CodeAutoFill {
     });
   }
 
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    if(!kIsWeb) {
-      listenOtp();
-    }
-  }
-
-  void listenOtp() async {
-    // await SmsAutoFill().unregisterListener();
-    // listenForCode();
-    await SmsAutoFill().listenForCode;
-    print("OTP listen Called");
-  }
-
-  @override
-  void dispose() {
-    if(!kIsWeb) {
-      SmsAutoFill().unregisterListener();
-    }
-    print("unregisterListener");
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Padding(
+    return kIsWeb&&size.width>520
+        ?CustomScaffoldWeb(
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SizedBox(height: size.height*0.03,),
+
+          Text(
+            translate(context,"phoneVerification"),
+            style: TextStyle(
+              fontSize: 30,
+              fontFamily: "ArabFontSemiBold",
+            ),
+          ),
+          SizedBox(height: size.height*0.02,),
+          Text(
+            translate(context,"enterTheCodeSentToYourPhone"),
+            style: TextStyle(
+                fontSize: 15,
+                color: kSubTitleColor
+            ),
+          ),
+          SizedBox(height: size.height*0.01,),
+          Text(
+            widget.phoneNumber,
+            style: TextStyle(
+                fontSize: 14,
+                color: kSubTitleColor
+            ),
+          ),
+          SizedBox(height: size.height*0.06,),
+          Center(
+            child: PinFieldAutoFill(
+              currentCode: codeValue,
+              codeLength: 6,
+              cursor: Cursor(height: size.height*0.03,color: kPrimaryColor,width: 1,enabled: true),
+              onCodeChanged: (code) {
+                setState(() {
+                  codeValue = code.toString();
+                });
+              },
+              onCodeSubmitted: (val) {
+              },
+
+              decoration:  UnderlineDecoration(
+                bgColorBuilder: FixedColorBuilder(Colors.grey[300]!),
+
+                textStyle: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold),
+                colorBuilder: FixedColorBuilder(Colors.grey[300]!,),),
+            ),
+          ),
+          SizedBox(height: size.height*0.05,),
+
+          TextButton(
+            child: Text(
+              widget.controller.timerIsActive
+                  ?translate(context, "resendCodeAt") + '${widget.controller.timerCount.inSeconds}s'
+                  : translate(context, "resend"),
+              style: const TextStyle(color: kPrimaryColor,fontWeight: FontWeight.normal, fontSize: 16,),
+            ),
+            onPressed: widget.controller.timerIsActive
+                ? null
+                : () async {
+              log(VerifyPhoneNumberScreen.id, name: 'Resend OTP');
+              await widget.controller.sendOTP();
+            },
+          ),
+          SizedBox(height: size.height*0.015,),
+          CustomButton(label: translate(context,"verify"), onPress: () async {
+            if(codeValue.length!=6)return;
+            Utils.showWaitingProgressDialog();
+            await widget.controller.verifyOTP(
+              otp: codeValue,
+            );
+          }),
+
+        ],
+      ),
+    )
+        :Padding(
       padding: const EdgeInsets.all(30.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -329,3 +392,5 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> with CodeAutoFill {
 
 
 }
+
+

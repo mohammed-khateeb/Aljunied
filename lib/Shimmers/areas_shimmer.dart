@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -11,15 +12,15 @@ class AreasShimmer extends StatelessWidget {
       baseColor: Colors.grey[100]!,
       highlightColor: Colors.grey[300]!,
       child: SizedBox(
-        height: size.height*0.15,
+        height:kIsWeb?250: size.height*0.15,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
 
             Container(
               margin: EdgeInsets.symmetric(horizontal: size.width*0.05),
-              height: size.height*0.03,
-              width: size.width*0.3,
+              height:kIsWeb?15: size.height*0.03,
+              width:kIsWeb?100: size.width*0.3,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(size.height*0.02),
                 color: Colors.grey[200],
@@ -35,7 +36,7 @@ class AreasShimmer extends StatelessWidget {
                 itemBuilder: (context,index) {
                   return Container(
                     margin: EdgeInsetsDirectional.only(end: size.width*0.02),
-                    width: size.width*0.4,
+                    width:kIsWeb?200: size.width*0.4,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(size.height*0.007),
                       color: Colors.grey[200],

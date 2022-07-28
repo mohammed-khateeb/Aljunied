@@ -4,6 +4,7 @@ import 'package:aljunied/Models/complaint.dart';
 import 'package:aljunied/Models/department.dart';
 import 'package:aljunied/Utils/extension.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -107,7 +108,7 @@ class CustomTextField extends StatelessWidget {
             child: Text(
               labelText!,
               style: TextStyle(
-                  fontSize: size.height * 0.02, color: Colors.grey[850]),
+                  fontSize:kIsWeb?18: size.height * 0.02, color: Colors.grey[850]),
             ),
           ),
         Padding(
@@ -126,7 +127,7 @@ class CustomTextField extends StatelessWidget {
                         children: [
                           TextFormField(
                             style: TextStyle(
-                                fontSize: size.height * 0.015),
+                                fontSize:kIsWeb?15: size.height * 0.015),
                             minLines: minLines ?? 1,
                             autofocus: false,
                             onFieldSubmitted: (_) =>
@@ -186,11 +187,11 @@ class CustomTextField extends StatelessWidget {
                                   FloatingLabelBehavior.always,
                               labelText: "",
                               suffixIcon: Padding(
-                                padding: EdgeInsets.all(size.height * 0.014),
+                                padding: EdgeInsets.all(kIsWeb?8:size.height * 0.014),
                                 child: suffixIcon,
                               ),
                               errorStyle:
-                                  TextStyle(fontSize: size.height * 0.011),
+                                  TextStyle(fontSize:kIsWeb?12: size.height * 0.011),
                               fillColor: color ?? Colors.grey[100],
                               errorText: errorText,
                               contentPadding: const EdgeInsets.only(
