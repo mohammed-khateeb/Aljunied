@@ -1,6 +1,8 @@
 import 'package:aljunied/Apis/admin_services.dart';
+import 'package:aljunied/Components/custom_scaffold_web.dart';
 import 'package:aljunied/Models/terms_conditions.dart';
 import 'package:aljunied/Widgets/waiting_widget.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../Utils/util.dart';
 import '../../Widgets/custom_app_bar.dart';
@@ -35,7 +37,30 @@ class _AddEditTermsScreenState extends State<AddEditTermsScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
+    return kIsWeb&&size.width>520
+        ?CustomScaffoldWeb(
+        title: translate(context, "termsAndConditions"),
+      body: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            SizedBox(height: 10,),
+            CustomTextField(
+              keyboardType: TextInputType.multiline,
+              controller: termsController,
+              labelText: translate(context, "termsAndConditions"),
+              withValidation: true,
+              minLines: 35,
+            ),
+
+            SizedBox(height: 20,),
+
+            CustomButton(label: translate(context, "save"), onPress:()=> add(context)),
+          ],
+        ),
+      ),
+    )
+        : Scaffold(
       appBar: CustomAppBar(title: translate(context, "termsAndConditions"),),
       body:  Padding(
         padding: EdgeInsets.symmetric(

@@ -5,10 +5,12 @@ import 'package:aljunied/Utils/navigator_utils.dart';
 import 'package:aljunied/Utils/util.dart';
 import 'package:aljunied/Widgets/custom_app_bar.dart';
 import 'package:aljunied/Widgets/custom_inkwell.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../Components/bid_container.dart';
+import '../../Components/custom_scaffold_web.dart';
 import '../../Controller/admin_controller.dart';
 import '../../Widgets/waiting_widget.dart';
 
@@ -34,7 +36,55 @@ class _BidsScreenState extends State<BidsScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
+    return kIsWeb&&size.width>520
+        ?CustomScaffoldWeb(
+      buttonLabel: translate(context, "add"),
+      title: translate(context, "bids"),
+      onPressButton: ()=>NavigatorUtils.navigateToAddEditBidScreen(context),
+      body: Consumer<BidController>(
+          builder: (context, bidController, child) {
+            return !bidController.waiting
+                ? GridView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisExtent: 150,
+                  mainAxisSpacing: 15,
+                  crossAxisSpacing: 15
+              ),
+              padding: EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 10),
+              itemCount: bidController.bids!.length,
+              itemBuilder: (_, index) {
+                return Stack(
+                  children: [
+                    BidContainer(bid: bidController.bids![index],edit: true,),
+                    IconButton(
+                      icon: const Icon(
+                        Icons.delete,
+                        color: Colors.red,
+                      ),
+                      iconSize: 20,
+
+                      onPressed: (){
+                        Utils.showSureAlertDialog(
+                            onSubmit: (){
+                              bidController.deleteBid(bidController.bids![index]);
+                            }
+                        );
+                      },
+                    )
+                  ],
+                );
+              },
+            )
+                : const WaitingWidget();
+          }),
+
+    )
+        :Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: CustomAppBar(
         titleColor: Colors.white,
@@ -42,13 +92,7 @@ class _BidsScreenState extends State<BidsScreen> {
         title: translate(context, "bids"),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Text(
-          translate(context, "add"),
-          style: TextStyle(
-              fontSize: size.height*0.018,
-              fontWeight: FontWeight.w600
-          ),
-        ),
+        child: Icon(Icons.add,color: Colors.white,),
         onPressed: () => NavigatorUtils.navigateToAddEditBidScreen(context),
       ),
       body: Container(

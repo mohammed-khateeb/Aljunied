@@ -1,17 +1,21 @@
 import 'package:aljunied/Components/Home_Employee_Components/search_section.dart';
+import 'package:aljunied/Components/app_bar_web.dart';
 import 'package:aljunied/Controller/transaction_controller.dart';
-import 'package:aljunied/Controller/user_controller.dart';
 import 'package:aljunied/Models/current_user.dart';
 import 'package:aljunied/Utils/navigator_utils.dart';
+import 'package:aljunied/Widgets/custom_button.dart';
 import 'package:aljunied/Widgets/custom_inkwell.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../Components/Home_Employee_Components/create_atransaction_section.dart';
 import '../Components/Home_Employee_Components/tasks_section.dart';
+import '../Components/bottom_bar_web.dart';
 import '../Components/custom_drawer.dart';
 import '../Utils/util.dart';
 import '../Widgets/custom_app_bar.dart';
+import '../Widgets/step_widget.dart';
 
 class HomeEmployeeScreen extends StatefulWidget {
   const HomeEmployeeScreen({Key? key}) : super(key: key);
@@ -35,7 +39,140 @@ class _HomeEmployeeScreenState extends State<HomeEmployeeScreen> {
   Widget build(BuildContext context) {
 
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
+    return kIsWeb&&size.width>520
+        ?Scaffold(
+          body: SingleChildScrollView(
+      child: SizedBox(
+          height: size.height,
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: Column(
+                  children: [
+
+                    SizedBox(height: 100,),
+
+                    Container(
+                      width: size.width,
+                      height: size.height * 0.55,
+                      decoration: const BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage("images/custom_scaffold.jpeg"),
+                              fit: BoxFit.fill)),
+                    ),
+                    Expanded(
+                      child: Container(
+                        color: Colors.grey[100],
+                        child: Align(
+                          alignment: AlignmentDirectional.bottomEnd,
+                          child: Image.asset(
+                            "images/down_web_path.png",
+                            height: size.height * 0.3,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const BottomBarWeb(),
+                  ],
+                ),
+              ),
+              Column(
+                children: [
+                  SizedBox(width: size.width,),
+                  const AppBarWeb(),
+                  Expanded(
+                    child: SizedBox(
+                      width: size.width,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 20,),
+                            Text(
+                              translate(context, "createATransaction"),
+                              style: const TextStyle(
+                                  fontSize: 30,
+                                  color: Colors.white
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Spacer(),
+
+                                  Padding(
+                                    padding: const EdgeInsetsDirectional.only(
+                                      start: 300
+                                    ),
+                                    child: Text(
+                                      translate(context, "followTheStepsBelowToCreateATransaction"),
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.grey[200]
+                                      ),
+                                      textAlign: TextAlign.center,
+
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  CustomButton(
+                                    width: 200,
+                                    height: 60,
+                                    label: translate(context, "createATransaction"),
+                                    onPress: ()=>NavigatorUtils.navigateToCreateEditATransactionScreen(context),
+                                  ),
+                                  SizedBox(width: 100,)
+                                ],
+                              ),
+
+
+                            Container(
+                                width: 800,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 20,
+                                    vertical: 10
+                                ),
+                                margin: EdgeInsets.symmetric(
+                                  horizontal: 15,
+                                ),
+                              child: Column(
+                                children: [
+                                  Wrap(
+                                    alignment: WrapAlignment.center,
+                                    spacing: 15,
+                                    runSpacing: 15,
+                                    children: [
+                                      StepWidget(label: translate(context, "typeOfTransaction"), iconPath: "work.png"),
+                                      StepWidget(label: translate(context, "subTypeOfTransaction"), iconPath: "paper.png"),
+                                      StepWidget(label: translate(context, "anotherAddition"), iconPath: "document.png"),
+                                      StepWidget(label: translate(context, "citizenInformation"), iconPath: "info.png"),
+
+                                    ],
+                                  ),
+                                  SizedBox(height: 30,),
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 65
+                                    ),
+                                    child: TasksSection(),
+                                  ),
+                                ],
+                              ),
+                                ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 40,),
+                ],
+              )
+            ],
+          ),
+      ),
+    ),
+        )
+        :Scaffold(
       key: scaffoldKey,
       drawer: CustomDrawer(),
       appBar: CustomAppBar(

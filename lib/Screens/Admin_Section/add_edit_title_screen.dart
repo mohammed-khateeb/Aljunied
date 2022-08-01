@@ -1,4 +1,6 @@
+import 'package:aljunied/Components/custom_scaffold_web.dart';
 import 'package:aljunied/Models/headline.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../../Utils/util.dart';
 import '../../Widgets/custom_app_bar.dart';
@@ -38,7 +40,120 @@ class _AddEditTitleScreenState extends State<AddEditTitleScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
+    return kIsWeb&&size.width>520
+        ?CustomScaffoldWeb(
+      title: widget.titleAppBar,
+      body: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            SizedBox(height: 10,),
+            CustomTextField(
+              controller: titleArController,
+              hintText: translate(context, "subTitle")+" (${translate(context, "arabic")})",
+              withValidation: true,
+            ),
+            SizedBox(height: 10,),
+            CustomTextField(
+              controller: titleEnController,
+              hintText: translate(context, "subTitle")+" (${translate(context, "english")})",
+            ),
+            SizedBox(height: 10,),
+            CustomTextField(
+              minLines: 5,
+              keyboardType: TextInputType.multiline,
+              controller: desController,
+              hintText: translate(context, "details"),
+              withValidation: titleLine.subTitles!.isEmpty,
+            ),
+
+            SizedBox(height: 10,),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Text(
+            //       translate(context, "subSubTitles"),
+            //       style: TextStyle(
+            //           fontSize: size.height*0.022,
+            //           fontWeight: FontWeight.w600,
+            //           color: Colors.grey[600]
+            //       ),
+            //     ),
+            //     CustomInkwell(
+            //       onTap: (){
+            //         FocusScope.of(context).unfocus();
+            //         openNewPage(context, AddEditSubTitleScreen(titleAppBar: titleController.text,)).then((value) {
+            //           if(value!=null && value is SubTitle) {
+            //             setState(() {
+            //               titleLine.subTitles!.add(value);
+            //             });
+            //           }
+            //         });
+            //       },
+            //       child: Icon(
+            //         Icons.add_circle,
+            //         color: kPrimaryColor,
+            //         size: size.height*0.03,
+            //       ),
+            //     )
+            //   ],
+            // ),
+
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: titleLine.subTitles!.length,
+              padding: EdgeInsets.symmetric(vertical: 10,horizontal: 15),
+              itemBuilder: (_,index){
+                return ListTile(
+                  onTap: (){
+                    FocusScope.of(context).unfocus();
+
+                    openNewPage(context, AddEditSubTitleScreen(subTitle: titleLine.subTitles![index],titleAppBar: titleArController.text)).then((value) {
+                      if(value!=null&&value is SubTitle){
+                        setState(() {
+                          titleLine.subTitles![index] = value;
+                        });
+                      }
+                    });
+                  },
+                  trailing: Icon(
+                    Icons.edit,
+                    color: Colors.grey,
+                    size: 20,
+                  ),
+                  leading: CustomInkwell(
+                    onTap: (){
+                      Utils.showSureAlertDialog(
+                          onSubmit: (){
+                            setState(() {
+                              titleLine.subTitles!.remove(titleLine.subTitles![index]);
+                            });
+                          }
+                      );
+
+                    },
+                    child: Icon(
+                      Icons.remove_circle,
+                      color: Colors.red,
+                      size: 25,
+                    ),
+                  ),
+                  title: Text(
+                    titleLine.subTitles![index].label!,
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+
+                );
+              },
+            ),
+            SizedBox(height: 20,),
+            CustomButton(label: translate(context, "save"), onPress:()=> add(context)),
+          ],
+        ),
+      ),
+    )
+        :Scaffold(
       appBar:  CustomAppBar(
         title: widget.titleAppBar,
       ),

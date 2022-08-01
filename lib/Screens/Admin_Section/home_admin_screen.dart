@@ -2,9 +2,12 @@ import 'package:aljunied/Constants/constants.dart';
 import 'package:aljunied/Utils/navigator_utils.dart';
 import 'package:aljunied/Utils/util.dart';
 import 'package:aljunied/Widgets/custom_app_bar.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../Components/Home_Employee_Components/search_section.dart';
+import '../../Components/app_bar_web.dart';
+import '../../Components/bottom_bar_web.dart';
 import '../../Widgets/custom_inkwell.dart';
 
 class HomeAdminScreen extends StatelessWidget {
@@ -13,7 +16,108 @@ class HomeAdminScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
+    return kIsWeb&&size.width>520
+        ?Scaffold(
+      body: SingleChildScrollView(
+        child: SizedBox(
+          height: size.height,
+          child: Stack(
+            children: [
+              Positioned.fill(
+                child: Column(
+                  children: [
+
+                    SizedBox(height: 100,),
+
+                    Container(
+                      width: size.width,
+                      height: size.height * 0.55,
+                      decoration: const BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage("images/custom_scaffold.jpeg"),
+                              fit: BoxFit.fill)),
+                    ),
+                    Expanded(
+                      child: Container(
+                        color: Colors.grey[100],
+                        child: Align(
+                          alignment: AlignmentDirectional.bottomEnd,
+                          child: Image.asset(
+                            "images/down_web_path.png",
+                            height: size.height * 0.3,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const BottomBarWeb(),
+                  ],
+                ),
+              ),
+              Column(
+                children: [
+                  SizedBox(width: size.width,),
+                  const AppBarWeb(),
+                  Expanded(
+                    child: SizedBox(
+                      width: size.width,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 20,),
+                            Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 200),
+                              child: Wrap(
+                                crossAxisAlignment: WrapCrossAlignment.center,
+                                runSpacing: 50,
+                                spacing: 50,
+                                children: List.generate(16, (index) {
+                                  return CustomInkwell(
+                                    onTap: (){
+                                      openPageByIndex(index,context);
+                                    },
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          height: 150,
+                                          width: 150,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(10),
+                                            color: Colors.grey[200],
+                                          ),
+                                          child: Padding(
+                                            padding:  EdgeInsets.all(30),
+                                            child: Image.asset(
+                                              "icons/${getImagePathByIndex(context, index)}",
+                                              color: kPrimaryColor,
+                                            ),
+                                          ),
+                                        ),
+                                        Text(
+                                          getLabelByIndex(context, index),
+                                          style: TextStyle(
+                                              fontSize: 16
+                                          ),
+                                          textAlign: TextAlign.center,
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                }),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 40,),
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
+    ):Scaffold(
       appBar: CustomAppBar(
         title: translate(context, "homePage"),
       ),
@@ -28,7 +132,7 @@ class HomeAdminScreen extends StatelessWidget {
                 itemCount: 16,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
-                    mainAxisExtent: size.height*0.18,
+                    mainAxisExtent: 150,
                     crossAxisSpacing: size.height*0.02
                 ),
                 itemBuilder: (_,index){

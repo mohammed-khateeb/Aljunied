@@ -1,8 +1,10 @@
+import 'package:aljunied/Components/custom_scaffold_web.dart';
 import 'package:aljunied/Components/news_container.dart';
 import 'package:aljunied/Utils/navigator_utils.dart';
 import 'package:aljunied/Utils/util.dart';
 import 'package:aljunied/Widgets/custom_app_bar.dart';
 import 'package:aljunied/Widgets/custom_inkwell.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../Constants/constants.dart';
@@ -30,7 +32,52 @@ class _NewsScreenState extends State<NewsScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
+    return kIsWeb&&size.width>520
+        ?CustomScaffoldWeb(
+      title: translate(context, "news"),
+      buttonLabel: translate(context, "add"),
+      onPressButton: ()=>NavigatorUtils.navigateToAddEditNewsScreen(context),
+      body: Consumer<NewsController>(builder: (context, newsController, child) {
+        return !newsController.waiting
+            ? ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          padding: const EdgeInsets.symmetric(
+              horizontal: 15,
+              vertical: 10),
+          itemCount: newsController.news!.length,
+          itemBuilder: (_, index) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(
+                vertical:10
+              ),
+              child: Stack(
+                children: [
+                  NewsContainer(news: newsController.news![index],edit: true,),
+                  IconButton(
+                    icon: Icon(
+                      Icons.delete,
+                      color: Colors.red,
+                    ),
+                    iconSize: 20,
+
+                    onPressed: (){
+                      Utils.showSureAlertDialog(
+                          onSubmit: (){
+                            newsController.deleteNews(newsController.news![index]);
+                          }
+                      );
+                    },
+                  )
+                ],
+              ),
+            );
+          },
+        )
+            : const WaitingWidget();
+      }),
+    )
+        :Scaffold(
 
       backgroundColor: kPrimaryColor,
 
@@ -40,13 +87,7 @@ class _NewsScreenState extends State<NewsScreen> {
         title: translate(context, "news"),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Text(
-          translate(context, "add"),
-          style: TextStyle(
-            fontSize: size.height*0.018,
-            fontWeight: FontWeight.w600
-          ),
-        ),
+        child: const Icon(Icons.add,color: Colors.white,),
         onPressed: () => NavigatorUtils.navigateToAddEditNewsScreen(context),
       ),
       body: Container(
@@ -65,28 +106,29 @@ class _NewsScreenState extends State<NewsScreen> {
                       vertical: size.height * 0.02),
                   itemCount: newsController.news!.length,
                   itemBuilder: (_, index) {
-                    return CustomInkwell(
-                      onTap: ()=>NavigatorUtils.navigateToAddEditNewsScreen(context,news: newsController.news![index]),
-                        child: Stack(
-                          children: [
-                            NewsContainer(news: newsController.news![index]),
-                            IconButton(
-                              icon: Icon(
-                                  Icons.delete,
-                                color: Colors.red,
-                              ),
-                              iconSize: size.height*0.025,
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: kIsWeb?10:0),
+                      child: Stack(
+                        children: [
+                          NewsContainer(news: newsController.news![index],edit: true,),
+                          IconButton(
+                            icon: Icon(
+                                Icons.delete,
+                              color: Colors.red,
+                            ),
+                            iconSize: size.height*0.025,
 
-                              onPressed: (){
-                                Utils.showSureAlertDialog(
-                                  onSubmit: (){
-                                    newsController.deleteNews(newsController.news![index]);
-                                  }
-                                );
-                              },
-                            )
-                          ],
-                        ));
+                            onPressed: (){
+                              Utils.showSureAlertDialog(
+                                onSubmit: (){
+                                  newsController.deleteNews(newsController.news![index]);
+                                }
+                              );
+                            },
+                          )
+                        ],
+                      ),
+                    );
                   },
                 )
               : const WaitingWidget();

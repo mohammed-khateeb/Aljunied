@@ -18,6 +18,7 @@ import 'package:aljunied/Screens/Admin_Section/investments_screen.dart';
 import 'package:aljunied/Screens/Admin_Section/news_screen.dart';
 import 'package:aljunied/Screens/Admin_Section/tourist_areas_screen.dart';
 import 'package:aljunied/Screens/Admin_Section/users_screen.dart';
+import 'package:aljunied/Screens/about_web_screen.dart';
 import 'package:aljunied/Screens/home_emloyee_screen.dart';
 import 'package:aljunied/Screens/add_investment_screen.dart';
 import 'package:aljunied/Screens/create_edit_transaction_screen.dart';
@@ -193,6 +194,10 @@ class NavigatorUtils {
 
   static void navigateToLanguageScreen(context) {
     openNewPage(context, const LanguageScreen());
+  }
+
+  static void navigateToAboutWebScreen(context) {
+    openNewPage(context, const AboutWebScreen());
   }
 
 

@@ -1,8 +1,10 @@
+import 'package:aljunied/Components/custom_scaffold_web.dart';
 import 'package:aljunied/Components/user_container.dart';
 import 'package:aljunied/Constants/constants.dart';
 import 'package:aljunied/Controller/admin_controller.dart';
 import 'package:aljunied/Utils/util.dart';
 import 'package:aljunied/Widgets/custom_app_bar.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -28,7 +30,26 @@ class _UsersScreenState extends State<UsersScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return Scaffold(
+    return kIsWeb&&size.width>520
+        ?CustomScaffoldWeb(
+      title: translate(context, "citizens"),
+      body: Consumer<AdminController>(builder: (context, adminController, child) {
+        return !adminController.waitingAllUsers
+            ? ListView.builder(
+          shrinkWrap: true,
+          physics: NeverScrollableScrollPhysics(),
+          padding: EdgeInsets.symmetric(
+              horizontal: 15,
+              vertical: 10),
+          itemCount: adminController.allUser!.length,
+          itemBuilder: (_, index) {
+            return UserContainer(employee: adminController.allUser![index],);
+          },
+        )
+            : const WaitingWidget();
+      }),
+    )
+        :Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: CustomAppBar(
         titleColor: Colors.white,

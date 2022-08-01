@@ -1,8 +1,10 @@
+import 'package:aljunied/Components/custom_scaffold_web.dart';
 import 'package:aljunied/Controller/investment_controller.dart';
 import 'package:aljunied/Models/investment.dart';
 import 'package:aljunied/Utils/util.dart';
 import 'package:aljunied/Widgets/custom_app_bar.dart';
 import 'package:aljunied/Widgets/custom_button.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -28,7 +30,94 @@ class _AddInvestmentScreenState extends State<AddInvestmentScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
+    return kIsWeb&&size.width>520
+        ?CustomScaffoldWeb(
+      title: translate(context, "invest"),
+      subTitle: translate(context, "pleaseFillOutTheFollowingFormWithAnInvestmentIdea"),
+      body: Form(
+      key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+
+            SizedBox(height: 15),
+
+            Image.asset(
+              "images/computer.png",
+              height:100,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: CustomTextField(
+                labelText: translate(context, "name"),
+                controller: nameController,
+                keyboardType: TextInputType.text,
+                suffixIcon: Image.asset(
+                  "icons/profile.png",
+                  color: Colors.grey[600],
+                  height: size.height*0.001,
+                ),
+
+                withValidation: true,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: CustomTextField(
+                labelText: translate(context, "mobileNumber"),
+                controller: mobileController,
+                keyboardType: TextInputType.number,
+                suffixIcon: Image.asset(
+                  "icons/call.png",
+                  color: Colors.grey[600],
+                  height: size.height*0.001,
+                ),
+                withValidation: true,
+
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: CustomTextField(
+                labelText: translate(context, "email"),
+                controller: emailController,
+                keyboardType: TextInputType.emailAddress,
+                suffixIcon: Image.asset(
+                  "icons/email.png",
+                  color: Colors.grey[600],
+
+                  height: size.height*0.001,
+                ),
+                withValidation: true,
+
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: CustomTextField(
+                labelText: translate(context, "ideaText"),
+                controller: ideaController,
+                keyboardType: TextInputType.multiline,
+                minLines: 5,
+                withValidation: true,
+
+              ),
+            ),
+            SizedBox(height: 15),
+            CustomButton(
+              label: translate(context, "send"),
+              onPress: (){
+                submit();
+              },
+            ),
+            SizedBox(height: 15),
+
+          ],
+        ),
+      ),
+    )
+        :Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: CustomAppBar(
         titleColor: Colors.white,
@@ -155,7 +244,7 @@ class _AddInvestmentScreenState extends State<AddInvestmentScreen> {
     Navigator.pop(context);
     Utils.showSuccessAlertDialog(
       translate(context, "theIdeaWasSubmittedSuccessfullyItWillBeConsideredByTheAdministrator"),
-      bottom: true
+      bottom: !kIsWeb||MediaQuery.of(Utils.navKey.currentContext!).size.width<520
     );
   }
 }

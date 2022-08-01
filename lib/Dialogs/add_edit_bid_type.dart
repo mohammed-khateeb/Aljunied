@@ -1,5 +1,6 @@
 import 'package:aljunied/Models/bid.dart';
 import 'package:aljunied/Models/department.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../Utils/util.dart';
 import '../Widgets/custom_text_field.dart';
@@ -34,7 +35,7 @@ class _AddEditBidTypeDialogState extends State<AddEditBidTypeDialog> {
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(30.0))),
       title: Text(translate(context, "addABidType"),style: TextStyle(
-          fontWeight: FontWeight.normal,fontSize: size.height * 0.018)),
+          fontWeight: FontWeight.normal,fontSize: kIsWeb&&size.width>520?16:size.height * 0.018)),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -52,7 +53,7 @@ class _AddEditBidTypeDialogState extends State<AddEditBidTypeDialog> {
       ),
       actions: [
         FlatButton(onPressed: () => add(context), child: Text(translate(context, "add"),style: TextStyle(
-            fontWeight: FontWeight.normal,fontSize: size.height * 0.018)))
+            fontWeight: FontWeight.normal,fontSize:kIsWeb&&size.width>520?16: size.height * 0.018)))
       ],
     );
   }

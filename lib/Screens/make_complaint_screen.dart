@@ -1,13 +1,18 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:aljunied/Apis/general_api.dart';
+import 'package:aljunied/Components/custom_scaffold_web.dart';
 import 'package:aljunied/Controller/admin_controller.dart';
 import 'package:aljunied/Models/complaint.dart';
+import 'package:aljunied/Models/current_user.dart';
 import 'package:aljunied/Utils/util.dart';
 import 'package:aljunied/Widgets/custom_app_bar.dart';
 import 'package:aljunied/Widgets/custom_button.dart';
 import 'package:aljunied/Widgets/custom_inkwell.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +35,11 @@ class _MakeComplaintScreenState extends State<MakeComplaintScreen> {
   final ImagePicker _picker = ImagePicker();
   File? picture;
 
+  ///for web
+  FilePickerResult? pickedFile;
+  Uint8List? pictureBase64;
+
+
 
   final TextEditingController idNumberController = TextEditingController();
   final TextEditingController mobileController = TextEditingController();
@@ -46,7 +56,175 @@ class _MakeComplaintScreenState extends State<MakeComplaintScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
+    return kIsWeb&&size.width>520
+        ?CustomScaffoldWeb(
+      title: translate(context, "makeAComplaint"),
+      subTitle: translate(context, "pleaseFillOutTheFollowingFormToFileAComplaint"),
+      body: Form(
+        key: _formKey,
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 20),
+
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: CustomTextField(
+                labelText: translate(context, "name"),
+                controller: nameController,
+                keyboardType: TextInputType.text,
+                suffixIcon: Image.asset(
+                  "icons/profile.png",
+                  color: Colors.grey[600],
+                  height: size.height*0.001,
+                ),
+                validator: (str){
+                  if(str!.isEmpty){
+                    return translate(context, "pleaseEnterYourName");
+                  }
+
+                  return null;
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: CustomTextField(
+                labelText: translate(context, "mobileNumber"),
+                controller: mobileController,
+                keyboardType: TextInputType.number,
+                suffixIcon: Image.asset(
+                  "icons/call.png",
+                  color: Colors.grey[600],
+                  height: size.height*0.001,
+                ),
+                validator: (str){
+                  if(str!.isEmpty){
+                    return translate(context, "pleaseEnterYourMobileNumber");
+                  }
+
+                  return null;
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: CustomTextField(
+                labelText: translate(context, "theIDNumber"),
+                controller: idNumberController,
+                keyboardType: TextInputType.number,
+                digitsOnly: true,
+                charLength: 10,
+                validator: (str){
+                  if(str!.isEmpty){
+                    return translate(context, "pleaseEnterThisField");
+                  }
+                  else if(str.length!=10){
+                    return translate(context, "pleaseEnterAValidNationalNumber");
+                  }
+                  return null;
+                },
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: CustomTextField(
+                labelText: translate(context, "complaintType"),
+                controller: complaintTypeController,
+                readOnly: true,
+                dropComplaintsTypes: context.watch<AdminController>().complaintTypes,
+                onSelectComplaintType: (ct){
+                  complaint.type = ct.name;
+                  complaint.typeId = ct.id;
+                },
+                validator: (str){
+                  if(str!.isEmpty){
+                    return translate(context, "pleaseEnterYourMobileNumber");
+                  }
+
+                  return null;
+                },
+              ),
+            ),
+            if(CurrentUser.userId!=null)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 5),
+                      child: Text(
+                        translate(context, "uploadPhoto"),
+                        style: TextStyle(
+                            fontSize:16,
+                            color: Colors.grey[850]
+                        ),
+                      ),
+                    ),
+                    CustomInkwell(
+                      onTap: () async {
+                        pickedFile = await FilePicker.platform.pickFiles();
+                        if (pickedFile != null) {
+                          try {
+                            setState(() {
+                              pictureBase64 = pickedFile!.files.first.bytes;
+                            });
+                          } catch (err) {
+                            print(err);
+                          }
+                        } else {
+                          print('No Image Selected');
+                        }
+                      },
+                      child: DottedBorder(
+                        strokeCap: StrokeCap.butt,
+                        dashPattern: const [7],
+                        color: Colors.grey,
+                        child: SizedBox(
+                          height: 140,
+                          child:pictureBase64!=null?Image.memory(pictureBase64!,width: size.width,): Center(
+                            child: Text(
+                              translate(context, "uploadPhoto"),
+                              style: TextStyle(
+                                  fontSize: 17,
+                                  color: Colors.grey[850],
+                                  decoration: TextDecoration.underline
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                )
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: CustomTextField(
+                labelText: translate(context, "explanationOfTheComplaint"),
+                controller: complaintDesController,
+                keyboardType: TextInputType.multiline,
+                minLines: 5,
+                withValidation: true,
+
+              ),
+            ),
+            const SizedBox(height: 20),
+            CustomButton(
+              label: translate(context, "send"),
+              onPress: (){
+                submit();
+              },
+            ),
+            const SizedBox(height: 20,),
+
+          ],
+        ),
+      ),
+    )
+        :Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: CustomAppBar(
 
@@ -160,6 +338,7 @@ class _MakeComplaintScreenState extends State<MakeComplaintScreen> {
                       },
                     ),
                   ),
+                  if(CurrentUser.userId!=null)
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: size.height*0.01),
                     child: Column(
@@ -239,12 +418,17 @@ class _MakeComplaintScreenState extends State<MakeComplaintScreen> {
       complaint.imageUrl = url;
 
     }
+    if(pictureBase64!=null) {
+      String url = await GeneralApi.saveOneImage(pictureWeb: pictureBase64!, folderPath: "Complaint");
+      complaint.imageUrl = url;
+
+    }
     await context.read<ComplaintController>().insertComplaint(complaint: complaint);
     Utils.hideWaitingProgressDialog();
     Navigator.pop(context);
     Utils.showSuccessAlertDialog(
         translate(context, "complaintWasSubmittedSuccessfullyItWillBeConsideredByTheAdministrator"),
-        bottom: true
+        bottom: !kIsWeb||MediaQuery.of(Utils.navKey.currentContext!).size.width<520
     );
   }
 
@@ -252,40 +436,38 @@ class _MakeComplaintScreenState extends State<MakeComplaintScreen> {
     showModalBottomSheet<void>(
         context: context,
         builder: (BuildContext context) {
-          return Container(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                ListTile(
-                  onTap: () async {
-                    final XFile? image =
-                    await _picker.pickImage(source: ImageSource.gallery);
-                    if (image != null) {
-                      Navigator.pop(context);
-                      setState(() {
-                        picture = File(image.path);
-                      });
-                    }
-                  },
-                  title: Text(translate(context, "gallery")),
-                  leading: const Icon(Icons.image),
-                ),
-                ListTile(
-                  onTap: () async {
-                    final XFile? image =
-                    await _picker.pickImage(source: ImageSource.camera);
-                    if (image != null) {
-                      Navigator.pop(context);
-                      setState(() {
-                        picture = File(image.path);
-                      });
-                    }
-                  },
-                  title: Text(translate(context, "camera")),
-                  leading: const Icon(Icons.camera),
-                )
-              ],
-            ),
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ListTile(
+                onTap: () async {
+                  final XFile? image =
+                  await _picker.pickImage(source: ImageSource.gallery);
+                  if (image != null) {
+                    Navigator.pop(context);
+                    setState(() {
+                      picture = File(image.path);
+                    });
+                  }
+                },
+                title: Text(translate(context, "gallery")),
+                leading: const Icon(Icons.image),
+              ),
+              ListTile(
+                onTap: () async {
+                  final XFile? image =
+                  await _picker.pickImage(source: ImageSource.camera);
+                  if (image != null) {
+                    Navigator.pop(context);
+                    setState(() {
+                      picture = File(image.path);
+                    });
+                  }
+                },
+                title: Text(translate(context, "camera")),
+                leading: const Icon(Icons.camera),
+              )
+            ],
           );
         });
   }

@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:aljunied/Components/custom_scaffold_web.dart';
 import 'package:aljunied/Constants/constants.dart';
 import 'package:aljunied/Controller/bid_controller.dart';
 import 'package:aljunied/Models/bid.dart';
@@ -8,6 +10,8 @@ import 'package:aljunied/Widgets/custom_app_bar.dart';
 import 'package:aljunied/Widgets/custom_button.dart';
 import 'package:aljunied/Widgets/custom_inkwell.dart';
 import 'package:aljunied/Widgets/custom_text_field.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -37,6 +41,12 @@ class _AddEditBidScreenState extends State<AddEditBidScreen> {
   final ImagePicker _picker = ImagePicker();
   File? picture;
 
+  ///for web
+  FilePickerResult? pickedFile;
+  Uint8List? pictureBase64;
+
+
+
   @override
   void initState() {
     if(context.read<AdminController>().waitingBidType){
@@ -61,7 +71,129 @@ class _AddEditBidScreenState extends State<AddEditBidScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
+    return kIsWeb&&size.width>520
+        ?CustomScaffoldWeb(
+      title: translate(context, "addBids"),
+      body: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            CustomTextField(
+              labelText: translate(context, "bidType"),
+              controller: bidTypeController,
+              dropBidsTypes: context.watch<AdminController>().bidTypes,
+              readOnly: true,
+              withValidation: true,
+              onSelectBidType: (type){
+                bidTypeId = type.id!;
+                bid.typeId = type.id!;
+              },
+
+            ),
+            SizedBox(height: 10,),
+            CustomTextField(
+              labelText: translate(context, "bidTitle"),
+              controller: bidTitleController,
+              withValidation: true,
+              suffixIcon: Image.asset(
+                "icons/document.png",
+                color: Colors.grey[700],
+                height: size.height*0.001,
+              ),
+            ),
+            SizedBox(height: 10,),
+
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(bottom: 7),
+                  child: Text(
+                    translate(context, "bidPicture"),
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey[850]
+                    ),
+                  ),
+                ),
+                CustomInkwell(
+                  onTap: () async {
+                    pickedFile = await FilePicker.platform.pickFiles();
+                    if (pickedFile != null) {
+                      try {
+                        setState(() {
+                          pictureBase64 = pickedFile!.files.first.bytes;
+                        });
+                      } catch (err) {
+                        print(err);
+                      }
+                    } else {
+                      print('No Image Selected');
+                    }
+                  },
+                  child: Card(
+                    elevation: 7,
+                    shadowColor: Colors.white,
+                    child:pictureBase64!=null?Image.memory(pictureBase64!,height:120,width: size.width,)
+                        :widget.bid!=null
+                        ?ReusableCachedNetworkImage(
+                      imageUrl: widget.bid!.imageUrl,
+                      height: 120,
+                      width: size.width,
+
+                    )
+                        : Image.asset(
+                      "images/browse.png",
+                      height: 120,
+                      width: size.width,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+
+              ],
+            ),
+            SizedBox(height: 10,),
+            CustomTextField(
+              labelText: translate(context, "status"),
+              controller: bidStatusController,
+              dropList: [
+                translate(context,"availableBids"),
+                translate(context,"submittedBids")
+              ],
+              onChanged: (str){
+                if(str == translate(context, "availableBids")){
+                  bid.forwarded = false;
+                }
+                else{
+                  bid.forwarded = true;
+                }
+              },
+              readOnly: true,
+              withValidation: true,
+
+            ),
+            SizedBox(height: 10,),
+
+            CustomTextField(
+              labelText: translate(context, "bidDetails"),
+              hintText: translate(context, "details"),
+              controller: bidDetailsController,
+              minLines: 5,
+              keyboardType: TextInputType.multiline,
+              withValidation: true,
+
+            ),
+            SizedBox(height: 20,),
+            CustomButton(
+              label:widget.bid!=null?translate(context, "edit"): translate(context, "share"),
+              onPress: ()=>submit(),
+            )
+          ],
+        ),
+      ),
+    )
+        :Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: CustomAppBar(
         title: translate(context, "addBids"),
@@ -204,13 +336,21 @@ class _AddEditBidScreenState extends State<AddEditBidScreen> {
     if(!_formKey.currentState!.validate()){
       return;
     }
-    if (picture == null&&widget.bid==null) {
+    if (picture == null&&widget.bid==null&&!kIsWeb) {
       Utils.showErrorAlertDialog(
           translate(context, "pleaseUploadAnImage"));
       return;
     }
+
+    if (pictureBase64 == null&&kIsWeb) {
+      Utils.showErrorAlertDialog(
+          translate(context, "pleaseUploadAnImage"));
+      return;
+    }
+
     Utils.showWaitingProgressDialog();
-    if(widget.bid!=null&&picture!=null){
+
+    if(widget.bid!=null&&picture!=null&&!kIsWeb||(widget.bid!=null&&pictureBase64!=null&&kIsWeb)){
       await GeneralApi.deleteFileByUrl(url: widget.bid!.imageUrl!);
     }
     if(picture!=null) {
@@ -218,6 +358,12 @@ class _AddEditBidScreenState extends State<AddEditBidScreen> {
       String url = await GeneralApi.saveOneImage(
         file: picture!, folderPath: 'Bid-images');
     bid.imageUrl = url;
+
+    }
+
+    if(pictureBase64!=null) {
+      String url = await GeneralApi.saveOneImage(pictureWeb: pictureBase64!, folderPath: "Bid-images");
+      bid.imageUrl = url;
 
     }
     bid.details = bidDetailsController.text;

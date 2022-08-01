@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../Models/category.dart';
 import '../Utils/util.dart';
@@ -34,7 +35,7 @@ class _AddEditSubCategoryDialogState extends State<AddEditSubCategoryDialog> {
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(30.0))),
       title: Text(translate(context, "addATransactionSubType"),style: TextStyle(
-          fontWeight: FontWeight.normal,fontSize: size.height * 0.018)),
+          fontWeight: FontWeight.normal,fontSize:kIsWeb&&size.width>520?16: size.height * 0.018)),
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -52,7 +53,7 @@ class _AddEditSubCategoryDialogState extends State<AddEditSubCategoryDialog> {
       ),
       actions: [
         FlatButton(onPressed: () => add(context), child: Text(translate(context, "add"),style: TextStyle(
-            fontWeight: FontWeight.normal,fontSize: size.height * 0.018)))
+            fontWeight: FontWeight.normal,fontSize:kIsWeb&&size.width>520?16: size.height * 0.018)))
       ],
     );
   }

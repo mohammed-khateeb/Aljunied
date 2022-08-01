@@ -14,6 +14,7 @@ class WelcomeScreen extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return kIsWeb&&size.width>520
         ?CustomScaffoldWeb(
+      showHeaderAndBottom: false,
       title: "بلدية الجنيد",
       subTitle: "نص شكلي بمعنى أن الغاية هي الشكل \nوليس المحتوى",
       body: Column(

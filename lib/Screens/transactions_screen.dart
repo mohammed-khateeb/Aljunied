@@ -1,9 +1,11 @@
+import 'package:aljunied/Components/custom_scaffold_web.dart';
 import 'package:aljunied/Components/user_container.dart';
 import 'package:aljunied/Constants/constants.dart';
 import 'package:aljunied/Controller/admin_controller.dart';
 import 'package:aljunied/Controller/transaction_controller.dart';
 import 'package:aljunied/Utils/util.dart';
 import 'package:aljunied/Widgets/custom_app_bar.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -32,7 +34,26 @@ class _TransactionsScreenState extends State<TransactionsScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return Scaffold(
+    return kIsWeb&&size.width>520
+        ?CustomScaffoldWeb(
+      title: translate(context, "searchResults"),
+      body: Consumer<TransactionController>(builder: (context, transactionsController, child) {
+        return !transactionsController.waitingSearchTransactions
+            ? ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          padding: const EdgeInsets.symmetric(
+              horizontal: 10,
+              vertical: 15),
+          itemCount: transactionsController.searchTransactions!.length,
+          itemBuilder: (_, index) {
+            return TransactionContainer(transaction: transactionsController.searchTransactions![index],);
+          },
+        )
+            : const WaitingWidget();
+      }),
+    )
+        :Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: CustomAppBar(
         titleColor: Colors.white,

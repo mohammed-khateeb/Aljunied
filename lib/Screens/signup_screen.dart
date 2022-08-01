@@ -64,6 +64,8 @@ class _SignupScreenState extends State<SignupScreen> {
     Size size = MediaQuery.of(context).size;
     return kIsWeb&&size.width>520
         ?CustomScaffoldWeb(
+      showHeaderAndBottom: false,
+
       body:  Form(
         key: _formKey,
         child: Column(

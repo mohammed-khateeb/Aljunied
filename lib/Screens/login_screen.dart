@@ -46,6 +46,8 @@ class _LoginScreenState extends State<LoginScreen> {
     Size size = MediaQuery.of(context).size;
     return kIsWeb&&size.width>520
         ?CustomScaffoldWeb(
+      showHeaderAndBottom: false,
+
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(

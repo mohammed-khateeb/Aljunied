@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'package:collection/collection.dart';
+import 'package:aljunied/Components/custom_scaffold_web.dart';
 import 'package:aljunied/Components/Create_Transaction_Components/step_four_transaction.dart';
 import 'package:aljunied/Constants/constants.dart';
 import 'package:aljunied/Controller/transaction_controller.dart';
@@ -8,6 +8,7 @@ import 'package:aljunied/Models/current_user.dart';
 import 'package:aljunied/Models/transaction.dart';
 import 'package:aljunied/Widgets/custom_inkwell.dart';
 import 'package:aljunied/Widgets/waiting_widget.dart';
+import 'package:flutter/foundation.dart' as web;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -116,7 +117,228 @@ class _CreateEditTransactionScreenState extends State<CreateEditTransactionScree
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
+    return web.kIsWeb&&size.width>520
+        ?CustomScaffoldWeb(
+      title: translate(context, "createATransaction"),
+      body: Column(
+        children: [
+          index!=null?
+          Padding(
+            padding:  const EdgeInsets.only(top: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                StepWidget(
+                  label: translate(context, "typeOfTransactionStep"),
+                  iconPath: "work.png",
+                  isSelected: index == 0,
+                  completed: index!>0,
+                  onTab: (){
+                    if(index!>0) {
+                      setState(() {
+                        index = 0;
+                      });
+                      pageController.animateToPage(0, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+                    }
+                  },
+                ),
+                StepWidget(
+                  label: translate(context, "subTypeOfTransaction"),
+                  iconPath: "paper.png",
+                  isSelected: index == 1,
+                  completed: index!>1,
+
+                  onTab: (){
+
+                    if(index!>1||(_formKeyStepOne.currentState!.validate()&&index==0)) {
+                      setState(() {
+                        index = 1;
+                      });
+                      pageController.animateToPage(1, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+                    }
+                  },
+                ),
+                StepWidget(
+                  label: translate(context, "anotherAdditionStep"),
+                  iconPath: "document.png",
+                  isSelected: index == 2,
+                  completed: index!>2,
+
+                  onTab: (){
+
+                    if(index!>2||index == 1) {
+                      setState(() {
+                        index =2;
+                      });
+                      pageController.animateToPage(2, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+                    }
+                  },
+                ),
+                StepWidget(
+                  label: translate(context, "citizenInformation"),
+                  iconPath: "info.png",
+                  isSelected: index == 3,
+                  completed: index!>3,
+
+                  onTab: (){
+                    if(index == 2) {
+                      setState(() {
+                        index =3;
+                      });
+                      pageController.animateToPage(3, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+                    }
+                  },
+                ),
+
+              ],
+            ),
+          ):SizedBox(height: 25),
+          Container(
+            width: size.width,
+            height:index ==3?800: 580,
+            margin: EdgeInsets.only(top: size.height*0.02),
+            decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(size.height*0.03))
+            ),
+            child: Padding(
+              padding: EdgeInsets.symmetric(
+                  vertical: size.height*0.05
+              ),
+              child: Consumer<AdminController>(
+                  builder: (context, adminController, child) {
+                    return !adminController.waitingCategories? PageView(
+                      physics: const NeverScrollableScrollPhysics(),
+                      controller: pageController,
+                      children: [
+                        Form(
+                          key: _formKeyStepOne,
+                          child: StepOneTransaction(
+                            categories: adminController.categories,
+                            areaController: areaController,
+                            onSelectType: (selected){
+                              setState(() {
+                                selectedTransactionTypeIndex = selected;
+                                selectedTransactionSubTypeIndex = 0;
+                                selectedCategory = adminController.categories![selected];
+                              });
+                            },
+                            selectedIndex: selectedTransactionTypeIndex,
+                            onSubmit: (){
+
+                              if(_formKeyStepOne.currentState!.validate()){
+                                setState(() {
+                                  index = 1;
+                                });
+                                pageController.animateToPage(1, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+                              }
+
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal:web.kIsWeb&&size.width>520?10: size.width*0.05,
+                          ),
+                          child: StepTwoTransaction(
+                            onSelectSubType: (index){
+                              setState(() {
+                                selectedTransactionSubTypeIndex = index;
+                              });
+                            },
+                            category: selectedCategory,
+                            selectedIndex: selectedTransactionSubTypeIndex,
+                            onSubmit: (){
+                              setState(() {
+                                index = 2;
+                              });
+                              pageController.animateToPage(2, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal:web.kIsWeb&&size.width>520?10: size.width*0.05,
+                          ),
+                          child: StepThreeTransaction(
+                            infoController: additionInfoController,
+                            onSubmit: (){
+                              setState(() {
+                                index = 3;
+                              });
+                              pageController.animateToPage(3, duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+                            },
+                          ),
+                        ),
+                        Form(
+                          key: _formKeyStepFour,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal:web.kIsWeb&&size.width>520?10: size.width*0.05,
+                            ),
+                            child: StepFourTransaction(
+                              isDay: isDay,
+                              edit: widget.transaction!=null,
+                              duration: duration,
+
+                              onChangeDuration: (d,day){
+                                setState(() {
+                                  duration = d;
+                                  isDay = day;
+                                });
+                              },
+                              onSelectConvertFrom: (dep){
+                                setState(() {
+                                  convertFromId = dep.id;
+                                });
+                              },
+                              onSelectConvertTo: (dep){
+                                setState(() {
+                                  convertToId = dep.id;
+
+                                });
+                              },
+                              onChangeHourOrDay: (day){
+                                setState(() {
+                                  isDay = day;
+                                });
+                              },
+                              convertToId:widget.transaction!=null? widget.transaction!.convertToId:null,
+                              departments: adminController.departments,
+                              nameController: citizenNameController,
+                              convertFromController: convertFromController,
+                              currentStageController: currentStageController,
+                              convertToController: convertToController,
+                              onSubmit: (){
+                                if(_formKeyStepFour.currentState!.validate()){
+                                  insertTransaction(size);
+                                }
+                              },
+                              onEndTransaction: (){
+                                if(_formKeyStepFour.currentState!.validate()){
+                                  Utils.showSureAlertDialog(
+                                      onSubmit: (){
+                                        insertTransaction(size,end: true);
+                                      }
+                                  );
+                                }
+                              },
+                            ),
+                          ),
+                        )
+
+
+
+                      ],
+                    ):const WaitingWidget();
+                  }
+              ),
+            ),
+          ),
+        ],
+      ),
+    )
+        :Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: CustomAppBar(
         title: translate(context, "createATransaction"),
@@ -441,24 +663,24 @@ class _CreateEditTransactionScreenState extends State<CreateEditTransactionScree
               child: Text(
                 randomNumber.toString().replaceAllMapped(RegExp(r".{3}"), (match) => "${match.group(0)} "),
                 style: TextStyle(
-                    fontSize: size.height*0.045
+                    fontSize:web.kIsWeb&&size.width>520?25: size.height*0.045
                 ),
               ),
             ),
-            SizedBox(width: size.width*0.03,),
+            SizedBox(width: web.kIsWeb&&size.width>520?15:size.width*0.03,),
             CustomInkwell(
               onTap: (){
                 Clipboard.setData(ClipboardData(text: randomNumber.toString()));
-                Utils.showToast(translate(Utils.navKey.currentContext!, "copied"), size.height*0.02);
+                Utils.showToast(translate(Utils.navKey.currentContext!, "copied"),web.kIsWeb&&size.width>520?16: size.height*0.02);
               },
               child: Image.asset(
                 "icons/copy.png",
-                height: size.height*0.035,
+                height:web.kIsWeb&&size.width>520?30: size.height*0.035,
               ),
             ),
           ],
         ),
-        bottom: true,
+        bottom: !web.kIsWeb||MediaQuery.of(Utils.navKey.currentContext!).size.width<520,
       );
     }
     else{
@@ -497,7 +719,7 @@ class _CreateEditTransactionScreenState extends State<CreateEditTransactionScree
         Navigator.pop(context,transaction);
         Utils.showSuccessAlertDialog(
             translate(context, "editedSuccessfully"),
-          bottom: true
+          bottom: !web.kIsWeb||MediaQuery.of(Utils.navKey.currentContext!).size.width<520
         );
 
       });

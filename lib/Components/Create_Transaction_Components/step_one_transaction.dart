@@ -1,6 +1,7 @@
 import 'package:aljunied/Widgets/custom_button.dart';
 import 'package:aljunied/Widgets/custom_inkwell.dart';
 import 'package:aljunied/Widgets/reusable_cache_network_image.dart';
+import 'package:flutter/foundation.dart' as web;
 import 'package:flutter/material.dart';
 
 import '../../Constants/constants.dart';
@@ -22,12 +23,14 @@ class StepOneTransaction extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return ListView(
+    return
+        ListView(
+          physics: web.kIsWeb&&size.width>520?NeverScrollableScrollPhysics():null,
       //crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: size.width*0.05,
+            horizontal:web.kIsWeb&&size.width>520?10: size.width*0.05,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,23 +39,23 @@ class StepOneTransaction extends StatelessWidget {
               Text(
                 translate(context, "selectArea"),
                 style: TextStyle(
-                    fontSize: size.height*0.02,
+                    fontSize:web.kIsWeb&&size.width>520?16: size.height*0.02,
                     fontFamily: "ArabFontBold",
                     fontWeight: FontWeight.bold
                 ),
               ),
-              SizedBox(height: size.height*0.01,),
+              SizedBox(height:web.kIsWeb&&size.width>520?10: size.height*0.01,),
               CustomTextField(
                 controller: areaController,
                 withValidation: true,
                 dropList: const ["صخرة","عبين","عبلين"],
                 readOnly: true,
               ),
-              SizedBox(height: size.height*0.03,),
+              SizedBox(height:web.kIsWeb&&size.width>520?15: size.height*0.03,),
               Text(
                 translate(context, "determineTheTypeOfTransaction"),
                 style: TextStyle(
-                    fontSize: size.height*0.02,
+                    fontSize:web.kIsWeb&&size.width>520?16: size.height*0.02,
                     fontFamily: "ArabFontBold",
                     fontWeight: FontWeight.bold
                 ),
@@ -61,26 +64,26 @@ class StepOneTransaction extends StatelessWidget {
               Text(
                 translate(context, "pleaseDetermineTheTypeOfTransaction"),
                 style: TextStyle(
-                    fontSize: size.height*0.018,
+                    fontSize:web.kIsWeb&&size.width>520?14: size.height*0.018,
                     color: kSubTitleColor
                 ),
               ),
-              SizedBox(height: size.height*0.03,),
+              SizedBox(height:web.kIsWeb&&size.width>520?10: size.height*0.03,),
             ],
           ),
         ),
 
         if(categories!=null)
         SizedBox(
-          height: size.height*0.35,
+          height:web.kIsWeb&&size.width>520?250: size.height*0.35,
 
           child: GridView.builder(
             itemCount: categories!.length,
             scrollDirection: Axis.horizontal,
-            padding: EdgeInsetsDirectional.only(start: size.width*0.03),
+            padding: EdgeInsetsDirectional.only(start:web.kIsWeb&&size.width>520?10: size.width*0.03),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                mainAxisExtent: size.width*0.29
+                mainAxisExtent:web.kIsWeb&&size.width>520?100: size.width*0.29
             ),
             itemBuilder: (_,index){
               return CustomInkwell(
@@ -90,8 +93,8 @@ class StepOneTransaction extends StatelessWidget {
                 child: Column(
                   children: [
                     Container(
-                      height: size.width*0.25,
-                      width: size.width*0.25,
+                      height:web.kIsWeb&&size.width>520?80: size.width*0.25,
+                      width:web.kIsWeb&&size.width>520?80: size.width*0.25,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(size.height*0.005),
                         border:selectedIndex==index? Border.all(
@@ -102,8 +105,8 @@ class StepOneTransaction extends StatelessWidget {
                       child: Padding(
                         padding:  EdgeInsets.all(size.height*0.02),
                         child: ReusableCachedNetworkImage(
-                          height: size.width*0.25,
-                          width: size.width*0.25,
+                          height:web.kIsWeb&&size.width>520?80: size.width*0.25,
+                          width:web.kIsWeb&&size.width>520?80: size.width*0.25,
                           imageUrl: categories![index].imageUrl,
                         ),
                       ),
@@ -111,7 +114,7 @@ class StepOneTransaction extends StatelessWidget {
                     Text(
                       categories![index].nameAr!,
                       style: TextStyle(
-                          fontSize: size.height*0.017
+                          fontSize:web.kIsWeb&&size.width>520?15: size.height*0.017
                       ),
                     )
                   ],
@@ -122,7 +125,7 @@ class StepOneTransaction extends StatelessWidget {
         ),
         Padding(
           padding: EdgeInsets.symmetric(
-            horizontal: size.width*0.05,
+            horizontal:web.kIsWeb&&size.width>520?10: size.width*0.05,
           ),
           child: CustomButton(
             label: translate(context, "continue"),

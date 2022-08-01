@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'dart:typed_data';
+import 'package:aljunied/Components/custom_scaffold_web.dart';
 import 'package:aljunied/Constants/constants.dart';
 import 'package:aljunied/Controller/news_controller.dart';
 import 'package:aljunied/Models/news.dart';
@@ -8,6 +10,8 @@ import 'package:aljunied/Widgets/custom_button.dart';
 import 'package:aljunied/Widgets/custom_inkwell.dart';
 import 'package:aljunied/Widgets/custom_text_field.dart';
 import 'package:aljunied/Widgets/reusable_cache_network_image.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +34,10 @@ class _AddEditNewsScreenState extends State<AddEditNewsScreen> {
   TextEditingController snapchatUrlController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+
+  ///for web
+  FilePickerResult? pickedFile;
+  Uint8List? pictureBase64;
 
   News news = News();
 
@@ -56,7 +64,138 @@ class _AddEditNewsScreenState extends State<AddEditNewsScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
+    return kIsWeb&&size.width>520
+        ?CustomScaffoldWeb(
+      title: translate(context, "addNews"),
+      body: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            CustomTextField(
+              labelText: translate(context, "newsTitle"),
+              controller: newsTitleController,
+              suffixIcon: Image.asset(
+                "icons/document.png",
+                color: Colors.grey[700],
+                height: size.height*0.001,
+              ),
+              withValidation: true,
+
+            ),
+            SizedBox(height: size.height*0.02,),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(bottom: 7),
+                  child: Text(
+                    translate(context, "newsPicture"),
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey[850]
+                    ),
+                  ),
+                ),
+                CustomInkwell(
+                  onTap: () async {
+                    pickedFile = await FilePicker.platform.pickFiles();
+                    if (pickedFile != null) {
+                      try {
+                        setState(() {
+                          pictureBase64 = pickedFile!.files.first.bytes;
+                        });
+                      } catch (err) {
+                        print(err);
+                      }
+                    } else {
+                      print('No Image Selected');
+                    }
+                  },
+                  child: Card(
+                    elevation: 7,
+                    shadowColor: Colors.white,
+                    child:pictureBase64!=null?Image.memory(pictureBase64!,height:120,width: size.width,)
+                        :widget.news!=null
+                        ?ReusableCachedNetworkImage(
+                      imageUrl: widget.news!.imageUrl,
+                      height: 120,
+                      width: size.width,
+
+                    )
+                        : Image.asset(
+                      "images/browse.png",
+                      height: 120,
+                      width: size.width,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+
+              ],
+            ),
+            SizedBox(height: size.height*0.02,),
+
+
+            CustomTextField(
+              labelText: translate(context, "theTextOfTheNews"),
+              hintText: translate(context, "theTextOfTheNews"),
+              controller: newsDetailsController,
+              minLines: 5,
+              keyboardType: TextInputType.multiline,
+              withValidation: true,
+
+            ),
+            SizedBox(height: size.height*0.02,),
+            CustomTextField(
+              labelText: translate(context, "facebookLink"),
+              controller: facebookUrlController,
+              suffixIcon: Image.asset(
+                "icons/facebook.png",
+                height: size.height*0.001,
+              ),
+
+            ),
+            SizedBox(height: size.height*0.02,),
+            CustomTextField(
+              labelText: translate(context, "snapchatLink"),
+              controller: snapchatUrlController,
+              suffixIcon: Image.asset(
+                "icons/snapchat.png",
+                height: size.height*0.001,
+              ),
+
+            ),
+            SizedBox(height: size.height*0.02,),
+            CustomTextField(
+              labelText: translate(context, "twitterLink"),
+              controller: twitterUrlController,
+              suffixIcon: Image.asset(
+                "icons/twitter.png",
+                height: size.height*0.001,
+              ),
+
+            ),
+            SizedBox(height: size.height*0.02,),
+            CustomTextField(
+              labelText: translate(context, "instagramLink"),
+              controller: instagramUrlController,
+              suffixIcon: Image.asset(
+                "icons/instagram.png",
+                height: size.height*0.001,
+              ),
+
+            ),
+            SizedBox(height: size.height*0.04,),
+
+            CustomButton(
+              label:widget.news!=null?translate(context, "edit"): translate(context, "add"),
+              onPress: ()=>submit(),
+            )
+          ],
+        ),
+      ),
+    )
+        :Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: CustomAppBar(
         title: translate(context, "addNews"),
@@ -208,19 +347,32 @@ class _AddEditNewsScreenState extends State<AddEditNewsScreen> {
     if(!_formKey.currentState!.validate()){
       return;
     }
-    if (picture == null&&widget.news==null) {
+    if (picture == null&&widget.news==null&&!kIsWeb) {
       Utils.showErrorAlertDialog(
           translate(context, "pleaseUploadAnImage"));
       return;
     }
+
+    if (pictureBase64 == null&&kIsWeb) {
+      Utils.showErrorAlertDialog(
+          translate(context, "pleaseUploadAnImage"));
+      return;
+    }
+
     Utils.showWaitingProgressDialog();
 
-    if(widget.news!=null&&picture!=null){
+    if(widget.news!=null&&picture!=null&&!kIsWeb||(widget.news!=null&&pictureBase64!=null&&kIsWeb)){
       await GeneralApi.deleteFileByUrl(url: widget.news!.imageUrl!);
     }
     if(picture!=null) {
       String url = await GeneralApi.saveOneImage(
         file: picture!, folderPath: 'News-images');
+      news.imageUrl = url;
+
+    }
+
+    if(pictureBase64!=null) {
+      String url = await GeneralApi.saveOneImage(pictureWeb: pictureBase64!, folderPath: "News-images");
       news.imageUrl = url;
 
     }

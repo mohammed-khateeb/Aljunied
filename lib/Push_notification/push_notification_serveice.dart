@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
@@ -156,7 +157,7 @@ class PushNotificationServices {
       if(fromAdmin) {
         Navigator.pop(Utils.navKey.currentContext!);
         Utils.showSuccessAlertDialog(translate(Utils.navKey.currentContext!,
-            "theNotificationHasBeenSentSuccessfully"),bottom: true);
+            "theNotificationHasBeenSentSuccessfully"),bottom: !kIsWeb||MediaQuery.of(Utils.navKey.currentContext!).size.width<520);
       }
     }).catchError((e) {
       debugPrint('error: $e');

@@ -1,6 +1,6 @@
 import 'package:aljunied/Widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter/foundation.dart' as web;
 import '../../Constants/constants.dart';
 import '../../Utils/util.dart';
 import '../../Widgets/custom_button.dart';
@@ -23,27 +23,27 @@ class StepThreeTransaction extends StatelessWidget {
           Text(
             translate(context, "anotherAdditionToTheTypeOf")+" "+"ترخيص ابنية",
             style: TextStyle(
-                fontSize: size.height*0.02,
+                fontSize: web.kIsWeb&&size.width>520?16:size.height*0.02,
                 fontFamily: "ArabFontBold",
                 fontWeight: FontWeight.bold
             ),
           ),
-          SizedBox(height: size.height*0.005,),
+          SizedBox(height:web.kIsWeb&&size.width>520?8: size.height*0.005,),
           Text(
             translate(context, "pleaseSelectAnyOtherAddOns"),
             style: TextStyle(
-                fontSize: size.height*0.018,
+                fontSize:web.kIsWeb&&size.width>520?14: size.height*0.018,
                 color: kSubTitleColor
             ),
           ),
-          SizedBox(height: size.height*0.03,),
+          SizedBox(height:web.kIsWeb&&size.width>520?20: size.height*0.03,),
           CustomTextField(
             minLines: 5,
             controller: infoController,
             keyboardType: TextInputType.multiline,
             hintText: translate(context, "anotherAddition"),
           ),
-          SizedBox(height: size.height*0.03,),
+          SizedBox(height:web.kIsWeb&&size.width>520?20: size.height*0.03,),
 
           CustomButton(
             label: translate(context, "continue"),

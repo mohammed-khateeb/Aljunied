@@ -2,6 +2,7 @@ import 'package:aljunied/Controller/transaction_controller.dart';
 import 'package:aljunied/Models/current_user.dart';
 import 'package:aljunied/Widgets/custom_inkwell.dart';
 import 'package:aljunied/Widgets/waiting_widget.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../Constants/constants.dart';
@@ -17,7 +18,7 @@ class TasksSection extends StatelessWidget {
     return Consumer<TransactionController>(
         builder: (context, transactionController, child) {
         return !transactionController.waitingTasks?Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment:kIsWeb&&size.width>520?CrossAxisAlignment.center: CrossAxisAlignment.start,
           children: [
             SizedBox(width: size.width,),
             if(CurrentUser.department!=null)
@@ -25,29 +26,31 @@ class TasksSection extends StatelessWidget {
               text: TextSpan(
                 text: translate(context, "tasks")+" ",
                 style: TextStyle(
-                  fontSize: size.height*0.02,
+                  fontSize:kIsWeb&&size.width>520?20: size.height*0.02,
                   color: Colors.black,
                   fontFamily: "ArabFontBold",
                 ),
                 children: <TextSpan>[
                   TextSpan(text: "(${CurrentUser.department!.name!})",
                       style: TextStyle(
-                          fontSize: size.height*0.013,
+                          fontSize:kIsWeb&&size.width>520?12: size.height*0.013,
                         fontFamily: "ArabFont"
                       )),
                 ],
               ),
             ),
-            SizedBox(height: size.height*0.01,),
+            SizedBox(height:kIsWeb&&size.width>520?10: size.height*0.01,),
             Row(
+              mainAxisAlignment: kIsWeb&&size.width>520?MainAxisAlignment.center:MainAxisAlignment.start,
               children: [
                 CustomInkwell(
                   onTap: (){
                     transactionController.changeTaskType(0);
                   },
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: size.width*0.03),
-                    height: size.height*0.045,
+                    padding: EdgeInsets.symmetric(horizontal:kIsWeb&&size.width>520?20: size.width*0.03),
+                    height:kIsWeb&&size.width>520?40: size.height*0.045,
+                    width: kIsWeb&&size.width>836?200:null,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(size.height*0.01),
                         color:context.watch<TransactionController>().taskType==0? kPrimaryColor:Colors.grey[200]
@@ -56,7 +59,7 @@ class TasksSection extends StatelessWidget {
                       child: Text(
                         translate(context, "all"),
                         style: TextStyle(
-                          fontSize: size.height*0.017,
+                          fontSize:kIsWeb&&size.width>520?16: size.height*0.017,
                           color:transactionController.taskType==0? Colors.white:Colors.grey[700],
 
                         ),
@@ -64,14 +67,15 @@ class TasksSection extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(width: size.width*0.02),
+                SizedBox(width:kIsWeb&&size.width>520?15: size.width*0.02),
                 CustomInkwell(
                   onTap: (){
                     transactionController.changeTaskType(1);
                   },
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: size.width*0.03),
-                    height: size.height*0.045,
+                    padding: EdgeInsets.symmetric(horizontal:kIsWeb&&size.width>520?15: size.width*0.03),
+                    height:kIsWeb&&size.width>520?40: size.height*0.045,
+                    width: kIsWeb&&size.width>836?200:null,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(size.height*0.01),
                         color:transactionController.taskType==1? kPrimaryColor:Colors.grey[200]
@@ -80,7 +84,7 @@ class TasksSection extends StatelessWidget {
                       child: Text(
                         translate(context, "completedTasks"),
                         style: TextStyle(
-                          fontSize: size.height*0.017,
+                          fontSize:kIsWeb&&size.width>520?16: size.height*0.017,
                           color:transactionController.taskType==1? Colors.white:Colors.grey[700],
 
                         ),
@@ -88,14 +92,16 @@ class TasksSection extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(width: size.width*0.02),
+                SizedBox(width:kIsWeb&&size.width>520?15: size.width*0.02),
                 CustomInkwell(
                   onTap: (){
                     transactionController.changeTaskType(2);
                   },
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: size.width*0.03),
-                    height: size.height*0.045,
+                    padding: EdgeInsets.symmetric(horizontal:kIsWeb&&size.width>520?15: size.width*0.03),
+                    height:kIsWeb&&size.width>520?40: size.height*0.045,
+                    width: kIsWeb&&size.width>836?200:null,
+
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(size.height*0.01),
                         color:transactionController.taskType==2? kPrimaryColor:Colors.grey[200]
@@ -104,7 +110,7 @@ class TasksSection extends StatelessWidget {
                       child: Text(
                         translate(context, "unfinishedTasks"),
                         style: TextStyle(
-                          fontSize: size.height*0.017,
+                          fontSize:kIsWeb&&size.width>520?16: size.height*0.017,
                           color:transactionController.taskType==2? Colors.white:Colors.grey[700],
 
                         ),
@@ -127,7 +133,7 @@ class TasksSection extends StatelessWidget {
                   child: Text(
                     translate(context, "today"),
                     style: TextStyle(
-                        fontSize: size.height*0.02,
+                        fontSize:kIsWeb&&size.width>520?18: size.height*0.02,
                         color: kSubTitleColor
                     ),
                   ),
@@ -159,7 +165,7 @@ class TasksSection extends StatelessWidget {
                   child: Text(
                     translate(context, "othersDay"),
                     style: TextStyle(
-                        fontSize: size.height*0.02,
+                        fontSize:kIsWeb&&size.width>520?18: size.height*0.02,
                         color: kSubTitleColor
                     ),
                   ),

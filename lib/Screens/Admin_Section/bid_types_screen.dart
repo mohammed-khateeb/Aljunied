@@ -1,9 +1,11 @@
+import 'package:aljunied/Components/custom_scaffold_web.dart';
 import 'package:aljunied/Constants/constants.dart';
 import 'package:aljunied/Dialogs/add_edit_bid_type.dart';
 import 'package:aljunied/Dialogs/add_edit_department.dart';
 import 'package:aljunied/Models/bid.dart';
 import 'package:aljunied/Models/department.dart';
 import 'package:aljunied/Widgets/custom_app_bar.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -37,7 +39,58 @@ class _BidsTypesScreenState extends State<BidsTypesScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
+    return kIsWeb&&size.width>520
+        ?CustomScaffoldWeb(
+      buttonLabel: translate(context, "add"),
+      onPressButton: ()=>addBidType(context: context),
+      title: translate(context, "bidsTypes"),
+      body: Consumer<AdminController>(
+          builder: (context, adminController, child) {
+            return !adminController.waitingBidType? ListView.builder(
+              itemCount: adminController.bidTypes!.length,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.symmetric(vertical: size.height*0.01,horizontal: size.width*0.01),
+              itemBuilder: (_,index){
+                return Card(
+                  elevation: 0.5,
+                  child: ListTile(
+                    onTap: (){
+                      editBidType(context: context,bidType: adminController.bidTypes![index]);
+                    },
+                    contentPadding: EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 15
+                    ),
+                    leading: Text(
+                      "${index+1} - ",
+                      style: const TextStyle(
+                          fontSize: 15
+                      ),
+                    ),
+                    title: Text(
+                      adminController.bidTypes![index].name!.toUpperCase(),
+                      style: const TextStyle(
+                          fontSize: 17
+                      ),
+                    ),
+                    trailing: CustomInkwell(
+                      onTap: ()=>removeBidType(adminController.bidTypes![index].id!),
+                      child: const Icon(
+                        FontAwesomeIcons.timesCircle,
+                        color: Colors.red,
+                        size: 25,
+                      ),
+                    ),
+
+                  ),
+                );
+              },
+            ):const WaitingWidget();
+          }
+      ),
+    )
+        :Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: CustomAppBar(
         titleColor: Colors.white,

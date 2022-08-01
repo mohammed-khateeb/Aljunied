@@ -1,5 +1,7 @@
+import 'package:aljunied/Components/custom_scaffold_web.dart';
 import 'package:aljunied/Constants/constants.dart';
 import 'package:aljunied/Widgets/custom_app_bar.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -31,7 +33,58 @@ class _ComplaintTypesScreenState extends State<ComplaintTypesScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
+    return kIsWeb&&size.width>520
+        ?CustomScaffoldWeb(
+      title: translate(context, "complaintsTypes"),
+      buttonLabel: translate(context, "add"),
+      onPressButton: ()=>addComplaintType(context: context),
+      body: Consumer<AdminController>(
+          builder: (context, adminController, child) {
+            return !adminController.waitingComplaintType? ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: adminController.complaintTypes!.length,
+              padding: EdgeInsets.symmetric(vertical: 10,horizontal: 15),
+              itemBuilder: (_,index){
+                return Card(
+                  elevation: 0.5,
+                  child: ListTile(
+                    onTap: (){
+                      editComplaintType(context: context,complaintType: adminController.complaintTypes![index]);
+                    },
+                    contentPadding: EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 15
+                    ),
+                    leading: Text(
+                      "${index+1} - ",
+                      style: TextStyle(
+                          fontSize: 16
+                      ),
+                    ),
+                    title: Text(
+                      adminController.complaintTypes![index].name!.toUpperCase(),
+                      style: TextStyle(
+                          fontSize: 16
+                      ),
+                    ),
+                    trailing: CustomInkwell(
+                      onTap: ()=>removeComplaintType(adminController.complaintTypes![index].id!),
+                      child: Icon(
+                        FontAwesomeIcons.timesCircle,
+                        color: Colors.red,
+                        size: 25,
+                      ),
+                    ),
+
+                  ),
+                );
+              },
+            ):const WaitingWidget();
+          }
+      ),
+    )
+        :Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: CustomAppBar(
         titleColor: Colors.white,

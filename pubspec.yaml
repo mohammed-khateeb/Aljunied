@@ -69,7 +69,7 @@ dependencies:
   card_swiper: ^2.0.3
   dotted_border: ^2.0.0+2
   vertical_weight_slider: ^2.4.0
-
+  file_picker: ^4.6.1
 
 
 

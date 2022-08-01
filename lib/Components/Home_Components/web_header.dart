@@ -71,14 +71,17 @@ class _WebHeaderState extends State<WebHeader> {
               children: [
                 Image.asset(
                   "images/up_path.png",
-                  height: size.height*0.27,
+                  width: size.width*0.25,
+                  //height: size.height*0.27,
                 ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Image.asset(
                       "images/white_down_path_web.png",
-                      height: size.height*0.27,
+                      width: size.width*0.25,
+
+                      //height: size.height*0.27,
                     ),
                   ],
                 ),
@@ -99,8 +102,8 @@ class _WebHeaderState extends State<WebHeader> {
                     width: 700,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text("بلدية الجنيد",
+                      children:  [
+                        Text(Localizations.localeOf(context).languageCode=="en"?"Junaid Municipality":"بلدية الجنيد",
                             style: TextStyle(
                                 fontSize: 35,
                                 fontWeight: FontWeight.bold,

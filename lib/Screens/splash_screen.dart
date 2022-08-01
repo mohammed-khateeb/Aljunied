@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'package:aljunied/Components/custom_scaffold_web.dart';
 import 'package:aljunied/Models/department.dart';
+import 'package:aljunied/Widgets/waiting_widget.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -185,7 +187,12 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
-    return newUpdate
+    return kIsWeb&&size.width>520
+        ?const CustomScaffoldWeb(
+      showHeaderAndBottom: false,
+      body: SizedBox(child: WaitingWidget(),),
+    )
+        : newUpdate
         ? _getNewVersionShow()
         : Scaffold(
             body: Container(

@@ -1,15 +1,17 @@
 import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:aljunied/Components/custom_scaffold_web.dart';
 import 'package:aljunied/Constants/constants.dart';
 import 'package:aljunied/Controller/area_controller.dart';
-import 'package:aljunied/Controller/bid_controller.dart';
 import 'package:aljunied/Models/area.dart';
-import 'package:aljunied/Models/bid.dart';
 import 'package:aljunied/Utils/util.dart';
 import 'package:aljunied/Widgets/custom_app_bar.dart';
 import 'package:aljunied/Widgets/custom_button.dart';
 import 'package:aljunied/Widgets/custom_inkwell.dart';
 import 'package:aljunied/Widgets/custom_text_field.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -37,6 +39,11 @@ class _AddEditAreaScreenState extends State<AddEditAreaScreen> {
   final ImagePicker _picker = ImagePicker();
   File? picture;
 
+  ///for web
+  FilePickerResult? pickedFile;
+  Uint8List? pictureBase64;
+
+
   @override
   void initState() {
     if(widget.area!=null){
@@ -56,7 +63,96 @@ class _AddEditAreaScreenState extends State<AddEditAreaScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
+    return kIsWeb&&size.width>520
+        ?CustomScaffoldWeb(
+      title: translate(context, "add"),
+      body:  Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            CustomTextField(
+              labelText: translate(context, "areaName"),
+              controller: areaTitleController,
+              withValidation: true,
+            ),
+            SizedBox(height: 10,),
+            CustomTextField(
+              labelText: translate(context, "location"),
+              hintText: translate(context, "locationLinkFromTheMap"),
+              controller: areaLocationController,
+              withValidation: true,
+            ),
+            SizedBox(height: 10,),
+
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(bottom: 8),
+                  child: Text(
+                    translate(context, "areaPicture"),
+                    style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey[850]
+                    ),
+                  ),
+                ),
+                CustomInkwell(
+                  onTap: () async {
+                    pickedFile = await FilePicker.platform.pickFiles();
+                    if (pickedFile != null) {
+                      try {
+                        setState(() {
+                          pictureBase64 = pickedFile!.files.first.bytes;
+                        });
+                      } catch (err) {
+                        print(err);
+                      }
+                    } else {
+                      print('No Image Selected');
+                    }
+                  },
+                  child: Card(
+                    elevation: 7,
+                    shadowColor: Colors.white,
+                    child:pictureBase64!=null?Image.memory(pictureBase64!,height:120,width: size.width,)
+                        :widget.area!=null
+                        ?ReusableCachedNetworkImage(
+                      imageUrl: widget.area!.imageUrl,
+                      height: 120,
+                      width: size.width,
+
+                    )
+                        : Image.asset(
+                      "images/browse.png",
+                      height: 120,
+                      width: size.width,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+
+              ],
+            ),
+            SizedBox(height: 10,),
+
+            CustomTextField(
+              labelText: translate(context, "details"),
+              controller: areaDetailsController,
+              withValidation: true,
+
+            ),
+            SizedBox(height: 20,),
+
+            CustomButton(
+              label:widget.area!=null?translate(context, "edit"): translate(context, "submit"),
+              onPress: ()=>submit(),
+            )
+          ],
+        ),
+      ),
+    )
+        : Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: CustomAppBar(
         title: translate(context, "add"),
@@ -166,11 +262,18 @@ class _AddEditAreaScreenState extends State<AddEditAreaScreen> {
     if(!_formKey.currentState!.validate()){
       return;
     }
-    if (picture == null&&widget.area==null) {
+    if (picture == null&&widget.area==null&&!kIsWeb) {
       Utils.showErrorAlertDialog(
           translate(context, "pleaseUploadAnImage"));
       return;
     }
+
+    if (pictureBase64 == null&&kIsWeb) {
+      Utils.showErrorAlertDialog(
+          translate(context, "pleaseUploadAnImage"));
+      return;
+    }
+
     Utils.showWaitingProgressDialog();
     if(widget.area!=null&&picture!=null){
       await GeneralApi.deleteFileByUrl(url: widget.area!.imageUrl!);
@@ -179,6 +282,12 @@ class _AddEditAreaScreenState extends State<AddEditAreaScreen> {
 
       String url = await GeneralApi.saveOneImage(
           file: picture!, folderPath: 'Tourist-images');
+      area.imageUrl = url;
+
+    }
+
+    if(pictureBase64!=null) {
+      String url = await GeneralApi.saveOneImage(pictureWeb: pictureBase64!, folderPath: "Tourist-images");
       area.imageUrl = url;
 
     }

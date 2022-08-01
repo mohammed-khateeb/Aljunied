@@ -3,6 +3,7 @@ import 'package:aljunied/Models/department.dart';
 import 'package:aljunied/Widgets/custom_inkwell.dart';
 import 'package:aljunied/Widgets/custom_text_field.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:vertical_weight_slider/vertical_weight_slider.dart';
 import '../../Constants/constants.dart';
@@ -66,20 +67,20 @@ class _StepFourTransactionState extends State<StepFourTransaction> {
         Text(
           translate(context, "citizenInformation"),
           style: TextStyle(
-              fontSize: size.height*0.02,
+              fontSize: kIsWeb?17:size.height*0.02,
               fontFamily: "ArabFontBold",
               fontWeight: FontWeight.bold
           ),
         ),
-        SizedBox(height: size.height*0.005,),
+        SizedBox(height:kIsWeb?5: size.height*0.005,),
         Text(
           translate(context, "pleaseSpecifyCitizenInformation"),
           style: TextStyle(
-              fontSize: size.height*0.018,
+              fontSize:kIsWeb?16: size.height*0.018,
               color: kSubTitleColor
           ),
         ),
-        SizedBox(height: size.height*0.03,),
+        SizedBox(height:kIsWeb?10: size.height*0.03,),
         CustomTextField(
           labelText: translate(context, "CitizenName"),
           controller: widget.nameController,
@@ -90,14 +91,14 @@ class _StepFourTransactionState extends State<StepFourTransaction> {
             height: size.height*0.001,
           ),
         ),
-        SizedBox(height: size.height*0.03,),
+        SizedBox(height:kIsWeb?10: size.height*0.03,),
         CustomTextField(
           labelText: translate(context, "currentStage"),
           controller: widget.currentStageController,
           withValidation: true,
 
         ),
-        SizedBox(height: size.height*0.03,),
+        SizedBox(height: kIsWeb?10:size.height*0.03,),
         if(CurrentUser.isAdmin == true)
         CustomTextField(
           labelText: translate(context, "convertFrom"),
@@ -122,7 +123,7 @@ class _StepFourTransactionState extends State<StepFourTransaction> {
           },
           dropDepartment: widget.departments!,
         ),
-        SizedBox(height: size.height*0.03,),
+        SizedBox(height:kIsWeb?10: size.height*0.03,),
         CustomTextField(
           labelText: translate(context, "convertTo"),
           readOnly: true,
@@ -138,7 +139,7 @@ class _StepFourTransactionState extends State<StepFourTransaction> {
           },
 
         ),
-        SizedBox(height: size.height*0.03,),
+        SizedBox(height: kIsWeb?10:size.height*0.03,),
 
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -151,8 +152,8 @@ class _StepFourTransactionState extends State<StepFourTransaction> {
                 });
               },
               child: Container(
-                height: size.height*0.045,
-                width: size.width*0.25,
+                height:kIsWeb?30: size.height*0.045,
+                width:kIsWeb?100: size.width*0.25,
                 decoration: BoxDecoration(
                   borderRadius: const BorderRadiusDirectional.horizontal(
                     start: Radius.circular(5)
@@ -163,7 +164,7 @@ class _StepFourTransactionState extends State<StepFourTransaction> {
                   child: Text(
                     translate(context, "hour"),
                     style: TextStyle(
-                      fontSize: size.height*0.02,
+                      fontSize:kIsWeb?16: size.height*0.02,
                       color: !widget.isDay?Colors.white:Colors.grey[700]
                     ),
                   ),
@@ -178,8 +179,8 @@ class _StepFourTransactionState extends State<StepFourTransaction> {
                 });
               },
               child: Container(
-                height: size.height*0.045,
-                width: size.width*0.25,
+                height:kIsWeb?30: size.height*0.045,
+                width:kIsWeb?100: size.width*0.25,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadiusDirectional.horizontal(
                         end: Radius.circular(5)
@@ -190,7 +191,7 @@ class _StepFourTransactionState extends State<StepFourTransaction> {
                   child: Text(
                     translate(context, "day"),
                     style: TextStyle(
-                        fontSize: size.height*0.02,
+                        fontSize:kIsWeb?16: size.height*0.02,
                         color: widget.isDay?Colors.white:Colors.grey[700]
                     ),
                   ),
@@ -203,36 +204,36 @@ class _StepFourTransactionState extends State<StepFourTransaction> {
         Center(
           child: Text(
             "${widget.duration} ${widget.isDay?translate(context, "day"):translate(context, "hour")}",
-            style: TextStyle(fontSize: size.height*0.035, fontWeight: FontWeight.w500),
+            style: TextStyle(fontSize:kIsWeb?20: size.height*0.035, fontWeight: FontWeight.w500),
           ),
         ),
         VerticalWeightSlider(
           controller: _controller,
-          height: size.height*0.15,
+          height:kIsWeb?100: size.height*0.15,
           isVertical: false,
           decoration:  PointerDecoration(
-            width: size.height*0.06,
+            width:kIsWeb?50: size.height*0.06,
             height: 3.0,
             largeColor: kPrimaryColor,
             mediumColor: kPrimaryColor,
             smallColor: kPrimaryColor,
-            gap: size.height*0.02,
+            gap:kIsWeb?20: size.height*0.02,
           ),
           onChanged: (double value) {
             widget.onChangeDuration(value.toInt(),widget.isDay);
           },
           indicator: Container(
             height: 3.0,
-            width: size.height*0.1,
+            width:kIsWeb?60: size.height*0.1,
             alignment: Alignment.centerLeft,
             color: kPrimaryColor,
           ),
         ),
         Image.asset(
          "icons/polygon.png",
-         height: size.height*0.02,
+         height:kIsWeb?15: size.height*0.02,
         ),
-        SizedBox(height: size.height*0.03,),
+        SizedBox(height:kIsWeb?15: size.height*0.03,),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -247,9 +248,9 @@ class _StepFourTransactionState extends State<StepFourTransaction> {
             if(widget.edit&&CurrentUser.department!=null&&CurrentUser.department!.id == widget.convertToId)
             Row(
               children: [
-                SizedBox(width: size.width*0.04,),
+                SizedBox(width:kIsWeb?30: size.width*0.04,),
                 CustomButton(
-                  width: size.width*0.4,
+                  width:kIsWeb?150: size.width*0.4,
                   borderWidth: 2.5,
                   borderColor: kPrimaryColor,
                   textColor: kPrimaryColor,

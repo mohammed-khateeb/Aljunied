@@ -1,5 +1,7 @@
+import 'package:aljunied/Components/custom_scaffold_web.dart';
 import 'package:aljunied/Components/transaction_container.dart';
 import 'package:aljunied/Controller/transaction_controller.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../Constants/constants.dart';
@@ -24,7 +26,27 @@ class _AllTransactionsScreenState extends State<AllTransactionsScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
+    return kIsWeb&&size.width>520
+        ?CustomScaffoldWeb(
+      title: translate(context, "transactions"),
+      body: Consumer<TransactionController>(
+          builder: (context, transactionController, child) {
+            return !transactionController.waitingAllTransactions
+                ? ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              padding: EdgeInsets.symmetric(
+                  horizontal: 15,
+                  vertical: 10),
+              itemCount: transactionController.allTransactions!.length,
+              itemBuilder: (_, index) {
+                return TransactionContainer(transaction: transactionController.allTransactions![index]);
+              },
+            )
+                : const WaitingWidget();
+          }),
+    )
+        :Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: CustomAppBar(
         titleColor: Colors.white,

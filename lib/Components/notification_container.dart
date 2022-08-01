@@ -2,6 +2,7 @@ import 'package:aljunied/Constants/constants.dart';
 import 'package:aljunied/Models/notification.dart';
 import 'package:aljunied/Utils/util.dart';
 import 'package:aljunied/Widgets/reusable_cache_network_image.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class NotificationContainer extends StatelessWidget {
@@ -13,8 +14,8 @@ class NotificationContainer extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: size.width*0.05,
-        vertical: size.height*0.01
+        horizontal:kIsWeb&&size.width>520?20: size.width*0.05,
+        vertical:kIsWeb&&size.width>520?10: size.height*0.01
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -26,14 +27,14 @@ class NotificationContainer extends StatelessWidget {
                 Text(
                   notification.title??"اشعار جديد",
                   style: TextStyle(
-                      fontSize: size.height*0.018,
+                      fontSize:kIsWeb&&size.width>520?16: size.height*0.018,
                       fontWeight: FontWeight.w600
                   ),
                 ),
                 Text(
                   notification.des!,
                   style: TextStyle(
-                      fontSize: size.height*0.013,
+                      fontSize:kIsWeb&&size.width>520?12: size.height*0.013,
                       color: kSubTitleColor
                   ),
                 ),
@@ -43,7 +44,7 @@ class NotificationContainer extends StatelessWidget {
           Text(
             Utils.getDateAndTimeString(notification.createAt!.toDate()),
             style: TextStyle(
-                fontSize: size.height*0.01,
+                fontSize:kIsWeb&&size.width>520?10: size.height*0.01,
                 color: kSubTitleColor
             ),
           ),

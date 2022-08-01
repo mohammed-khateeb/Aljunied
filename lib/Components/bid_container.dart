@@ -9,13 +9,14 @@ import '../Widgets/reusable_cache_network_image.dart';
 
 class BidContainer extends StatelessWidget {
   final Bid bid;
-  const BidContainer({Key? key, required this.bid}) : super(key: key);
+  final bool edit;
+  const BidContainer({Key? key, required this.bid, this.edit = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return CustomInkwell(
-      onTap: ()=>NavigatorUtils.navigateToNewsDetailsScreen(context, bid: bid),
+      onTap: ()=>edit?NavigatorUtils.navigateToAddEditBidScreen(context,bid: bid):NavigatorUtils.navigateToNewsDetailsScreen(context, bid: bid),
       child: SizedBox(
         //height: size.height*0.2,
         child: Stack(

@@ -4,6 +4,7 @@ import 'package:aljunied/Models/transaction.dart';
 import 'package:aljunied/Utils/navigator_utils.dart';
 import 'package:aljunied/Utils/util.dart';
 import 'package:aljunied/Widgets/custom_inkwell.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -28,7 +29,7 @@ class TaskWidget extends StatelessWidget {
       child: Card(
         child: Padding(
           padding: EdgeInsets.symmetric(
-              horizontal: size.width * 0.03, vertical: size.height * 0.01),
+              horizontal:kIsWeb?15: size.width * 0.03, vertical:kIsWeb?10: size.height * 0.01),
           child: Row(
             children: [
               Expanded(
@@ -43,7 +44,7 @@ class TaskWidget extends StatelessWidget {
                           " " +
                           transactionModel.citizenName!,
                       style: TextStyle(
-                          fontSize: size.height * 0.02,
+                          fontSize:kIsWeb?15: size.height * 0.02,
                           fontWeight: FontWeight.w600),
                     ),
                     Text(
@@ -53,7 +54,7 @@ class TaskWidget extends StatelessWidget {
                           " " +
                           transactionModel.currentStage!,
                       style: TextStyle(
-                          fontSize: size.height * 0.012, color: Colors.grey),
+                          fontSize:kIsWeb?12: size.height * 0.012, color: Colors.grey),
                     ),
                   ],
                 ),
@@ -65,7 +66,7 @@ class TaskWidget extends StatelessWidget {
                         transactionModel.completed == true
                     ? Icons.check_circle_rounded
                     : Icons.arrow_forward_ios,
-                size: size.height * 0.025,
+                size:kIsWeb?15: size.height * 0.025,
                 color: (CurrentUser.department != null &&
                             transactionModel.convertFromId ==
                                 CurrentUser.department!.id) ||

@@ -210,13 +210,13 @@ class CustomTextField extends StatelessWidget {
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton2(
                           isExpanded: true,
-                          dropdownWidth: width ?? size.width * 0.855,
+                          dropdownWidth: width!=null?width:kIsWeb?410: size.width * 0.855,
                           buttonElevation: 0,
                           dropdownElevation: 1,
-                          iconSize: size.height * 0.03,
+                          iconSize: kIsWeb?20:size.height * 0.03,
                           icon: Padding(
                             padding: EdgeInsetsDirectional.only(
-                                end: size.width * 0.015),
+                                end: kIsWeb?20:size.width * 0.015),
                             child: Icon(
                               Icons.keyboard_arrow_down,
                               color: Colors.grey[800],
@@ -225,7 +225,7 @@ class CustomTextField extends StatelessWidget {
                           hint: Text(
                             '',
                             style: TextStyle(
-                              fontSize: size.height * 0.02,
+                              fontSize:kIsWeb?17: size.height * 0.02,
                               color: Theme.of(context).hintColor,
                             ),
                           ),
@@ -243,7 +243,7 @@ class CustomTextField extends StatelessWidget {
                                               ? item.nameEn!
                                               : item.nameAr!,
                                           style: TextStyle(
-                                            fontSize: size.height * 0.018,
+                                            fontSize: kIsWeb?16:size.height * 0.018,
                                           ),
                                         ),
                                         const Divider(),
@@ -262,11 +262,11 @@ class CustomTextField extends StatelessWidget {
                             }
                           },
                           dropdownDecoration:
-                              BoxDecoration(color: Colors.grey[200]),
-                          dropdownMaxHeight: size.height * 0.3,
-                          buttonHeight: height ?? size.height * 0.065,
-                          buttonWidth: width ?? size.width * 0.9,
-                          itemHeight: size.height * 0.06,
+                          BoxDecoration(color: Colors.grey[200]),
+                          dropdownMaxHeight:kIsWeb?450: size.height * 0.3,
+                          buttonHeight: height!=null?height:kIsWeb?50: size.height * 0.065,
+                          buttonWidth: width!=null?width:kIsWeb?410: size.width * 0.9,
+                          itemHeight:kIsWeb?50: size.height * 0.06,
                         ),
                       ),
                     ),
@@ -278,13 +278,13 @@ class CustomTextField extends StatelessWidget {
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton2(
                           isExpanded: true,
-                          dropdownWidth: width ?? size.width * 0.855,
+                          dropdownWidth: width!=null?width:kIsWeb?410: size.width * 0.855,
                           buttonElevation: 0,
                           dropdownElevation: 1,
-                          iconSize: size.height * 0.03,
+                          iconSize: kIsWeb?20:size.height * 0.03,
                           icon: Padding(
                             padding: EdgeInsetsDirectional.only(
-                                end: size.width * 0.015),
+                                end: kIsWeb?15:size.width * 0.015),
                             child: Icon(
                               Icons.keyboard_arrow_down,
                               color: Colors.grey[800],
@@ -293,7 +293,7 @@ class CustomTextField extends StatelessWidget {
                           hint: Text(
                             '',
                             style: TextStyle(
-                              fontSize: size.height * 0.02,
+                              fontSize:kIsWeb?17: size.height * 0.02,
                               color: Theme.of(context).hintColor,
                             ),
                           ),
@@ -307,7 +307,7 @@ class CustomTextField extends StatelessWidget {
                                 Text(
                                   item.name!,
                                   style: TextStyle(
-                                    fontSize: size.height * 0.018,
+                                    fontSize:kIsWeb?16: size.height * 0.018,
                                   ),
                                 ),
                                 const Divider(),
@@ -324,10 +324,10 @@ class CustomTextField extends StatelessWidget {
                           },
                           dropdownDecoration:
                           BoxDecoration(color: Colors.grey[200]),
-                          dropdownMaxHeight: size.height * 0.3,
-                          buttonHeight: height ?? size.height * 0.065,
-                          buttonWidth: width ?? size.width * 0.9,
-                          itemHeight: size.height * 0.06,
+                          dropdownMaxHeight:kIsWeb?450: size.height * 0.3,
+                          buttonHeight: height!=null?height:kIsWeb?50: size.height * 0.065,
+                          buttonWidth: width!=null?width:kIsWeb?410: size.width * 0.9,
+                          itemHeight:kIsWeb?50: size.height * 0.06,
                         ),
                       ),
                     ),
@@ -339,13 +339,13 @@ class CustomTextField extends StatelessWidget {
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton2(
                           isExpanded: true,
-                          dropdownWidth: width ?? size.width * 0.855,
+                          dropdownWidth: width!=null?width:kIsWeb?410: size.width * 0.855,
                           buttonElevation: 0,
                           dropdownElevation: 1,
-                          iconSize: size.height * 0.03,
+                          iconSize: kIsWeb?20:size.height * 0.03,
                           icon: Padding(
                             padding: EdgeInsetsDirectional.only(
-                                end: size.width * 0.015),
+                                end: kIsWeb?15:size.width * 0.015),
                             child: Icon(
                               Icons.keyboard_arrow_down,
                               color: Colors.grey[800],
@@ -354,7 +354,7 @@ class CustomTextField extends StatelessWidget {
                           hint: Text(
                             '',
                             style: TextStyle(
-                              fontSize: size.height * 0.02,
+                              fontSize:kIsWeb?17: size.height * 0.02,
                               color: Theme.of(context).hintColor,
                             ),
                           ),
@@ -368,7 +368,7 @@ class CustomTextField extends StatelessWidget {
                                 Text(
                                   item.name!,
                                   style: TextStyle(
-                                    fontSize: size.height * 0.018,
+                                    fontSize:kIsWeb?16: size.height * 0.018,
                                   ),
                                 ),
                                 const Divider(),
@@ -385,10 +385,10 @@ class CustomTextField extends StatelessWidget {
                           },
                           dropdownDecoration:
                           BoxDecoration(color: Colors.grey[200]),
-                          dropdownMaxHeight: size.height * 0.3,
-                          buttonHeight: height ?? size.height * 0.065,
-                          buttonWidth: width ?? size.width * 0.9,
-                          itemHeight: size.height * 0.06,
+                          dropdownMaxHeight:kIsWeb?450: size.height * 0.3,
+                          buttonHeight: height!=null?height:kIsWeb?50: size.height * 0.065,
+                          buttonWidth: width!=null?width:kIsWeb?410: size.width * 0.9,
+                          itemHeight:kIsWeb?50: size.height * 0.06,
                         ),
                       ),
                     ),
@@ -400,13 +400,13 @@ class CustomTextField extends StatelessWidget {
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton2(
                           isExpanded: true,
-                          dropdownWidth: width ?? size.width * 0.855,
+                          dropdownWidth: width!=null?width:kIsWeb?410: size.width * 0.855,
                           buttonElevation: 0,
                           dropdownElevation: 1,
-                          iconSize: size.height * 0.03,
+                          iconSize: kIsWeb?20:size.height * 0.03,
                           icon: Padding(
                             padding: EdgeInsetsDirectional.only(
-                                end: size.width * 0.015),
+                                end: kIsWeb?15:size.width * 0.015),
                             child: Icon(
                               Icons.keyboard_arrow_down,
                               color: Colors.grey[800],
@@ -415,7 +415,7 @@ class CustomTextField extends StatelessWidget {
                           hint: Text(
                             '',
                             style: TextStyle(
-                              fontSize: size.height * 0.02,
+                              fontSize:kIsWeb?17: size.height * 0.02,
                               color: Theme.of(context).hintColor,
                             ),
                           ),
@@ -429,7 +429,7 @@ class CustomTextField extends StatelessWidget {
                                 Text(
                                    item.name!,
                                   style: TextStyle(
-                                    fontSize: size.height * 0.018,
+                                    fontSize:kIsWeb?16: size.height * 0.018,
                                   ),
                                 ),
                                 const Divider(),
@@ -445,10 +445,10 @@ class CustomTextField extends StatelessWidget {
                           },
                           dropdownDecoration:
                           BoxDecoration(color: Colors.grey[200]),
-                          dropdownMaxHeight: size.height * 0.3,
-                          buttonHeight: height ?? size.height * 0.065,
-                          buttonWidth: width ?? size.width * 0.9,
-                          itemHeight: size.height * 0.06,
+                          dropdownMaxHeight:kIsWeb?450: size.height * 0.3,
+                          buttonHeight: height!=null?height:kIsWeb?50: size.height * 0.065,
+                          buttonWidth: width!=null?width:kIsWeb?410: size.width * 0.9,
+                          itemHeight:kIsWeb?50: size.height * 0.06,
                         ),
                       ),
                     ),
@@ -460,22 +460,22 @@ class CustomTextField extends StatelessWidget {
                       child: DropdownButtonHideUnderline(
                         child: DropdownButton2(
                           isExpanded: true,
-                          dropdownWidth: width ?? size.width * 0.9,
+                          dropdownWidth: width!=null?width:kIsWeb?410: size.width * 0.855,
                           buttonElevation: 0,
                           dropdownElevation: 1,
-                          iconSize: size.height * 0.03,
+                          iconSize: kIsWeb?20:size.height * 0.03,
                           icon: Padding(
                             padding: EdgeInsetsDirectional.only(
-                                end: size.width * 0.015),
+                                end: kIsWeb?15:size.width * 0.015),
                             child: Icon(
                               Icons.keyboard_arrow_down,
-                              color: Colors.grey[600],
+                              color: Colors.grey[800],
                             ),
                           ),
                           hint: Text(
                             '',
                             style: TextStyle(
-                              fontSize: size.height * 0.02,
+                              fontSize:kIsWeb?17: size.height * 0.02,
                               color: Theme.of(context).hintColor,
                             ),
                           ),
@@ -489,7 +489,7 @@ class CustomTextField extends StatelessWidget {
                                         Text(
                                           item,
                                           style: TextStyle(
-                                            fontSize: size.height * 0.018,
+                                            fontSize:kIsWeb?16: size.height * 0.018,
                                           ),
                                         ),
                                         const Divider(),
@@ -504,11 +504,11 @@ class CustomTextField extends StatelessWidget {
                             }
                           },
                           dropdownDecoration:
-                              BoxDecoration(color: Colors.grey[200]),
-                          dropdownMaxHeight: size.height * 0.3,
-                          buttonHeight: height ?? size.height * 0.065,
-                          buttonWidth: width ?? size.width * 0.9,
-                          itemHeight: size.height * 0.06,
+                          BoxDecoration(color: Colors.grey[200]),
+                          dropdownMaxHeight:kIsWeb?450: size.height * 0.3,
+                          buttonHeight: height!=null?height:kIsWeb?50: size.height * 0.065,
+                          buttonWidth: width!=null?width:kIsWeb?410: size.width * 0.9,
+                          itemHeight:kIsWeb?50: size.height * 0.06,
                         ),
                       ),
                     ),
@@ -532,7 +532,7 @@ class CustomTextField extends StatelessWidget {
                       helperText!,
                       style: TextStyle(
                         color: kPrimaryColor,
-                        fontSize: size.height * 0.01,
+                        fontSize: kIsWeb&&size.width>520?9:size.height * 0.01,
                       ),
 
                     ),

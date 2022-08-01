@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class LabelWithDetails extends StatelessWidget {
@@ -13,8 +14,8 @@ class LabelWithDetails extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     return Padding(
       padding: EdgeInsets.symmetric(
-        horizontal: horizontalPadding??size.width*0.03,
-        vertical: verticalPadding??size.height*0.01
+        horizontal: horizontalPadding!=null?horizontalPadding!:kIsWeb&&size.width>520?15:size.width*0.03,
+        vertical: verticalPadding!=null?verticalPadding!:kIsWeb&&size.width>520?10:size.height*0.01,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -22,19 +23,19 @@ class LabelWithDetails extends StatelessWidget {
           Text(
             label,
             style: TextStyle(
-              fontSize: size.height*0.02,
+              fontSize: kIsWeb&&size.width>520?16:size.height*0.02,
               fontWeight: FontWeight.w600,
             ),
             textAlign: TextAlign.start,
           ),
           Padding(
             padding: EdgeInsetsDirectional.only(
-              start: size.width*0.01
+              start:kIsWeb&&size.width>520?10: size.width*0.01
             ),
             child: Text(
               details,
               style: TextStyle(
-                fontSize: size.height*0.017,
+                fontSize:kIsWeb&&size.width>520?13: size.height*0.017,
                 color: Colors.grey[600],
               ),
               textAlign: TextAlign.start,

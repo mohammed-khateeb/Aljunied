@@ -1,6 +1,9 @@
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
 import '../Constants/constants.dart';
 import '../Models/current_user.dart';
 import '../Models/department.dart';
@@ -235,13 +238,33 @@ class GeneralApi{
   }
 
   static Future <dynamic> saveOneImage(
-      {required File file,required String folderPath}) async {
+      {File? file,required String folderPath,Uint8List? pictureWeb}) async {
     String fileName = DateTime.now().millisecondsSinceEpoch.toString();
-    Reference reference =
-    FirebaseStorage.instance.ref().child(folderPath).child(fileName);
-    TaskSnapshot uploadTask = await reference.putFile(file);
-    String url = await uploadTask.ref.getDownloadURL();
-    return url;
+    String? url;
+    if(kIsWeb){
+      Reference _reference = FirebaseStorage.instance
+          .ref()
+          .child(folderPath).child(fileName);
+      await _reference
+          .putData(
+        pictureWeb!,
+        SettableMetadata(contentType: 'image/jpeg'),
+      )
+          .whenComplete(() async {
+        await _reference.getDownloadURL().then((value) {
+          url = value;
+        });
+      });
+      return url;
+    }
+    else{
+      Reference reference =
+      FirebaseStorage.instance.ref().child(folderPath).child(fileName);
+      TaskSnapshot uploadTask = await reference.putFile(file!);
+      String url = await uploadTask.ref.getDownloadURL();
+      return url;
+    }
+
   }
   static Future<dynamic> deleteFileByUrl({required String url}) async {
     return (FirebaseStorage.instance.refFromURL(url)).delete();

@@ -1,3 +1,4 @@
+import 'package:aljunied/Components/custom_scaffold_web.dart';
 import 'package:aljunied/Components/news_container.dart';
 import 'package:aljunied/Constants/constants.dart';
 import 'package:aljunied/Controller/bid_controller.dart';
@@ -6,6 +7,7 @@ import 'package:aljunied/Utils/navigator_utils.dart';
 import 'package:aljunied/Utils/util.dart';
 import 'package:aljunied/Widgets/custom_app_bar.dart';
 import 'package:aljunied/Widgets/custom_inkwell.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -31,7 +33,67 @@ class _ComplaintsScreenState extends State<ComplaintsScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
+    return kIsWeb&&size.width>520
+        ?CustomScaffoldWeb(
+      title: translate(context, "complaints"),
+      body: Consumer<ComplaintController>(
+          builder: (context, complaintController, child) {
+            return !complaintController.waiting
+                ? ListView.builder(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              padding: EdgeInsets.symmetric(
+                  horizontal: 15,
+                  vertical: 10),
+              itemCount: complaintController.complaints!.length,
+              itemBuilder: (_, index) {
+                return ListTile(
+                  onTap: ()=>NavigatorUtils.navigateToComplaintDetailsScreen(context, complaintController.complaints![index]),
+                  title: RichText(
+                    text: TextSpan(
+                      text: complaintController.complaints![index].userName!,
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.grey[800],
+                          fontFamily: "ArabFont"
+                      ),
+                      children:  <TextSpan>[
+                        TextSpan(text: ' ',),
+                        TextSpan(text: "(${complaintController.complaints![index].type!})",style: TextStyle(fontSize: 12,color: kPrimaryColor)),
+                      ],
+                    ),
+                  ),
+                  subtitle: Text(
+                    Utils.getDateAndTimeString(
+                        complaintController.complaints![index].createAt!.toDate()
+                    ),
+                    style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey[600]
+                    ),
+                  ),
+                  trailing: IconButton(
+                    icon: const Icon(
+                      Icons.delete,
+                      color: Colors.red,
+                    ),
+                    iconSize: 25,
+
+                    onPressed: (){
+                      Utils.showSureAlertDialog(
+                          onSubmit: (){
+                            complaintController.deleteComplaint(complaintController.complaints![index]);
+                          }
+                      );
+                    },
+                  ),
+                );
+              },
+            )
+                : const WaitingWidget();
+          }),
+    )
+        :Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: CustomAppBar(
         titleColor: Colors.white,

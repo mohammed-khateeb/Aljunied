@@ -20,7 +20,7 @@ class DownloadAppSection extends StatelessWidget {
           runSpacing: 15,
           children: [
             SizedBox(
-              width: 600,
+              width: 450,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -34,13 +34,28 @@ class DownloadAppSection extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 15,
                       )
-                  )
+
+                  ),
+                  SizedBox(height: 15,),
+                  Row(
+                    children: [
+                      Image.asset(
+                        "images/google_play.png",
+                        height: 35,
+                      ),
+                      SizedBox(width: 15,),
+                      Image.asset(
+                        "images/app_store.png",
+                        height: 35,
+                      )
+                    ],
+                  ),
                 ],
               ),
             ),
             Image.asset(
               "images/download_app.png",
-              height: 450,
+              height: 420,
 
             )
           ],

@@ -29,12 +29,12 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 android {
     compileSdkVersion 31
     //ndkVersion flutter.ndkVersion
-//    lintOptions {
-//        disable 'InvalidPackage'
-//        disable "Instantiatable"
-//        checkReleaseBuilds false
-//        abortOnError false
-//    }
+    lintOptions {
+        disable 'InvalidPackage'
+        disable "Instantiatable"
+        checkReleaseBuilds false
+        abortOnError false
+    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

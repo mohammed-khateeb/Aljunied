@@ -1,9 +1,13 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:aljunied/Apis/general_api.dart';
+import 'package:aljunied/Components/custom_scaffold_web.dart';
 import 'package:aljunied/Constants/constants.dart';
 import 'package:aljunied/Widgets/reusable_cache_network_image.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart' as web;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -28,6 +32,11 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
   final TextEditingController nameArController = TextEditingController();
   XFile? image;
 
+  ///for web
+  FilePickerResult? pickedFile;
+  Uint8List? pictureBase64;
+
+
   final ImagePicker _picker = ImagePicker();
 
 
@@ -41,7 +50,133 @@ class _EditCategoryScreenState extends State<EditCategoryScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
+    return web.kIsWeb&&size.width>520
+        ?CustomScaffoldWeb(
+      body: Column(
+        children: [
+          SizedBox(height: size.height*0.02,),
+          CustomInkwell(
+            onTap: () async {
+              pickedFile = await FilePicker.platform.pickFiles();
+              if (pickedFile != null) {
+                try {
+                  setState(() {
+                    pictureBase64 = pickedFile!.files.first.bytes;
+                  });
+                } catch (err) {
+                  print(err);
+                }
+              } else {
+                print('No Image Selected');
+              }
+            },
+            child: Container(
+              height: 200,
+              width: 200,
+              decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey[700]!),
+                  borderRadius: BorderRadius.circular(5),
+                  image:pictureBase64!=null? DecorationImage(
+                      image: MemoryImage(
+                        pictureBase64!
+                      ),
+                      fit: BoxFit.cover
+                  ):null
+              ),
+              child:pictureBase64!=null?
+              SizedBox()
+                  :widget.category.imageUrl!=null
+                  ?ReusableCachedNetworkImage(
+                imageUrl: widget.category.imageUrl,
+                height: 200,
+                width: 200,
+                borderRadius: BorderRadius.circular(5),
+                fit: BoxFit.contain,
+              )
+                  :Icon(Icons.image,size: 50,),
+            ),
+          ),
+          SizedBox(height:20),
+          CustomTextField(
+            borderRadius: size.height*0.01,
+            controller: nameArController,
+            hintText: translate(context, "nameAr"),
+          ),
+
+          SizedBox(height: 30),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                translate(context, "subTypesOfTransactions"),
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.grey[600]
+                ),
+              ),
+              CustomInkwell(
+                onTap: ()=>addSubCategory(context: context),
+                child: Icon(
+                  Icons.add_circle,
+                  color: kPrimaryColor,
+                  size: 25,
+                ),
+              )
+            ],
+          ),
+          if(widget.category.subcategories!=null)
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: widget.category.subcategories!.length,
+              padding: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
+              itemBuilder: (_,index){
+                return Card(
+                  elevation: 0.5,
+                  child: ListTile(
+                    onTap: (){
+                      editSubCategory(context: context,subcategory: widget.category.subcategories![index]);
+                    },
+                    contentPadding: EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 15
+                    ),
+                    leading: Text(
+                      "${index+1} -",
+                      style: TextStyle(
+                          fontSize: 16
+                      ),
+                    ),
+                    title: Text(
+                      widget.category.subcategories![index].nameAr!.toUpperCase(),
+                      style: TextStyle(
+                          fontSize: 16
+                      ),
+                    ),
+                    trailing: CustomInkwell(
+                      onTap: (){
+                        setState(() {
+                          widget.category.subcategories!.remove(widget.category.subcategories![index]);
+                        });
+                      },
+                      child: Icon(
+                        FontAwesomeIcons.timesCircle,
+                        color: Colors.red,
+                        size: 25,
+                      ),
+                    ),
+
+                  ),
+                );
+              },
+            ),
+          SizedBox(height: 20),
+          CustomButton(label: translate(context, "save"), onPress:()=> add(context)),
+        ],
+      ),
+    )
+        :Scaffold(
       appBar: CustomAppBar(),
       body:  Padding(
         padding: EdgeInsets.symmetric(

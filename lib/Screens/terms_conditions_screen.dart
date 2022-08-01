@@ -35,6 +35,8 @@ class _TermsConditionsScreenState extends State<TermsConditionsScreen> {
     Size size = MediaQuery.of(context).size;
     return kIsWeb&&size.width>520
         ?CustomScaffoldWeb(
+      showHeaderAndBottom: false,
+
       title: translate(context, "termsAndConditions"),
       body:terms!=null? Text(
         terms!.terms!,

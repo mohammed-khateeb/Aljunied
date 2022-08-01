@@ -226,6 +226,8 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> with CodeAutoFill {
     Size size = MediaQuery.of(context).size;
     return kIsWeb&&size.width>520
         ?CustomScaffoldWeb(
+      showHeaderAndBottom: false,
+
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

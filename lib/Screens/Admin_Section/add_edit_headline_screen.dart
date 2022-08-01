@@ -1,5 +1,7 @@
+import 'package:aljunied/Components/custom_scaffold_web.dart';
 import 'package:aljunied/Constants/constants.dart';
 import 'package:aljunied/Models/headline.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../Controller/headline_controller.dart';
@@ -43,7 +45,142 @@ class _AddEditHeadlineScreenState extends State<AddEditHeadlineScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
+    return kIsWeb&&size.width>520
+        ?CustomScaffoldWeb(
+      body: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            SizedBox(height: 10),
+            CustomTextField(
+              borderRadius: 10,
+              controller: titleArController,
+              hintText: translate(context, "mainTitle")+" (${translate(context, "arabic")})",
+              withValidation: true,
+
+            ),
+            SizedBox(height: 10,),
+            CustomTextField(
+              borderRadius: 10,
+              controller: titleEnController,
+              hintText: translate(context, "mainTitle")+" (${translate(context, "english")})",
+
+            ),
+            SizedBox(height: 10,),
+            CustomTextField(
+              borderRadius: 10,
+              minLines: 5,
+              keyboardType: TextInputType.multiline,
+              controller: desController,
+              withValidation: headline.titles!.isEmpty,
+              hintText: translate(context, "details"),
+              helperText: translate(context, "thereIsNoNeedForDetailsIfTheMainTitleContainsSubheadings"),
+            ),
+            SizedBox(height: 10,),
+            if(widget.headline!=null&&widget.orderIndex!=null)
+              CustomTextField(
+                borderRadius: 10,
+                controller: orderController,
+                readOnly: true,
+                onChanged: (str){
+                  orderIndex = int.tryParse(str);
+                },
+                dropList: List<String>.generate(widget.orderIndex!-1, (i) => "${i + 1}"),
+                hintText: translate(context, "order"),
+              ),
+
+            SizedBox(height: 10,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  translate(context, "subTitles"),
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey[600]
+                  ),
+                ),
+                CustomInkwell(
+                  onTap: (){
+                    FocusScope.of(context).unfocus();
+
+                    openNewPage(context, AddEditTitleScreen(titleAppBar: titleArController.text,)).then((value) {
+                      if(value!=null&&value is TitleLine) {
+                        setState(() {
+                          headline.titles!.add(value);
+                        });
+                      }
+                    });
+                  },
+                  child: Icon(
+                    Icons.add_circle,
+                    color: kPrimaryColor,
+                    size: 30,
+                  ),
+                )
+              ],
+            ),
+            ListView.builder(
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              itemCount: headline.titles!.length,
+              padding: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
+              itemBuilder: (_,index){
+                return Theme(
+                  data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                  child: ListTile(
+                    onTap: (){
+                      FocusScope.of(context).unfocus();
+                      openNewPage(context, AddEditTitleScreen(titleLine: headline.titles![index],titleAppBar: titleArController.text)).then((value) {
+                        if(value!=null&&value is TitleLine){
+                          setState(() {
+                            headline.titles![index] = value;
+                          });
+                        }
+                      });
+                    },
+                    trailing: Icon(
+                      Icons.edit,
+                      color: Colors.grey,
+                      size: 20,
+                    ),
+                    leading: CustomInkwell(
+                      onTap: (){
+                        Utils.showSureAlertDialog(
+                            onSubmit: (){
+                              setState(() {
+                                headline.titles!.remove(headline.titles![index]);
+                              });
+                            }
+                        );
+
+                      },
+                      child: Padding(
+                        padding: EdgeInsetsDirectional.only(end: 10),
+                        child: Icon(
+                          Icons.remove_circle,
+                          color: Colors.red,
+                          size: 20,
+                        ),
+                      ),
+                    ),
+                    title: Text(
+                      Localizations.localeOf(context).languageCode=="ar"?headline.titles![index].labelAr!:headline.titles![index].labelEn??headline.titles![index].labelAr!,
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                    ),
+
+                  ),
+                );
+              },
+            ),
+            SizedBox(height: 25,),
+            CustomButton(label: translate(context, "save"), onPress:()=> add(context)),
+          ],
+        ),
+      ),
+    )
+        :Scaffold(
       appBar: const CustomAppBar(),
       body:  Padding(
         padding: EdgeInsets.symmetric(

@@ -41,7 +41,9 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     context.read<AdminController>().getAllBidTypes();
     context.read<BidController>().getBids();
-    context.read<HeadlineController>().getHeadlines();
+    if(!kIsWeb) {
+      context.read<HeadlineController>().getHeadlines();
+    }
     context.read<NewsController>().getNews();
     context.read<AreaController>().getAreas();
     super.initState();
@@ -61,18 +63,20 @@ class _HomeScreenState extends State<HomeScreen> {
           ?Scaffold(
        body: SingleChildScrollView(
          child: Column(
-           children: const [
-             AppBarWeb(),
-             WebHeader(),
-             SizedBox(height: 20,),
-             Banners(),
-             SizedBox(height: 20,),
-             BidsComponent(),
-             SizedBox(height: 20,),
-             ActivitiesAndAreas(),
-             SizedBox(height: 30,),
-             DownloadAppSection(),
-             BottomBarWeb(),
+           children:  [
+             if(size.width>824&&Localizations.localeOf(context).languageCode=="ar"||
+                 size.width>1000&&Localizations.localeOf(context).languageCode=="en")
+             const AppBarWeb(),
+             const WebHeader(),
+             const SizedBox(height: 20,),
+             const Banners(),
+             const SizedBox(height: 20,),
+             const BidsComponent(),
+             const SizedBox(height: 20,),
+             const ActivitiesAndAreas(),
+             const SizedBox(height: 30,),
+             const DownloadAppSection(),
+             const BottomBarWeb(),
            ],
          ),
        ),

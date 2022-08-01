@@ -1,8 +1,10 @@
+import 'package:aljunied/Components/custom_scaffold_web.dart';
 import 'package:aljunied/Controller/notification_controller.dart';
 import 'package:aljunied/Models/notification.dart';
 import 'package:aljunied/Push_notification/push_notification_serveice.dart';
 import 'package:aljunied/Widgets/custom_button.dart';
 import 'package:aljunied/Widgets/custom_text_field.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -33,7 +35,96 @@ class _SendNotificationScreenState extends State<SendNotificationScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
+    return kIsWeb&&size.width>520
+        ?CustomScaffoldWeb(
+      title: translate(context, "sendNotification"),
+      body: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            if(widget.referenceNumber==null)
+              CustomTextField(
+                labelText: translate(context, "theTargetGroupOfTheNotice"),
+                controller: groupController,
+                readOnly: true,
+                withValidation: true,
+                onChanged: (str){
+                  if(str == "Custom"||str == "مخصص"){
+                    setState(() {
+                      custom = true;
+                      topic = null;
+                    });
+                  }
+                  else{
+                    setState(() {
+                      custom = false;
+                      if(str == "All"||str == "الكل"){
+                        topic = TopicKey.allUsers;
+                      }
+                      else if(str == "Citizens"||str == "المواطنين") {
+                        topic = TopicKey.citizens;
+                      }
+                      else{
+                        topic = TopicKey.employee;
+                      }
+                    });
+                  }
+                },
+                dropList: [
+                  translate(context, "all"),
+                  translate(context, "employees"),
+                  translate(context, "citizens"),
+                  translate(context, "custom")
+                ],
+              ),
+            if(custom)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    height: size.height*0.02,
+                  ),
+                  CustomTextField(
+                    labelText: translate(context, "referenceNumber"),
+                    controller: referenceController,
+                    charLength: 6,
+                    digitsOnly: true,
+                    keyboardType: TextInputType.number,
+
+                    withValidation: true,
+                  ),
+                ],
+              ),
+            SizedBox(
+              height: size.height*0.02,
+            ),
+            CustomTextField(
+              labelText: translate(context, "title"),
+              controller: titleController,
+            ),
+            SizedBox(
+              height: size.height*0.02,
+            ),
+            CustomTextField(
+              labelText: translate(context, "noticeText"),
+              controller: desController,
+              minLines:4,
+              keyboardType: TextInputType.multiline,
+              withValidation: true,
+
+            ),
+            SizedBox(
+              height:custom?kIsWeb?25:size.height*0.21:kIsWeb?70: size.height*0.33,
+            ),
+            CustomButton(
+              label: translate(context, "send"),
+              onPress: (){sendNotification();},
+            )
+          ],
+        ),
+      ),
+    )
+        :Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: CustomAppBar(
         titleColor: Colors.white,

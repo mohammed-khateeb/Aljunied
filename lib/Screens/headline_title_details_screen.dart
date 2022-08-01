@@ -1,5 +1,7 @@
+import 'package:aljunied/Components/custom_scaffold_web.dart';
 import 'package:aljunied/Models/headline.dart';
 import 'package:expandable/expandable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../Constants/constants.dart';
@@ -15,7 +17,71 @@ class HeadlineTitleDetailsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
+    return kIsWeb&&size.width>520
+        ?CustomScaffoldWeb(
+      title: headline!=null?Localizations.localeOf(context).languageCode=="ar"?headline!.labelAr:headline!.labelEn??headline!.labelAr!
+          :Localizations.localeOf(context).languageCode=="ar"?titleLine!.labelAr:titleLine!.labelEn??titleLine!.labelAr,
+      body: headline==null
+          ?ListView(
+        shrinkWrap: true,
+
+        physics: NeverScrollableScrollPhysics(),
+        padding: EdgeInsets.symmetric(
+            horizontal: 5,
+            vertical: 10
+        ),
+        children: [
+          if(titleLine!.des!=null)
+            Text(
+              titleLine!.des!,
+              style: TextStyle(
+                fontSize: 15,
+              ),
+            ),
+          SizedBox(height: 10,),
+          if(titleLine!.subTitles!.isNotEmpty)
+            ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: titleLine!.subTitles!.length,
+              itemBuilder: (_,index){
+                return ExpandablePanel(
+                  theme: const ExpandableThemeData(
+                    expandIcon: Icons.add,
+                    collapseIcon: Icons.remove,
+                  ),
+                  header: Text(
+                    titleLine!.subTitles![index].label!,
+                    style: TextStyle(
+                      fontSize: 14,
+                    ),
+                  ),
+                  collapsed: const SizedBox(),
+                  expanded: Container(
+                    width: 700,
+                    child: Text(
+                      titleLine!.subTitles![index].des!,
+                      style: TextStyle(
+                          fontSize: size.height * 0.018,
+                          fontWeight: FontWeight.normal),
+                    ),
+                  ),
+                );
+              },
+            ),
+        ],
+      )
+          :Padding(
+        padding: EdgeInsets.symmetric(
+            horizontal: size.width*0.05,
+            vertical: size.height*0.02
+        ),
+        child: Text(headline!.des??"",style: TextStyle(
+          fontSize: size.height*0.02,
+        ),),
+      ),
+    )
+        :Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: CustomAppBar(
         titleColor: Colors.white,

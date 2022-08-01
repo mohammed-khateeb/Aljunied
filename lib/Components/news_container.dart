@@ -9,13 +9,21 @@ import '../Widgets/reusable_cache_network_image.dart';
 
 class NewsContainer extends StatelessWidget {
   final News news;
-  const NewsContainer({Key? key, required this.news}) : super(key: key);
+  final bool edit;
+  const NewsContainer({Key? key, required this.news, this.edit = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return CustomInkwell(
-      onTap: ()=>NavigatorUtils.navigateToNewsDetailsScreen(context, news: news),
+      onTap: (){
+        if(!edit){
+          NavigatorUtils.navigateToNewsDetailsScreen(context, news: news);
+        }
+        else{
+          NavigatorUtils.navigateToAddEditNewsScreen(context,news: news);
+        }
+      },
       child: SizedBox(
         height:kIsWeb?200: size.height*0.2,
         child: Stack(

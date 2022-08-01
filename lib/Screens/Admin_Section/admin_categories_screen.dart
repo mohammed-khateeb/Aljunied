@@ -1,5 +1,7 @@
+import 'package:aljunied/Components/custom_scaffold_web.dart';
 import 'package:aljunied/Constants/constants.dart';
 import 'package:aljunied/Widgets/custom_app_bar.dart';
+import 'package:flutter/foundation.dart' as web;
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +34,59 @@ class _AdminCategoriesScreenState extends State<AdminCategoriesScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
+    return web.kIsWeb&&size.width>520
+        ?CustomScaffoldWeb(
+      buttonLabel: translate(context, "add"),
+      onPressButton: ()=>addCategory(context: context),
+      title: translate(context, "transactionsTypes"),
+      body: Consumer<AdminController>(
+          builder: (context, adminController, child) {
+            return !adminController.waitingCategories? ListView.builder(
+              itemCount: adminController.categories!.length,
+              shrinkWrap: true,
+              physics: NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
+              itemBuilder: (_,index){
+                return Card(
+                  elevation: 0.5,
+                  child: ListTile(
+                    onTap: (){
+                      editCategory(context: context,category: adminController.categories![index]);
+                    },
+                    contentPadding: EdgeInsets.symmetric(
+                        vertical: 10,
+                        horizontal: 15
+                    ),
+                    leading: ReusableCachedNetworkImage(
+                      imageUrl: adminController.categories![index].imageUrl,
+                      height: 40,
+                      width: 40,
+                      borderRadius: BorderRadius.circular(5),
+                      fit: BoxFit.contain,
+                    ),
+                    title: Text(
+                      adminController.categories![index].nameAr!.toUpperCase(),
+                      style: TextStyle(
+                          fontSize: 16
+                      ),
+                    ),
+                    trailing: CustomInkwell(
+                      onTap: ()=>removeCategory(adminController.categories![index].id!),
+                      child: const Icon(
+                        FontAwesomeIcons.timesCircle,
+                        color: Colors.red,
+                        size: 25,
+                      ),
+                    ),
+
+                  ),
+                );
+              },
+            ):const WaitingWidget();
+          }
+      ),
+    )
+        :Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: CustomAppBar(
         titleColor: Colors.white,

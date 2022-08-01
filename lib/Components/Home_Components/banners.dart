@@ -15,7 +15,8 @@ import '../../Controller/admin_controller.dart';
 import '../../Shimmers/banner_shimmer.dart';
 
 class Banners extends StatelessWidget {
-  const Banners({Key? key}) : super(key: key);
+  final bool fromNewsScreen;
+  const Banners({Key? key, this.fromNewsScreen = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,15 +24,15 @@ class Banners extends StatelessWidget {
     return Consumer<NewsController>(
         builder: (context, newsController, child) {
         return newsController.news!=null?newsController.news!.isNotEmpty? SizedBox(
-          height:kIsWeb?200: size.height*0.2,
+          height:kIsWeb?fromNewsScreen?250:200: size.height*0.2,
           child: Padding(
-            padding: EdgeInsetsDirectional.only(start: kIsWeb?size.width*0.05:0),
+            padding: EdgeInsetsDirectional.only(start: kIsWeb&&!fromNewsScreen?size.width*0.05:0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if(kIsWeb)
                 Text(
-                  translate(context, "news"),
+                  translate(context, "latestNews"),
                   style: TextStyle(
                     fontSize: 15,
                     fontFamily: "ArabFontBold",
@@ -41,7 +42,7 @@ class Banners extends StatelessWidget {
                 Expanded(
                   child: Swiper(
                       autoplay: true,
-                      viewportFraction:kIsWeb?350/size.width: 0.95,
+                      viewportFraction:kIsWeb?fromNewsScreen?500/size.width:350/size.width: 0.95,
                       itemCount: newsController.news!.length,
                       itemBuilder: (BuildContext context,int index) {
                       return Padding(
@@ -71,7 +72,7 @@ class Banners extends StatelessWidget {
               ],
             ),
           ),
-        ):const SizedBox():kIsWeb?const AreasShimmer():const BannerShimmer();
+        ):const SizedBox():kIsWeb&&size.width>520?AreasShimmer():const BannerShimmer();
       }
     );
   }

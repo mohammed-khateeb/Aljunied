@@ -1,8 +1,8 @@
+import 'package:aljunied/Components/custom_scaffold_web.dart';
 import 'package:aljunied/Controller/area_controller.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../../Components/Home_Components/activities_and_areas.dart';
 import '../../Components/area_container.dart';
 import '../../Constants/constants.dart';
 import '../../Utils/navigator_utils.dart';
@@ -28,7 +28,56 @@ class _TouristAreasScreenState extends State<TouristAreasScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
+    return kIsWeb&&size.width>520
+        ?CustomScaffoldWeb(
+      title: translate(context, "touristAreasAndActivities"),
+      buttonLabel: translate(context, "add"),
+      onPressButton: ()=>NavigatorUtils.navigateToAddEditAreaScreen(context),
+      body: Consumer<AreaController>(
+          builder: (context, areaController, child) {
+            return !areaController.waiting
+                ? GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisExtent: 260,
+                  mainAxisSpacing: 15,
+                  crossAxisSpacing: 15
+              ),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: 15,
+                  vertical: 10),
+              itemCount: areaController.areas!.length,
+              itemBuilder: (_, index) {
+                return CustomInkwell(
+                    onTap: ()=>NavigatorUtils.navigateToAddEditAreaScreen(context,area: areaController.areas![index]),
+                    child: Stack(
+                      children: [
+                        AreaContainer(area: areaController.areas![index]),
+                        IconButton(
+                          icon: const Icon(
+                            Icons.delete,
+                            color: Colors.red,
+                          ),
+                          iconSize: 25,
+
+                          onPressed: (){
+                            Utils.showSureAlertDialog(
+                                onSubmit: (){
+                                  areaController.deleteArea(areaController.areas![index]);
+                                }
+                            );
+                          },
+                        )
+                      ],
+                    ));
+              },
+            )
+                : const WaitingWidget();
+          }),
+    )
+        :Scaffold(
       backgroundColor: kPrimaryColor,
       appBar: CustomAppBar(
         titleColor: Colors.white,
@@ -36,13 +85,7 @@ class _TouristAreasScreenState extends State<TouristAreasScreen> {
         title: translate(context, "touristAreasAndActivities"),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Text(
-          translate(context, "add"),
-          style: TextStyle(
-              fontSize: size.height*0.018,
-              fontWeight: FontWeight.w600
-          ),
-        ),
+        child: Icon(Icons.add,color: Colors.white,),
         onPressed: () => NavigatorUtils.navigateToAddEditAreaScreen(context),
       ),
       body: Container(

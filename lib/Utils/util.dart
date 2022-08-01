@@ -221,12 +221,14 @@ class Utils{
   }
 
   static showSuccessAlertDialog(String msg,{String? imagePath,String? label,Widget? details,Color? color,Widget? action,Function? onTap,bool bottom = false}) {
+    Size size = MediaQuery.of(navKey.currentContext!).size;
     AlertDialog alert = AlertDialog(
       insetPadding: EdgeInsets.zero,
       scrollable: true,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
-          top: Radius.circular(MediaQuery.of(navKey.currentContext!).size.height*0.03)
+          top: Radius.circular(kIsWeb&&size.width>520?25:size.height*0.03),
+          bottom: Radius.circular(bottom?0:kIsWeb&&size.width>520?25:size.height*0.03),
         ),
       ),
       title: Stack(
@@ -237,17 +239,18 @@ class Utils{
               CircleAvatar(
                 child: Icon(
                   FontAwesomeIcons.check,
-                  size: MediaQuery.of(navKey.currentContext!).size.height*0.06,
+                  size: kIsWeb&&size.width>520?50:size.height*0.06,
                   color: kPrimaryColor,
                 ),
                 backgroundColor:color?? Color(0xff64c962),
-                radius: MediaQuery.of(navKey.currentContext!).size.height*0.05,
+                radius: kIsWeb&&size.width>520?40:size.height*0.05,
               ),
             ],
           ),
         ],
       ),
       content: Container(
+        width: kIsWeb&&size.width>520?300:null,
         margin: const EdgeInsetsDirectional.only(bottom: 0),
         child: Stack(
           children: [
@@ -256,22 +259,22 @@ class Utils{
               children: [
                 Text(
                   label??translate(navKey.currentState!.context, 'success'),
-                  style:  TextStyle(fontWeight: FontWeight.w600, fontSize: MediaQuery.of(navKey.currentContext!).size.height*0.022),
+                  style:  TextStyle(fontWeight: FontWeight.w600, fontSize: kIsWeb&&size.width>520?17:size.height*0.022),
                 ),
-                SizedBox(height: MediaQuery.of(navKey.currentContext!).size.height*0.01),
+                SizedBox(height: kIsWeb&&size.width>520?10:size.height*0.01),
                 Center(
                   child: Text(
                     msg,
-                    style: TextStyle(fontSize: MediaQuery.of(navKey.currentContext!).size.height*0.018,color: kSubTitleColor),
+                    style: TextStyle(fontSize: kIsWeb&&size.width>520?15:size.height*0.018,color: kSubTitleColor),
                     textAlign: TextAlign.center,
                   ),
                 ),
                 SizedBox(
-                  height: MediaQuery.of(navKey.currentContext!).size.height*0.01,
+                  height: kIsWeb&&size.width>520?10:size.height*0.01,
                 ),
                 details??const SizedBox(),
                 SizedBox(
-                  height: MediaQuery.of(navKey.currentContext!).size.height*0.01,
+                  height: kIsWeb&&size.width>520?10:size.height*0.01,
                 ),
                 action?? CustomButton(
 
@@ -286,7 +289,7 @@ class Utils{
                   label: translate(navKey.currentState!.context, "ok"),
                 ),
                 SizedBox(
-                  height: MediaQuery.of(navKey.currentContext!).size.height*0.01,
+                  height: kIsWeb&&size.width>520?10:size.height*0.01,
                 ),
               ],
             ),
@@ -309,89 +312,7 @@ class Utils{
   }
 
 
-  static showWinDialog() {
-    showGeneralDialog(
-      context: navKey.currentState!.context,
-      barrierColor: Colors.black12.withOpacity(0.6), // Background color
-      barrierDismissible: false,
-      barrierLabel: 'Dialog',
-      transitionDuration: Duration(milliseconds: 400),
-      pageBuilder: (_, __, ___) {
-        return Column(
-          children: <Widget>[
-            Expanded(
-              child: Image.asset(
-                "images/win.gif",
-                fit: BoxFit.cover,
-              ),
-            ),
 
-          ],
-        );
-      },
-    );
-  }
-
-  static showSendNotificationDialog(Size size,{required String userName,required String userId}){
-    TextEditingController receiverController = TextEditingController(text: userName);
-    TextEditingController titleController = TextEditingController();
-    TextEditingController desController = TextEditingController();
-    AlertDialog alert = AlertDialog(
-      scrollable: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      content: Column(
-        children: [
-          CustomTextField(
-            readOnly: true,
-            hintText: translate(navKey.currentState!.context, "userName"),
-            controller: receiverController,
-            height: size.height*0.06,
-          ),
-          SizedBox(height: size.height*0.03,width: size.width,),
-          CustomTextField(
-            controller: titleController,
-            hintText: translate(navKey.currentState!.context, "title"),
-            height: size.height*0.06,
-          ),
-          SizedBox(height: size.height*0.03,),
-          CustomTextField(
-            hintText: translate(navKey.currentState!.context, "description"),
-            controller: desController,
-            height: size.height*0.06,
-          ),
-          SizedBox(height: size.height*0.03,),
-          CustomButton(
-            width: size.width*0.3,
-              height: size.height*0.045,
-              label: translate(navKey.currentState!.context, "send"),
-              onPress: (){
-                Navigator.of(navKey.currentState!.context).pop();
-                PushNotificationServices.sendMessageToAnyUser(
-                    title: titleController.text,
-                    body: desController.text,
-                    to: userId);
-            }
-            ),
-          SizedBox(height: size.height*0.02,),
-
-        ],
-      ),
-    );
-    showDialog(
-      context: navKey.currentState!.context,
-      useRootNavigator: false,
-      builder: (BuildContext context) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            alert,
-          ],
-        );
-      },
-    );
-  }
 
   static showToast(String msg,double fontSize){
     Fluttertoast.showToast(
@@ -405,55 +326,7 @@ class Utils{
     );
   }
 
-  static showEnterRoomDialog(Size size,{required Function onSubmit,required TextEditingController roomIdController}){
 
-    AlertDialog alert = AlertDialog(
-      scrollable: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      content: Column(
-        children: [
-          CustomTextField(
-            readOnly: false,
-            hintText: translate(navKey.currentState!.context, "roomId"),
-            controller: roomIdController,
-            height: size.height*0.06,
-          ),
-          SizedBox(height: size.height*0.03,width: size.width,),
-
-          CustomButton(
-              width: size.width*0.3,
-              height: size.height*0.045,
-              label: translate(navKey.currentState!.context, "join"),
-              onPress: (){
-
-                if(roomIdController.text.isNotEmpty) {
-                  Navigator.of(navKey.currentState!.context).pop();
-                  onSubmit();
-                }
-              }
-          ),
-          SizedBox(height: size.height*0.02,),
-
-        ],
-      ),
-    );
-    showDialog(
-      context: navKey.currentState!.context,
-      useRootNavigator: false,
-
-      builder: (BuildContext context) {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            alert,
-          ],
-        );
-      },
-    );
-  }
-  
   static String getStringPlace(int place){
     return "${place}st";
   }
@@ -486,10 +359,11 @@ class Utils{
   }
 
   static showSureAlertDialog({required Function onSubmit,String? msg}){
+    Size size = MediaQuery.of(navKey.currentState!.context).size;
     AlertDialog alert = AlertDialog(
       scrollable: true,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
+        borderRadius: BorderRadius.circular(kIsWeb?5:20.0),
       ),
       title: Stack(
         children: [
@@ -518,8 +392,8 @@ class Utils{
               children: [
 
                 SizedBox(
-                  width:
-                  MediaQuery.of(navKey.currentState!.context).size.width *
+                  width:kIsWeb&&size.width>520?300:
+                  size.width *
                       0.9,
                   child: Center(
                     child: Text(
@@ -535,8 +409,8 @@ class Utils{
                   height: 23,
                 ),
                 SizedBox(
-                  width:
-                  MediaQuery.of(navKey.currentState!.context).size.width *
+                  width:kIsWeb&&size.width>520?300:
+                  size.width *
                       0.6,
                   height: 40,
                   child: Row(
@@ -592,136 +466,10 @@ class Utils{
     );
   }
 
-  static Future showErrorDialog(Size size, String msg) async{
-    AlertDialog alert = AlertDialog(
-      scrollable: true,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
-      ),
-      content: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              CustomInkwell(
-                onTap: (){
-                  Navigator.of(navKey.currentState!.context,
-                      rootNavigator: true)
-                      .pop('dialog');
-                },
-                child: Container(
-                  height: size.height*0.025,
-                  width: size.height*0.025,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: kCardColor,
-                  ),
-                  child: Icon(
-                    Icons.close,
-                    size: size.height*0.02,
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Stack(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(
-                    top: size.height*0.08
-                ),
-                child: Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(size.height*0.02),
-                      color: kCardColor
-                  ),
-                  child: Column(
-                    children: [
-                      SizedBox(height: size.height*0.06,),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          msg,
-                          style: TextStyle(
-                              fontSize: size.height*0.022,
-                              fontWeight: FontWeight.bold,
-                              color: const Color(0xffffc107)
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                      SizedBox(height: size.height*0.02,),
-
-                      CustomInkwell(
-                        onTap: (){
-                          Navigator.of(navKey.currentState!.context,
-                              rootNavigator: true)
-                              .pop('dialog');
-                        },
-                        child: Container(
-                          width: size.width*0.5,
-                          decoration: BoxDecoration(
-                            color: Color(0xffff7f3f),
-                            borderRadius: BorderRadius.circular(size.height*0.015),
-                          ),
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: size.height*0.01
-                            ),
-                            child: Center(
-                              child: Text(
-                                translate(navKey.currentState!.context, "goBack"),
-                                style: TextStyle(
-                                  fontSize: size.height*0.024,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: size.height*0.04,),
-                    ],
-                  ),
-                ),
-              ),
-              Center(
-                child: Container(
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: kPrimaryColor.withOpacity(0.1),
-                        spreadRadius: 1,
-                        blurRadius: 30,
-                        offset: Offset(0, 30), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  child: Image.asset(
-                    "images/joystick.png",
-                    height: size.height*0.125,
-
-                  ),
-                ),
-              )
-            ],
-          )
-
-        ],
-      ),
-    );
-    showDialog(
-      context: navKey.currentState!.context,
-      useRootNavigator: false,
-      builder: (BuildContext context) {
-        return alert;
-      },
-    );
-  }
 
 
   static Future showErrorAlertDialog(String msg,{bool goToNextScreen = false,Function? whenNavBack}) async{
+    Size size = MediaQuery.of(navKey.currentState!.context).size;
     AlertDialog alert = AlertDialog(
       scrollable: true,
       shape: RoundedRectangleBorder(
@@ -758,8 +506,9 @@ class Utils{
                 ),
                 const SizedBox(height: 7),
                 SizedBox(
-                  width:
-                  MediaQuery.of(navKey.currentState!.context).size.width *
+                  width:kIsWeb&&size.width>520
+                      ?300
+                      : MediaQuery.of(navKey.currentState!.context).size.width *
                       0.60,
                   child: Center(
                     child: Text(
@@ -773,8 +522,9 @@ class Utils{
                   height: 23,
                 ),
                 SizedBox(
-                  width:
-                  MediaQuery.of(navKey.currentState!.context).size.width *
+                  width:kIsWeb&&size.width>520
+                      ?300
+                      : size.width *
                       0.45,
                   height: 40,
                   child: RaisedButton(
