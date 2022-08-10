@@ -39,7 +39,7 @@ class StepWidget extends StatelessWidget {
                   ),
                   SizedBox(height: kIsWeb&&size.width>520?onTab!=null?5:15:size.height*0.01,),
                   SizedBox(
-                    height: kIsWeb&&size.width>520?onTab!=null?40:30:size.height*0.05,
+                    height: kIsWeb&&size.width>520?onTab!=null?40:50:size.height*0.05,
                     width:kIsWeb&&size.width>520?onTab!=null?85:100: size.width*0.15,
                     child: Center(
                       child: Text(

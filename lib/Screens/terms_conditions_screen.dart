@@ -1,4 +1,5 @@
 import 'package:aljunied/Components/custom_scaffold_web.dart';
+import 'package:aljunied/Widgets/custom_button.dart';
 import 'package:aljunied/Widgets/waiting_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -35,12 +36,13 @@ class _TermsConditionsScreenState extends State<TermsConditionsScreen> {
     Size size = MediaQuery.of(context).size;
     return kIsWeb&&size.width>520
         ?CustomScaffoldWeb(
+      buttonLabel: translate(context,"continue"),
+      onPressButton: ()=>Navigator.of(context).pop(),
       showHeaderAndBottom: false,
-
       title: translate(context, "termsAndConditions"),
       body:terms!=null? Text(
         terms!.terms!,
-        style: TextStyle(
+        style: const TextStyle(
           fontSize: 17,
         ),
       ):const WaitingWidget(),

@@ -42,7 +42,7 @@ class CustomScaffoldWeb extends StatelessWidget {
                       child: Container(
                         color: Colors.grey[100],
                         child: Align(
-                          alignment: AlignmentDirectional.bottomEnd,
+                          alignment: Alignment.bottomLeft,
                           child: Image.asset(
                             "images/down_web_path.png",
                             height: size.height * 0.3,
@@ -123,10 +123,10 @@ class CustomScaffoldWeb extends StatelessWidget {
               ),
               if(buttonLabel!=null&&onPressButton!=null&&size.width>1000)
                 Align(
-                  alignment: AlignmentDirectional.centerEnd,
+                  alignment: Alignment.centerLeft,
                   child: Padding(
-                    padding: const EdgeInsetsDirectional.only(
-                      end: 100,
+                    padding: const EdgeInsets.only(
+                      left: 100,
                       bottom: 200
                     ),
                     child: CustomButton(

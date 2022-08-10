@@ -55,7 +55,7 @@ class _AddEditHeadlineScreenState extends State<AddEditHeadlineScreen> {
             CustomTextField(
               borderRadius: 10,
               controller: titleArController,
-              hintText: translate(context, "mainTitle")+" (${translate(context, "arabic")})",
+              hintText: translate(context, "mainTitle")+" ${translate(context, "inArabic")}",
               withValidation: true,
 
             ),
@@ -63,7 +63,7 @@ class _AddEditHeadlineScreenState extends State<AddEditHeadlineScreen> {
             CustomTextField(
               borderRadius: 10,
               controller: titleEnController,
-              hintText: translate(context, "mainTitle")+" (${translate(context, "english")})",
+              hintText: translate(context, "mainTitle")+" ${translate(context, "inEnglish")}",
 
             ),
             SizedBox(height: 10,),
@@ -196,7 +196,7 @@ class _AddEditHeadlineScreenState extends State<AddEditHeadlineScreen> {
                   height: size.height*0.05,
                   borderRadius: size.height*0.01,
                   controller: titleArController,
-                  hintText: translate(context, "mainTitle")+" (${translate(context, "arabic")})",
+                  hintText: translate(context, "mainTitle")+" ${translate(context, "inArabic")}",
                   withValidation: true,
 
                 ),
@@ -205,7 +205,7 @@ class _AddEditHeadlineScreenState extends State<AddEditHeadlineScreen> {
                   height: size.height*0.05,
                   borderRadius: size.height*0.01,
                   controller: titleEnController,
-                  hintText: translate(context, "mainTitle")+" (${translate(context, "english")})",
+                  hintText: translate(context, "mainTitle")+" ${translate(context, "inEnglish")}",
 
                 ),
                 SizedBox(height: size.height*0.02,),

@@ -25,6 +25,7 @@ class _AppBarWebState extends State<AppBarWeb> {
     var appLanguage = Provider.of<AppLanguage>(context);
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           color: Colors.grey[200],
@@ -159,16 +160,19 @@ class _AppBarWebState extends State<AppBarWeb> {
             ],
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 10),
+        const SizedBox(height: 5,),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
           child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              const SizedBox(width: 100,),
               const Text(
                 "بلدية الجنيد \nAl Junaid Municipality",
                 style: TextStyle(
                     fontSize: 20, fontWeight: FontWeight.bold, fontFamily: ""),
               ),
-              Spacer(),
+              const SizedBox(width: 60,),
               if(CurrentUser.department!=null||CurrentUser.isAdmin ==true)
                 SizedBox(
                 width: 300,
@@ -198,62 +202,14 @@ class _AppBarWebState extends State<AppBarWeb> {
                 ),
               ),
               if(CurrentUser.department!=null)
-                const Spacer(),
+                const SizedBox(width: 60,),
 
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: CurrentUser.department != null&&CurrentUser.isAdmin!=true
-                    ? Row(
-                        children: [
+              CurrentUser.department != null&&CurrentUser.isAdmin!=true
+                  ? Row(
+                      children: [
 
 
-                            CustomInkwell(
-                              onTap: () =>
-                                  NavigatorUtils.navigateToNotificationsScreen(
-                                      context),
-                              child: Text(
-                                translate(context, "notifications"),
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ),
-                          SizedBox(
-                            width: 15,
-                          ),
                           CustomInkwell(
-                            onTap: () =>
-                                NavigatorUtils.navigateToCreateEditATransactionScreen(context),
-                            child: Text(
-                              translate(context, "createATransaction"),
-                              style: const TextStyle(
-                                fontSize: 14,
-                              ),
-                            ),
-                          ),
-
-
-                        ],
-                      )
-                    : Row(
-                        children: [
-                          CustomInkwell(
-                            onTap: () =>
-                                NavigatorUtils.navigateToHomeScreen(context),
-                            child: Text(
-                              translate(context, "main"),
-                              style: const TextStyle(
-                                fontSize: 14,
-                              ),
-                            ),
-                          ),
-                          if(CurrentUser.userId!=null)
-                          SizedBox(
-                            width: 15,
-                          ),
-                          if(CurrentUser.userId!=null)
-
-                            CustomInkwell(
                             onTap: () =>
                                 NavigatorUtils.navigateToNotificationsScreen(
                                     context),
@@ -264,64 +220,111 @@ class _AppBarWebState extends State<AppBarWeb> {
                               ),
                             ),
                           ),
-                          SizedBox(
-                            width: 15,
-                          ),
-                          CustomInkwell(
-                            onTap: () =>
-                                NavigatorUtils.navigateToAboutWebScreen(
-                                    context),
-                            child: Text(
-                              translate(context, "aboutTheMunicipality"),
-                              style: const TextStyle(
-                                fontSize: 14,
-                              ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        CustomInkwell(
+                          onTap: () =>
+                              NavigatorUtils.navigateToCreateEditATransactionScreen(context),
+                          child: Text(
+                            translate(context, "createATransaction"),
+                            style: const TextStyle(
+                              fontSize: 14,
                             ),
                           ),
-                          SizedBox(
-                            width: 15,
-                          ),
-                          CustomInkwell(
-                            onTap: () =>
-                                NavigatorUtils.navigateToBidsScreen(context),
-                            child: Text(
-                              translate(context, "bids"),
-                              style: const TextStyle(
-                                fontSize: 14,
-                              ),
+                        ),
+
+
+                      ],
+                    )
+                  : Row(
+                      children: [
+                        CustomInkwell(
+                          onTap: () =>
+                              NavigatorUtils.navigateToHomeScreen(context),
+                          child: Text(
+                            translate(context, "main"),
+                            style: const TextStyle(
+                              fontSize: 14,
                             ),
                           ),
-                          SizedBox(
-                            width: 15,
-                          ),
+                        ),
+                        if(CurrentUser.userId!=null)
+                        SizedBox(
+                          width: 15,
+                        ),
+                        if(CurrentUser.userId!=null)
+
                           CustomInkwell(
-                            onTap: () =>
-                                NavigatorUtils.navigateToTouristAreasScreen(
-                                    context),
-                            child: Text(
-                              translate(context, "touristAreasAndActivities"),
-                              style: const TextStyle(
-                                fontSize: 14,
-                              ),
+                          onTap: () =>
+                              NavigatorUtils.navigateToNotificationsScreen(
+                                  context),
+                          child: Text(
+                            translate(context, "notifications"),
+                            style: const TextStyle(
+                              fontSize: 14,
                             ),
                           ),
-                          SizedBox(
-                            width: 15,
-                          ),
-                          CustomInkwell(
-                            onTap: () =>
-                                NavigatorUtils.navigateToAddInvestmentScreen(
-                                    context),
-                            child: Text(
-                              translate(context, "investWithUs"),
-                              style: const TextStyle(
-                                fontSize: 14,
-                              ),
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        CustomInkwell(
+                          onTap: () =>
+                              NavigatorUtils.navigateToAboutWebScreen(
+                                  context),
+                          child: Text(
+                            translate(context, "aboutTheMunicipality"),
+                            style: const TextStyle(
+                              fontSize: 14,
                             ),
-                          )
-                        ],
-                      ),
-              )
+                          ),
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        CustomInkwell(
+                          onTap: () =>
+                              NavigatorUtils.navigateToBidsScreen(context),
+                          child: Text(
+                            translate(context, "bids"),
+                            style: const TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        CustomInkwell(
+                          onTap: () =>
+                              NavigatorUtils.navigateToTouristAreasScreen(
+                                  context),
+                          child: Text(
+                            translate(context, "touristAreasAndActivities"),
+                            style: const TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        CustomInkwell(
+                          onTap: () =>
+                              NavigatorUtils.navigateToAddInvestmentScreen(
+                                  context),
+                          child: Text(
+                            translate(context, "investWithUs"),
+                            style: const TextStyle(
+                              fontSize: 14,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+              const SizedBox(width: 20,),
+
             ],
           ),
         ),

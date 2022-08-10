@@ -64,7 +64,7 @@ class _HomeEmployeeScreenState extends State<HomeEmployeeScreen> {
                       child: Container(
                         color: Colors.grey[100],
                         child: Align(
-                          alignment: AlignmentDirectional.bottomEnd,
+                          alignment: Alignment.bottomLeft,
                           child: Image.asset(
                             "images/down_web_path.png",
                             height: size.height * 0.3,
@@ -98,11 +98,21 @@ class _HomeEmployeeScreenState extends State<HomeEmployeeScreen> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
+                                  if(Localizations.localeOf(context).languageCode=="ar")
                                   Spacer(),
-
+                                  if(Localizations.localeOf(context).languageCode=="en")
+                                    SizedBox(width: 100,),
+                                  if(Localizations.localeOf(context).languageCode=="en")
+                                    CustomButton(
+                                      width: 200,
+                                      height: 60,
+                                      label: translate(context, "createATransaction"),
+                                      onPress: ()=>NavigatorUtils.navigateToCreateEditATransactionScreen(context),
+                                    ),
+                                  if(Localizations.localeOf(context).languageCode=="ar")
                                   Padding(
-                                    padding: const EdgeInsetsDirectional.only(
-                                      start: 300
+                                    padding: const EdgeInsets.only(
+                                      right: 300
                                     ),
                                     child: Text(
                                       translate(context, "followTheStepsBelowToCreateATransaction"),
@@ -115,13 +125,32 @@ class _HomeEmployeeScreenState extends State<HomeEmployeeScreen> {
                                     ),
                                   ),
                                   Spacer(),
+                                  if(Localizations.localeOf(context).languageCode=="en")
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          right: 300
+                                      ),
+                                      child: Text(
+                                        translate(context, "followTheStepsBelowToCreateATransaction"),
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.grey[200]
+                                        ),
+                                        textAlign: TextAlign.center,
+
+                                      ),
+                                    ),
+                                  if(Localizations.localeOf(context).languageCode=="ar")
                                   CustomButton(
                                     width: 200,
                                     height: 60,
                                     label: translate(context, "createATransaction"),
                                     onPress: ()=>NavigatorUtils.navigateToCreateEditATransactionScreen(context),
                                   ),
-                                  SizedBox(width: 100,)
+                                  if(Localizations.localeOf(context).languageCode=="ar")
+                                  SizedBox(width: 100,),
+                                  if(Localizations.localeOf(context).languageCode=="en")
+                                    Spacer(),
                                 ],
                               ),
 

@@ -35,7 +35,7 @@ class _CreateEditTransactionScreenState extends State<CreateEditTransactionScree
   final _formKeyStepOne = GlobalKey<FormState>();
   final _formKeyStepFour = GlobalKey<FormState>();
 
-  TransactionModel transaction = TransactionModel(keyWords: [],employees: [],departments: []);
+  TransactionModel transaction = TransactionModel(keyWords: [],employees: [],employeesId: [],departments: []);
 
   PageController pageController = PageController();
   int? index;
@@ -147,9 +147,7 @@ class _CreateEditTransactionScreenState extends State<CreateEditTransactionScree
                   iconPath: "paper.png",
                   isSelected: index == 1,
                   completed: index!>1,
-
                   onTab: (){
-
                     if(index!>1||(_formKeyStepOne.currentState!.validate()&&index==0)) {
                       setState(() {
                         index = 1;
@@ -600,9 +598,8 @@ class _CreateEditTransactionScreenState extends State<CreateEditTransactionScree
     transaction.type = selectedCategory!.nameAr;
     transaction.subType =selectedCategory!.subcategories!=null&&selectedCategory!.subcategories!.isNotEmpty? selectedCategory!.subcategories![selectedTransactionSubTypeIndex].nameAr:null;
     transaction.citizenName = citizenNameController.text;
-    transaction.convertFrom = convertFromController.text;
     transaction.convertTo = convertToController.text;
-    transaction.convertFrom = CurrentUser.department!=null&&CurrentUser.isAdmin!=true? CurrentUser.department!.name:convertFromId;
+    transaction.convertFrom = CurrentUser.department!=null&&CurrentUser.isAdmin!=true? CurrentUser.department!.name:convertFromController.text;
     transaction.convertFromId = convertFromId;
     transaction.convertToId = convertToId;
     transaction.currentStage = currentStageController.text;
@@ -617,15 +614,7 @@ class _CreateEditTransactionScreenState extends State<CreateEditTransactionScree
       transaction.convertFromId = CurrentUser.department!.id!;
       transaction.convertToId = null;
       transaction.convertTo = translate(context, "transactionEnd");
-      // if(context.read<TransactionController>().todayTasks!=null&&context.read<TransactionController>().todayTasks!.firstWhereOrNull((element) => element.id==transaction.id)!=null){
-      //   context.read<TransactionController>().todayUnFinishTasks!.removeWhere((element) => element.id==transaction.id);
-      //   context.read<TransactionController>().todayCompletedTasks!.add(transaction);
-      // }
-      // else{
-      //   context.read<TransactionController>().unFinishTasks!.removeWhere((element) => element.id==transaction.id);
-      //   context.read<TransactionController>().completedTasks!.add(transaction);
-      //
-      // }
+
     }
 
 
@@ -684,7 +673,7 @@ class _CreateEditTransactionScreenState extends State<CreateEditTransactionScree
       );
     }
     else{
-      if(transaction.employeesId!.last != CurrentUser.userId&&CurrentUser.department!=null){
+      if(transaction.employeesId!=null&&transaction.employeesId!.last != CurrentUser.userId&&CurrentUser.department!=null){
         transaction.employeesId!.add(CurrentUser.userId!);
         transaction.employees!.add(CurrentUser.userName!);
         transaction.departments!.add(CurrentUser.department!.name!);

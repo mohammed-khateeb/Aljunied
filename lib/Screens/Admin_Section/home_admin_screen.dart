@@ -41,7 +41,7 @@ class HomeAdminScreen extends StatelessWidget {
                       child: Container(
                         color: Colors.grey[100],
                         child: Align(
-                          alignment: AlignmentDirectional.bottomEnd,
+                          alignment: Alignment.bottomLeft,
                           child: Image.asset(
                             "images/down_web_path.png",
                             height: size.height * 0.3,
