@@ -111,6 +111,8 @@
   "firstGameDate": "تاريخ اول لعبة",
   "popUpDes": "الوصف",
   "setAsAdmin": "تعيين كمسؤول",
+  "thisUserIsASuperAdminCanNotBeDeleted": "هذا المستخدم هو مشرف رئيسي.\nلا يمكن حذفه",
+
   "removeFromAdmins": "إزالة من المسؤولين",
   "successfullySetAsAdministrator": "تم تعيينه كمسؤول بنجاح",
   "itHasBeenRemovedFromTheAdministratorsSuccessfully": "تم إزالته من المسؤولين بنجاح",

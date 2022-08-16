@@ -76,47 +76,7 @@ class EmployeeDetailsScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 10,),
-                      if(employee.mobileNumber!=null)
-                        Card(
-                          elevation: 6,
-                          shadowColor: Colors.white,
-                          child: Padding(
-                            padding: EdgeInsets.all(7),
-                            child: Row(
-                              children: [
 
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(width: size.width,),
-                                      Text(
-                                        employee.mobileNumber!.toString(),
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                        ),
-                                      ),
-                                      Text(
-                                        translate(context, "mobileNumber"),
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            color: Colors.grey
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 8),
-                                  child: Image.asset(
-                                    "icons/call.png",
-                                    height: 25,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
                       if(employee.mobileNumber!=null)
                         Card(
                           elevation: 6,
@@ -224,7 +184,13 @@ class EmployeeDetailsScreen extends StatelessWidget {
                           CustomButton(
                             label:employee.isAdmin!=true?translate(context, "setAsAdmin"): translate(context, "removeFromAdmins"),
                             onPress: (){
-                              Utils.showSureAlertDialog(
+                              if(employee.isSuperAdmin==true){
+                                Utils.showErrorAlertDialog(
+                                    translate(context, "thisUserIsASuperAdminCanNotBeDeleted")
+                                );
+                              }
+                              else {
+                                Utils.showSureAlertDialog(
                                   onSubmit: (){
                                     if(employee.isAdmin!=true){
                                       PushNotificationServices.sendMessageToAnyUser(
@@ -238,6 +204,7 @@ class EmployeeDetailsScreen extends StatelessWidget {
                                     Navigator.pop(context);
                                   }
                               );
+                              }
                             },
                           ),
                         ],
@@ -374,23 +341,32 @@ class EmployeeDetailsScreen extends StatelessWidget {
             },
           ),
           SizedBox(height: size.height*0.01,),
+          
           CustomButton(
             label:employee.isAdmin!=true?translate(context, "setAsAdmin"): translate(context, "removeFromAdmins"),
             onPress: (){
-              Utils.showSureAlertDialog(
-                  onSubmit: (){
-                    if(employee.isAdmin!=true){
-                      PushNotificationServices.sendMessageToAnyUser(
-                        title:"الادارة",
-                        body: "تم تعيينك كمسؤول في التطبيق.\n الرجاء تسجيل الخروج والدخول من جديد.",
-                        to: employee.token!,
-                      );
-                    }
-                    context.read<AdminController>().appointmentAsAdmin(userId: employee.id!,toAdmin: employee.isAdmin!=true);
+              if(employee.isSuperAdmin==true){
+                Utils.showErrorAlertDialog(
+                  translate(context, "thisUserIsASuperAdminCanNotBeDeleted")
+                );
+              }
+              else{
+                Utils.showSureAlertDialog(
+                    onSubmit: (){
+                      if(employee.isAdmin!=true){
+                        PushNotificationServices.sendMessageToAnyUser(
+                          title:"الادارة",
+                          body: "تم تعيينك كمسؤول في التطبيق.\n الرجاء تسجيل الخروج والدخول من جديد.",
+                          to: employee.token!,
+                        );
+                      }
+                      context.read<AdminController>().appointmentAsAdmin(userId: employee.id!,toAdmin: employee.isAdmin!=true);
 
-                    Navigator.pop(context);
-                  }
-              );
+                      Navigator.pop(context);
+                    }
+                );
+              }
+              
             },
           ),
         ],

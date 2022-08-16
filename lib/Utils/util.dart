@@ -547,29 +547,31 @@ class Utils{
                       : size.width *
                       0.45,
                   height: 40,
-                  child: CustomInkwell(
-                    onTap: () {
-                      Navigator.of(navKey.currentState!.context,
-                          rootNavigator: true)
-                          .pop('dialog');
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: kCardColor,
-                          borderRadius: BorderRadius.circular(50.0)
-                      ),
-
-                      child: Padding(
-                        padding:  EdgeInsets.symmetric(
-                            horizontal:kIsWeb&&size.width>520
-                                ?15
-                                : MediaQuery.of(navKey.currentState!.context).size.width *
-                                0.02
+                  child: Center(
+                    child: CustomInkwell(
+                      onTap: () {
+                        Navigator.of(navKey.currentState!.context,
+                            rootNavigator: true)
+                            .pop('dialog');
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.red,
+                            borderRadius: BorderRadius.circular(50.0)
                         ),
-                        child: Text(
-                            translate(navKey.currentState!.context, "ok"),
-                            style: const TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold,color: Colors.white)),
+
+                        child: Padding(
+                          padding:  EdgeInsets.symmetric(
+                              horizontal:kIsWeb&&size.width>520
+                                  ?15
+                                  : MediaQuery.of(navKey.currentState!.context).size.width *
+                                  0.02
+                          ),
+                          child: Text(
+                              translate(navKey.currentState!.context, "ok"),
+                              style: const TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold,color: Colors.white)),
+                        ),
                       ),
                     ),
                   ),

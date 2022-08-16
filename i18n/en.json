@@ -13,6 +13,7 @@
   "askTheMunicipality": "Ask the municipality",
   "tribute": "Tribute",
   "answered": "Answered",
+  "thisUserIsASuperAdminCanNotBeDeleted": "This user is a master admin.\ncan not be deleted",
   "trashContainer": "Trash container",
   "lighting": "Lighting",
   "trashContainerRequests": "Trash container requests",
