@@ -13,6 +13,7 @@ import '../Components/Home_Employee_Components/create_atransaction_section.dart'
 import '../Components/Home_Employee_Components/tasks_section.dart';
 import '../Components/bottom_bar_web.dart';
 import '../Components/custom_drawer.dart';
+import '../Controller/headline_controller.dart';
 import '../Utils/util.dart';
 import '../Widgets/custom_app_bar.dart';
 import '../Widgets/step_widget.dart';
@@ -29,6 +30,9 @@ class _HomeEmployeeScreenState extends State<HomeEmployeeScreen> {
 
   @override
   void initState() {
+    if(!kIsWeb) {
+      context.read<HeadlineController>().getHeadlines();
+    }
     if(CurrentUser.department!=null) {
       context.read<TransactionController>().getEmployeeTasks(CurrentUser.department!.id!);
     }

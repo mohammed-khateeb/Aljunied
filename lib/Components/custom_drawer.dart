@@ -203,6 +203,208 @@ class CustomDrawer extends StatelessWidget {
                   ],
                 ),
               ),
+
+              ExpandablePanel(
+                theme: const ExpandableThemeData(
+                  iconColor: Colors.white,
+                  expandIcon: Icons.add,
+                  collapseIcon: Icons.remove,
+                ),
+                header: Padding(
+                  padding: EdgeInsetsDirectional.only(
+                      start: size.width * 0.05),
+                  child: Text(
+                    translate(context, "atYourService"),
+                    style: TextStyle(
+                        fontSize: size.height * 0.018,
+                        color: Colors.white),
+                  ),
+                ),
+                expanded: ListView(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.zero,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: [
+                    if(CurrentUser.token!=null)
+                    Padding(
+                      padding: EdgeInsetsDirectional.only(
+                          start: size.width * 0.1),
+                      child: CustomInkwell(
+                        onTap: (){
+                          NavigatorUtils
+                              .navigateToMakeComplaintScreen(context,kind: 1);
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(translate(context, "askTheMunicipality"),
+                              style: TextStyle(
+                                  fontSize: size.height * 0.018,
+                                  color: Colors.white),
+                            ),
+                            Divider(),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsetsDirectional.only(
+                          start: size.width * 0.1),
+                      child: CustomInkwell(
+                        onTap: (){
+                          NavigatorUtils
+                              .navigateToMakeComplaintScreen(context,kind: 2);
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(translate(context, "suggestion"),
+                              style: TextStyle(
+                                  fontSize: size.height * 0.018,
+                                  color: Colors.white),
+                            ),
+                            Divider(),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsetsDirectional.only(
+                          start: size.width * 0.1),
+                      child: CustomInkwell(
+                        onTap: (){
+                          NavigatorUtils
+                              .navigateToMakeComplaintScreen(context);
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(translate(context, "complaint"),
+                              style: TextStyle(
+                                  fontSize: size.height * 0.018,
+                                  color: Colors.white),
+                            ),
+                            Divider(),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsetsDirectional.only(
+                          start: size.width * 0.1),
+                      child: CustomInkwell(
+                        onTap: (){
+                          NavigatorUtils
+                              .navigateToMakeComplaintScreen(context,kind: 4);
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(translate(context, "report"),
+                              style: TextStyle(
+                                  fontSize: size.height * 0.018,
+                                  color: Colors.white),
+                            ),
+                            Divider(),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsetsDirectional.only(
+                          start: size.width * 0.1),
+                      child: CustomInkwell(
+                        onTap: (){
+                          NavigatorUtils
+                              .navigateToMakeComplaintScreen(context,kind: 5);
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(translate(context, "tribute"),
+                              style: TextStyle(
+                                  fontSize: size.height * 0.018,
+                                  color: Colors.white),
+                            ),
+                            Divider(),
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                collapsed: const SizedBox(),
+              ),
+              ExpandablePanel(
+                theme: const ExpandableThemeData(
+                  iconColor: Colors.white,
+                  expandIcon: Icons.add,
+                  collapseIcon: Icons.remove,
+                ),
+                header: Padding(
+                  padding: EdgeInsetsDirectional.only(
+                      start: size.width * 0.05),
+                  child: Text(
+                    translate(context, "serviceRequest"),
+                    style: TextStyle(
+                        fontSize: size.height * 0.018,
+                        color: Colors.white),
+                  ),
+                ),
+                expanded: ListView(
+                  shrinkWrap: true,
+                  padding: EdgeInsets.zero,
+                  physics: const NeverScrollableScrollPhysics(),
+                  children: [
+
+                    Padding(
+                      padding: EdgeInsetsDirectional.only(
+                          start: size.width * 0.1),
+                      child: CustomInkwell(
+                        onTap: (){
+                          NavigatorUtils
+                              .navigateToMakeComplaintScreen(context,kind: 6);
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(translate(context, "requestATrashContainerService"),
+                              style: TextStyle(
+                                  fontSize: size.height * 0.018,
+                                  color: Colors.white),
+                            ),
+                            Divider(),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsetsDirectional.only(
+                          start: size.width * 0.1),
+                      child: CustomInkwell(
+                        onTap: (){
+                          NavigatorUtils
+                              .navigateToMakeComplaintScreen(context,kind: 7);
+                        },
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(translate(context, "lightingServiceRequest"),
+                              style: TextStyle(
+                                  fontSize: size.height * 0.018,
+                                  color: Colors.white),
+                            ),
+                            Divider(),
+                          ],
+                        ),
+                      ),
+                    ),
+
+
+                  ],
+                ),
+                collapsed: const SizedBox(),
+              ),
               if(CurrentUser.department==null)
 
                 CustomInkwell(

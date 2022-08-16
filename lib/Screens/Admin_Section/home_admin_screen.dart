@@ -215,7 +215,7 @@ class HomeAdminScreen extends StatelessWidget {
         return translate(context, "complaintsTypes");
       }
       case 12: {
-        return translate(context, "complaints");
+        return translate(context, "atYourService");
       }
       case 13: {
         return translate(context, "investments");
@@ -268,7 +268,7 @@ class HomeAdminScreen extends StatelessWidget {
         return "complaint_type.png";
       }
       case 12: {
-        return "complaint.png";
+        return "support.png";
       }
       case 13: {
         return "investment.png";
@@ -338,7 +338,7 @@ class HomeAdminScreen extends StatelessWidget {
       }
 
       case 12: {
-        NavigatorUtils.navigateToComplaintsScreen(context);
+        NavigatorUtils.navigateToServicesScreen(context);
         break;
       }
 

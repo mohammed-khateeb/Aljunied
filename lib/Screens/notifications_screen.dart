@@ -24,8 +24,8 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
   void initState() {
     context.read<NotificationController>().getNotifications(
       CurrentUser.department!=null
-          ?[CurrentUser.department!.id!,TopicKey.employee,TopicKey.allUsers]
-          :[TopicKey.allUsers],
+          ?[CurrentUser.department!.id!,CurrentUser.token!,TopicKey.employee,TopicKey.allUsers]
+          :CurrentUser.token!=null?[TopicKey.allUsers,CurrentUser.token!]:[TopicKey.allUsers],
     );
     super.initState();
   }

@@ -16,6 +16,7 @@ import 'package:aljunied/Screens/Admin_Section/home_admin_screen.dart';
 import 'package:aljunied/Screens/Admin_Section/investment_details_screen.dart';
 import 'package:aljunied/Screens/Admin_Section/investments_screen.dart';
 import 'package:aljunied/Screens/Admin_Section/news_screen.dart';
+import 'package:aljunied/Screens/Admin_Section/services_screen.dart';
 import 'package:aljunied/Screens/Admin_Section/tourist_areas_screen.dart';
 import 'package:aljunied/Screens/Admin_Section/users_screen.dart';
 import 'package:aljunied/Screens/about_web_screen.dart';
@@ -85,9 +86,14 @@ class NavigatorUtils {
   }
 
 
-  static void navigateToComplaintsScreen(context,) {
-    openNewPage(context, const ComplaintsScreen());
+  static void navigateToComplaintsScreen(context, {int kind = 3}) {
+    openNewPage(context, ComplaintsScreen(kind: kind,));
   }
+
+  static void navigateToServicesScreen(context) {
+    openNewPage(context, const ServicesScreen());
+  }
+
 
   static void navigateToComplaintDetailsScreen(context,Complaint complaint) {
     openNewPage(context, ComplaintDetailsScreen(complaint: complaint));
@@ -188,8 +194,8 @@ class NavigatorUtils {
     openNewPage(context, const AddInvestmentScreen());
   }
 
-  static void navigateToMakeComplaintScreen(context) {
-    openNewPage(context, const MakeComplaintScreen());
+  static void navigateToMakeComplaintScreen(context,{ int kind = 3}) {
+    openNewPage(context, MakeComplaintScreen(kind: kind,));
   }
 
   static void navigateToLanguageScreen(context) {

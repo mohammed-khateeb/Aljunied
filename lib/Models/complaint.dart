@@ -4,8 +4,11 @@ class Complaint{
   String? id;
   String? userName;
   String? mobileNumber;
-
+  int? kind;/// 1== ask 2== suggestion 3==complaint  4==report 5==tribute
   String? imageUrl;
+  String? token;
+  String? answer;
+
   String? details;
   int? citizenNumber;
   String? typeId;
@@ -14,8 +17,8 @@ class Complaint{
 
 
   Complaint({this.id, this.userName,this.details,this.imageUrl,
-    this.citizenNumber,this.typeId,this.type,
-    this.createAt,this.mobileNumber});
+    this.citizenNumber,this.typeId,this.type,this.kind,
+    this.createAt,this.mobileNumber,this.token,this.answer});
 
   Complaint.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -25,6 +28,9 @@ class Complaint{
     createAt = json['createAt'];
     citizenNumber = json['citizenNumber'];
     type = json['type'];
+    kind = json['kind'];
+    answer = json['answer'];
+    token = json['token'];
     mobileNumber = json['mobileNumber'];
     typeId = json['typeId'];
 
@@ -38,8 +44,10 @@ class Complaint{
     data['details'] = details;
     data['createAt'] = createAt;
     data['mobileNumber'] = mobileNumber;
-
+    data['answer'] = answer;
     data['citizenNumber'] = citizenNumber;
+    data['kind'] = kind;
+    data['token'] = token;
     data['type'] = type;
     data['typeId'] = typeId;
 

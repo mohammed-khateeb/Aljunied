@@ -14,9 +14,17 @@ class ComplaintController with ChangeNotifier{
     complaints!.add(complaint);
     notifyListeners();
   }
-  Future getComplaints()async{
+
+  answerQuestion(Complaint complaint){
+    ComplaintApi.answerQuestion(complaint);
+    complaints??=[];
+    complaints!.firstWhere((element) => element.id==complaint.id).answer = complaint.answer;
+    notifyListeners();
+  }
+
+  Future getComplaints({int kind = 3})async{
     waiting = true;
-    complaints = await ComplaintApi.getComplaints();
+    complaints = await ComplaintApi.getComplaints(kind);
     waiting = false;
     notifyListeners();
   }

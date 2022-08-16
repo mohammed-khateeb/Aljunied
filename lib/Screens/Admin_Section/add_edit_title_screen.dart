@@ -2,6 +2,7 @@ import 'package:aljunied/Components/custom_scaffold_web.dart';
 import 'package:aljunied/Models/headline.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import '../../Constants/constants.dart';
 import '../../Utils/util.dart';
 import '../../Widgets/custom_app_bar.dart';
 import '../../Widgets/custom_button.dart';
@@ -68,36 +69,36 @@ class _AddEditTitleScreenState extends State<AddEditTitleScreen> {
             ),
 
             SizedBox(height: 10,),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //   children: [
-            //     Text(
-            //       translate(context, "subSubTitles"),
-            //       style: TextStyle(
-            //           fontSize: size.height*0.022,
-            //           fontWeight: FontWeight.w600,
-            //           color: Colors.grey[600]
-            //       ),
-            //     ),
-            //     CustomInkwell(
-            //       onTap: (){
-            //         FocusScope.of(context).unfocus();
-            //         openNewPage(context, AddEditSubTitleScreen(titleAppBar: titleController.text,)).then((value) {
-            //           if(value!=null && value is SubTitle) {
-            //             setState(() {
-            //               titleLine.subTitles!.add(value);
-            //             });
-            //           }
-            //         });
-            //       },
-            //       child: Icon(
-            //         Icons.add_circle,
-            //         color: kPrimaryColor,
-            //         size: size.height*0.03,
-            //       ),
-            //     )
-            //   ],
-            // ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  translate(context, "subSubTitles"),
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.grey[600]
+                  ),
+                ),
+                CustomInkwell(
+                  onTap: (){
+                    FocusScope.of(context).unfocus();
+                    openNewPage(context, AddEditSubTitleScreen(titleAppBar: titleArController.text,)).then((value) {
+                      if(value!=null && value is SubTitle) {
+                        setState(() {
+                          titleLine.subTitles!.add(value);
+                        });
+                      }
+                    });
+                  },
+                  child: Icon(
+                    Icons.add_circle,
+                    color: kPrimaryColor,
+                    size: 30,
+                  ),
+                )
+              ],
+            ),
 
             ListView.builder(
               shrinkWrap: true,
@@ -193,36 +194,36 @@ class _AddEditTitleScreenState extends State<AddEditTitleScreen> {
                 ),
 
                 SizedBox(height: size.height*0.06,),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     Text(
-                //       translate(context, "subSubTitles"),
-                //       style: TextStyle(
-                //           fontSize: size.height*0.022,
-                //           fontWeight: FontWeight.w600,
-                //           color: Colors.grey[600]
-                //       ),
-                //     ),
-                //     CustomInkwell(
-                //       onTap: (){
-                //         FocusScope.of(context).unfocus();
-                //         openNewPage(context, AddEditSubTitleScreen(titleAppBar: titleController.text,)).then((value) {
-                //           if(value!=null && value is SubTitle) {
-                //             setState(() {
-                //               titleLine.subTitles!.add(value);
-                //             });
-                //           }
-                //         });
-                //       },
-                //       child: Icon(
-                //         Icons.add_circle,
-                //         color: kPrimaryColor,
-                //         size: size.height*0.03,
-                //       ),
-                //     )
-                //   ],
-                // ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      translate(context, "subSubTitles"),
+                      style: TextStyle(
+                          fontSize: size.height*0.022,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.grey[600]
+                      ),
+                    ),
+                    CustomInkwell(
+                      onTap: (){
+                        FocusScope.of(context).unfocus();
+                        openNewPage(context, AddEditSubTitleScreen(titleAppBar: titleArController.text,)).then((value) {
+                          if(value!=null && value is SubTitle) {
+                            setState(() {
+                              titleLine.subTitles!.add(value);
+                            });
+                          }
+                        });
+                      },
+                      child: Icon(
+                        Icons.add_circle,
+                        color: kPrimaryColor,
+                        size: size.height*0.03,
+                      ),
+                    )
+                  ],
+                ),
 
                   SizedBox(
                     height: size.height*0.4,

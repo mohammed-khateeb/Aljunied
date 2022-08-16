@@ -1,6 +1,8 @@
 import 'package:aljunied/Constants/constants.dart';
 import 'package:aljunied/Models/headline.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import '../../Components/custom_scaffold_web.dart';
 import '../../Utils/util.dart';
 import '../../Widgets/custom_app_bar.dart';
 import '../../Widgets/custom_button.dart';
@@ -35,7 +37,36 @@ class _AddEditSubTitleScreenState extends State<AddEditSubTitleScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Scaffold(
+    return kIsWeb&&size.width>520
+        ?CustomScaffoldWeb(
+      title: widget.titleAppBar,
+      body:Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            SizedBox(height: 10,),
+            CustomTextField(
+              controller: titleController,
+              hintText: translate(context, "subSubTitle"),
+              withValidation: true,
+            ),
+            SizedBox(height: size.height*0.02,),
+            CustomTextField(
+              minLines: 5,
+              keyboardType: TextInputType.multiline,
+              controller: desController,
+              withValidation: true,
+              hintText: translate(context, "details"),
+            ),
+
+            SizedBox(height: 20,),
+
+            CustomButton(label: translate(context, "save"), onPress:()=> add(context)),
+          ],
+        ),
+      ),
+    )
+        :Scaffold(
       appBar: CustomAppBar(
         title: widget.titleAppBar,
       ),

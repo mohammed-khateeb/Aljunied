@@ -22,7 +22,8 @@ import '../Controller/complaint_controller.dart';
 import '../Widgets/custom_text_field.dart';
 
 class MakeComplaintScreen extends StatefulWidget {
-  const MakeComplaintScreen({Key? key}) : super(key: key);
+  final int kind;
+  const MakeComplaintScreen({Key? key, required this.kind}) : super(key: key);
 
   @override
   State<MakeComplaintScreen> createState() => _MakeComplaintScreenState();
@@ -58,8 +59,20 @@ class _MakeComplaintScreenState extends State<MakeComplaintScreen> {
     Size size = MediaQuery.of(context).size;
     return kIsWeb&&size.width>520
         ?CustomScaffoldWeb(
-      title: translate(context, "makeAComplaint"),
-      subTitle: translate(context, "pleaseFillOutTheFollowingFormToFileAComplaint"),
+      title:widget.kind==1
+          ?translate(context, "askTheMunicipality")
+          : widget.kind==2
+          ?translate(context, "suggestion")
+          : widget.kind==3
+          ?translate(context, "makeAComplaint")
+          :widget.kind==4
+          ?translate(context, "report")
+          :widget.kind==5
+          ?translate(context, "tribute")
+          :widget.kind==6
+          ?translate(context, "requestATrashContainerService")
+          :translate(context, "lightingServiceRequest"),
+      subTitle:widget.kind==3? translate(context, "pleaseFillOutTheFollowingFormToFileAComplaint"):null,
       body: Form(
         key: _formKey,
         child: Column(
@@ -127,6 +140,7 @@ class _MakeComplaintScreenState extends State<MakeComplaintScreen> {
                 },
               ),
             ),
+            if(widget.kind==3)
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: CustomTextField(
@@ -147,7 +161,7 @@ class _MakeComplaintScreenState extends State<MakeComplaintScreen> {
                 },
               ),
             ),
-            if(CurrentUser.userId!=null)
+            if(CurrentUser.userId!=null&&(widget.kind==3||widget.kind==4))
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 child: Column(
@@ -200,10 +214,28 @@ class _MakeComplaintScreenState extends State<MakeComplaintScreen> {
                   ],
                 )
             ),
-            Padding(
+            widget.kind!=6&&widget.kind!=7?Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: CustomTextField(
-                labelText: translate(context, "explanationOfTheComplaint"),
+                labelText:widget.kind==1
+                    ?translate(context, "theQuestion")
+                    : widget.kind==2
+                    ?translate(context, "suggestion")
+                    : widget.kind==3
+                    ?translate(context, "explanationOfTheComplaint")
+                    :widget.kind==4
+                    ?translate(context, "report")
+                    :translate(context, "tribute"),
+                controller: complaintDesController,
+                keyboardType: TextInputType.multiline,
+                minLines: 5,
+                withValidation: true,
+
+              ),
+            ):Padding(
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              child: CustomTextField(
+                labelText:translate(context, "locationLinkFromTheMap"),
                 controller: complaintDesController,
                 keyboardType: TextInputType.multiline,
                 minLines: 5,
@@ -230,7 +262,19 @@ class _MakeComplaintScreenState extends State<MakeComplaintScreen> {
 
         titleColor: Colors.white,
         arrowColor: Colors.white,
-        title: translate(context, "makeAComplaint"),
+        title:widget.kind==1
+            ?translate(context, "askTheMunicipality")
+            : widget.kind==2
+            ?translate(context, "suggestion")
+            : widget.kind==3
+          ?translate(context, "makeAComplaint")
+            :widget.kind==4
+            ?translate(context, "report")
+            :widget.kind==5
+            ?translate(context, "tribute")
+            :widget.kind==6
+            ?translate(context, "requestATrashContainerService")
+            :translate(context, "lightingServiceRequest"),
       ),
       body: Container(
         width: size.width,
@@ -252,6 +296,7 @@ class _MakeComplaintScreenState extends State<MakeComplaintScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(height: size.height*0.04,),
+                  if(widget.kind==3)
                   Text(
                     translate(context, "pleaseFillOutTheFollowingFormToFileAComplaint"),
                     style: TextStyle(
@@ -318,6 +363,7 @@ class _MakeComplaintScreenState extends State<MakeComplaintScreen> {
                       },
                     ),
                   ),
+                  if(widget.kind==3)
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: size.height*0.01),
                     child: CustomTextField(
@@ -338,7 +384,7 @@ class _MakeComplaintScreenState extends State<MakeComplaintScreen> {
                       },
                     ),
                   ),
-                  if(CurrentUser.userId!=null)
+                  if(CurrentUser.userId!=null&&(widget.kind==3||widget.kind==4))
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: size.height*0.01),
                     child: Column(
@@ -378,10 +424,29 @@ class _MakeComplaintScreenState extends State<MakeComplaintScreen> {
                       ],
                     )
                   ),
+                  widget.kind!=6&&widget.kind!=7?
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: size.height*0.01),
                     child: CustomTextField(
-                      labelText: translate(context, "explanationOfTheComplaint"),
+                      labelText:widget.kind==1
+                          ?translate(context, "theQuestion")
+                          : widget.kind==2
+                          ?translate(context, "suggestion")
+                          : widget.kind==3
+                          ?translate(context, "explanationOfTheComplaint")
+                          :widget.kind==4
+                          ?translate(context, "report")
+                          :translate(context, "tribute"),
+                      controller: complaintDesController,
+                      keyboardType: TextInputType.multiline,
+                      minLines: 5,
+                      withValidation: true,
+
+                    ),
+                  ):Padding(
+                    padding: EdgeInsets.symmetric(vertical: size.height*0.01),
+                    child: CustomTextField(
+                      labelText:translate(context, "locationLinkFromTheMap"),
                       controller: complaintDesController,
                       keyboardType: TextInputType.multiline,
                       minLines: 5,
@@ -412,6 +477,8 @@ class _MakeComplaintScreenState extends State<MakeComplaintScreen> {
     complaint.citizenNumber = int.parse(idNumberController.text);
     complaint.details = complaintDesController.text;
     complaint.mobileNumber = mobileController.text;
+    complaint.kind = widget.kind;
+    complaint.token = CurrentUser.token;
     Utils.showWaitingProgressDialog();
     if(picture!=null) {
       String url = await GeneralApi.saveOneImage(file: picture!, folderPath: "Complaint");
@@ -427,7 +494,9 @@ class _MakeComplaintScreenState extends State<MakeComplaintScreen> {
     Utils.hideWaitingProgressDialog();
     Navigator.pop(context);
     Utils.showSuccessAlertDialog(
-        translate(context, "complaintWasSubmittedSuccessfullyItWillBeConsideredByTheAdministrator"),
+        widget.kind==3
+            ?translate(context, "complaintWasSubmittedSuccessfullyItWillBeConsideredByTheAdministrator")
+            :translate(context, "sendingSuccessfully"),
         bottom: !kIsWeb||MediaQuery.of(Utils.navKey.currentContext!).size.width<520
     );
   }

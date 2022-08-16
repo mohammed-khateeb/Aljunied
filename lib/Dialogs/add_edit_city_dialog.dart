@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import '../Models/city.dart';
 import '../Utils/util.dart';
@@ -30,8 +31,9 @@ class _AddEditCityDialogState extends State<AddEditCityDialog> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return AlertDialog(
-      shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(30.0))),
+      actionsPadding: EdgeInsets.symmetric(horizontal: kIsWeb&&size.width>520?10:size.width*0.02),
+      shape:  RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(kIsWeb&&size.width>520?0:30.0))),
       title: Text(translate(context,"addCity")),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -55,7 +57,7 @@ class _AddEditCityDialogState extends State<AddEditCityDialog> {
         ],
       ),
       actions: [
-        FlatButton(onPressed: () => add(context), child: Text(translate(context, "add")))
+        InkWell(onTap: () => add(context), child: Text(translate(context, "add")))
       ],
     );
   }

@@ -190,7 +190,7 @@ class PushNotificationServices {
         Utils.hideWaitingProgressDialog();
         Navigator.pop(Utils.navKey.currentContext!);
         Utils.showSuccessAlertDialog(translate(Utils.navKey.currentContext!,
-            "theNotificationHasBeenSentSuccessfully"));
+            "theNotificationHasBeenSentSuccessfully"),bottom: !kIsWeb||MediaQuery.of(Utils.navKey.currentContext!).size.width<520);
       }
     }).catchError((e) {
       debugPrint('error: $e');

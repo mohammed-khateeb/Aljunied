@@ -416,38 +416,58 @@ class Utils{
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      RaisedButton(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50.0),
-                        ),
-                        onPressed: () {
+                      CustomInkwell(
+                        onTap: () {
                           Navigator.of(navKey.currentState!.context,
                               rootNavigator: true)
                               .pop('dialog');
                           onSubmit();
                         },
-                        color: kCardColor,
-                        textColor: Colors.white,
-                        child: Text(
-                            translate(navKey.currentState!.context, "ok"),
-                            style: const TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold)),
-                      ),
-                      RaisedButton(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: kCardColor,
+                            borderRadius: BorderRadius.circular(50.0)
+                          ),
+
+                          child: Padding(
+                            padding:  EdgeInsets.symmetric(
+                                horizontal:kIsWeb&&size.width>520
+                                    ?15
+                                    : MediaQuery.of(navKey.currentState!.context).size.width *
+                                    0.02
+                            ),
+                            child: Text(
+                                translate(navKey.currentState!.context, "ok"),
+                                style: const TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold,color: Colors.white)),
+                          ),
                         ),
-                        onPressed: () {
+                      ),
+                      CustomInkwell(
+                        onTap: () {
                           Navigator.of(navKey.currentState!.context,
                               rootNavigator: true)
                               .pop('dialog');
                         },
-                        color: kCardColor,
-                        textColor: Colors.white,
-                        child: Text(
-                            translate(navKey.currentState!.context, "cancel"),
-                            style: const TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold)),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: kCardColor,
+                              borderRadius: BorderRadius.circular(50.0)
+                          ),
+
+                          child: Padding(
+                            padding:  EdgeInsets.symmetric(
+                                horizontal:kIsWeb&&size.width>520
+                                    ?15
+                                    : MediaQuery.of(navKey.currentState!.context).size.width *
+                                    0.02
+                            ),
+                            child: Text(
+                                translate(navKey.currentState!.context, "cancel"),
+                                style: const TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold,color: Colors.white)),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -527,22 +547,31 @@ class Utils{
                       : size.width *
                       0.45,
                   height: 40,
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50.0),
-                    ),
-                    onPressed: () {
+                  child: CustomInkwell(
+                    onTap: () {
                       Navigator.of(navKey.currentState!.context,
                           rootNavigator: true)
                           .pop('dialog');
-
                     },
-                    color: Colors.red,
-                    textColor: Colors.white,
-                    child: Text(
-                        translate(navKey.currentState!.context, "ok"),
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: kCardColor,
+                          borderRadius: BorderRadius.circular(50.0)
+                      ),
+
+                      child: Padding(
+                        padding:  EdgeInsets.symmetric(
+                            horizontal:kIsWeb&&size.width>520
+                                ?15
+                                : MediaQuery.of(navKey.currentState!.context).size.width *
+                                0.02
+                        ),
+                        child: Text(
+                            translate(navKey.currentState!.context, "ok"),
+                            style: const TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold,color: Colors.white)),
+                      ),
+                    ),
                   ),
                 ),
               ],
@@ -610,22 +639,29 @@ class Utils{
                   MediaQuery.of(navKey.currentState!.context).size.width *
                       0.45,
                   height: 40,
-                  child: RaisedButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50.0),
-                    ),
-                    onPressed: () {
+                  child: CustomInkwell(
+                    onTap: () {
                       Navigator.of(navKey.currentState!.context,
                           rootNavigator: true)
                           .pop('dialog');
-
                     },
-                    color: Color(0xff5DADE2),
-                    textColor: Colors.white,
-                    child: Text(
-                        translate(navKey.currentState!.context, "ok"),
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: kCardColor,
+                          borderRadius: BorderRadius.circular(50.0)
+                      ),
+
+                      child: Padding(
+                        padding:  EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(navKey.currentState!.context).size.width *
+                              0.02
+                        ),
+                        child: Text(
+                            translate(navKey.currentState!.context, "ok"),
+                            style: const TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold,color: Colors.white)),
+                      ),
+                    ),
                   ),
                 ),
               ],

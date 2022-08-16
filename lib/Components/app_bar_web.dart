@@ -173,14 +173,14 @@ class _AppBarWebState extends State<AppBarWeb> {
                     fontSize: 20, fontWeight: FontWeight.bold, fontFamily: ""),
               ),
               const SizedBox(width: 60,),
-              if(CurrentUser.department!=null||CurrentUser.isAdmin ==true)
-                SizedBox(
+              CurrentUser.department!=null||CurrentUser.isAdmin ==true
+                ?SizedBox(
                 width: 300,
                 child: CustomTextField(
                   hintText: translate(context, "search"),
                   controller: controller,
                 ),
-              ),
+              ):SizedBox(width: MediaQuery.of(context).size.width*0.42,),
               if(CurrentUser.department!=null||CurrentUser.isAdmin ==true)
               const SizedBox(width: 10),
               if(CurrentUser.department!=null||CurrentUser.isAdmin ==true)

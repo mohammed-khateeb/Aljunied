@@ -100,16 +100,11 @@ class _SplashScreenState extends State<SplashScreen> {
                 alignment: Alignment.center,
                 margin: EdgeInsets.only(top: 18),
                 padding: EdgeInsets.all(8.0),
-                child: RaisedButton(
-                  onPressed: () {
+                child: InkWell(
+                  onTap: () {
                     LaunchReview.launch();
                   },
                   highlightColor: Colors.red[400],
-                  textColor: Theme.of(context).accentColor,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(8.0)),
-                  padding: EdgeInsets.all(8.0),
-                  color: Color(0xffea5c2b),
                   child:  Text(
                     translate(context, "update"),
                     style: TextStyle(fontSize: size.height*0.02, color: Colors.white),

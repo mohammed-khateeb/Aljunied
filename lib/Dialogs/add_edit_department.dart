@@ -31,8 +31,9 @@ class _AddEditDepartmentDialogState extends State<AddEditDepartmentDialog> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return AlertDialog(
-      shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(30.0))),
+      actionsPadding: EdgeInsets.symmetric(horizontal: kIsWeb&&size.width>520?10:size.width*0.02),
+      shape:  RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(kIsWeb&&size.width>520?0:30.0))),
       title: Text(translate(context, "addADepartment"),style: TextStyle(
           fontWeight: FontWeight.normal,fontSize:kIsWeb&&size.width>520?16: size.height * 0.018)),
       content: Column(
@@ -51,7 +52,7 @@ class _AddEditDepartmentDialogState extends State<AddEditDepartmentDialog> {
         ],
       ),
       actions: [
-        FlatButton(onPressed: () => add(context), child: Text(translate(context, "add"),style: TextStyle(
+        InkWell(onTap: () => add(context), child: Text(translate(context, "add"),style: TextStyle(
             fontWeight: FontWeight.normal,fontSize:kIsWeb&&size.width>520?16: size.height * 0.018)))
       ],
     );

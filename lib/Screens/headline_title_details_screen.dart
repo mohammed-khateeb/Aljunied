@@ -62,7 +62,7 @@ class HeadlineTitleDetailsScreen extends StatelessWidget {
                     child: Text(
                       titleLine!.subTitles![index].des!,
                       style: TextStyle(
-                          fontSize: size.height * 0.018,
+                          fontSize: 14,
                           fontWeight: FontWeight.normal),
                     ),
                   ),

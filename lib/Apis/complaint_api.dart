@@ -20,15 +20,28 @@ class ComplaintApi{
 
   }
 
+  static void answerQuestion(
+      Complaint complaint)  {
+    DocumentReference complaintDoc =
+    db.collection(CollectionsKey.complaint).doc(complaint.id);
+
+    complaintDoc.update({
+      "answer": complaint.answer,
+    });
+
+    return ;
+  }
+
   static deleteComplaint(String complaintId){
     db.collection(CollectionsKey.complaint).doc(complaintId).delete();
   }
 
-  static Future<List<Complaint>> getComplaints() async {
+  static Future<List<Complaint>> getComplaints(int kind) async {
     List<Complaint> complaints = [];
 
     QuerySnapshot snapshot = await db
         .collection(CollectionsKey.complaint)
+        .where("kind",isEqualTo: kind)
         .orderBy('createAt', descending: true)
         .get();
 

@@ -16,7 +16,8 @@ import '../../Controller/admin_controller.dart';
 import '../../Widgets/waiting_widget.dart';
 
 class ComplaintsScreen extends StatefulWidget {
-  const ComplaintsScreen({Key? key}) : super(key: key);
+  final int kind;
+  const ComplaintsScreen({Key? key, required this.kind}) : super(key: key);
 
   @override
   State<ComplaintsScreen> createState() => _ComplaintsScreenState();
@@ -25,8 +26,13 @@ class ComplaintsScreen extends StatefulWidget {
 class _ComplaintsScreenState extends State<ComplaintsScreen> {
   @override
   void initState() {
+    Future.delayed(Duration.zero).then((value) {
+      context.read<ComplaintController>().resetWaiting().then((value) {
+        context.read<ComplaintController>().getComplaints(kind: widget.kind);
+      });
 
-    context.read<ComplaintController>().getComplaints();
+    });
+
     super.initState();
   }
 
@@ -35,7 +41,19 @@ class _ComplaintsScreenState extends State<ComplaintsScreen> {
     Size size = MediaQuery.of(context).size;
     return kIsWeb&&size.width>520
         ?CustomScaffoldWeb(
-      title: translate(context, "complaints"),
+      title:widget.kind==1
+          ?translate(context, "questions")
+          : widget.kind==2
+          ?translate(context, "suggestions")
+          : widget.kind==3
+          ?translate(context, "complaints")
+          :widget.kind==4
+          ?translate(context, "reports")
+          :widget.kind==5
+          ?translate(context, "tributes")
+          :widget.kind==6
+          ?translate(context, "trashContainerRequests")
+          :translate(context, "lightingRequests"),
       body: Consumer<ComplaintController>(
           builder: (context, complaintController, child) {
             return !complaintController.waiting
@@ -59,6 +77,9 @@ class _ComplaintsScreenState extends State<ComplaintsScreen> {
                       ),
                       children:  <TextSpan>[
                         TextSpan(text: ' ',),
+                        if(complaintController.complaints![index].answer!=null)
+                          TextSpan(text: "(${translate(context, "answered")})",style: TextStyle(fontSize: 12,color: Colors.green)),
+                        if(complaintController.complaints![index].type!=null)
                         TextSpan(text: "(${complaintController.complaints![index].type!})",style: TextStyle(fontSize: 12,color: kPrimaryColor)),
                       ],
                     ),
@@ -98,7 +119,19 @@ class _ComplaintsScreenState extends State<ComplaintsScreen> {
       appBar: CustomAppBar(
         titleColor: Colors.white,
         arrowColor: Colors.white,
-        title: translate(context, "complaints"),
+        title:widget.kind==1
+            ?translate(context, "questions")
+            : widget.kind==2
+            ?translate(context, "suggestions")
+            : widget.kind==3
+            ?translate(context, "complaints")
+            :widget.kind==4
+            ?translate(context, "reports")
+            :widget.kind==5
+            ?translate(context, "tributes")
+            :widget.kind==6
+            ?translate(context, "trashContainerRequests")
+            :translate(context, "lightingRequests"),
       ),
       body: Container(
         width: size.width,
@@ -129,6 +162,10 @@ class _ComplaintsScreenState extends State<ComplaintsScreen> {
                     ),
                     children:  <TextSpan>[
                       TextSpan(text: ' ',),
+                      if(complaintController.complaints![index].answer!=null)
+                      TextSpan(text: "(${translate(context, "answered")})",style: TextStyle(fontSize: size.height*0.012,color: Colors.green)),
+
+                      if(complaintController.complaints![index].type!=null)
                       TextSpan(text: "(${complaintController.complaints![index].type!})",style: TextStyle(fontSize: size.height*0.012,color: kPrimaryColor)),
                     ],
                   ),
