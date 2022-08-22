@@ -79,8 +79,26 @@ class ServicesScreen extends StatelessWidget {
                 vertical: 15
             ),
             child: CustomButton(
-              label: translate(context, "lightingRequests"),
+              label: translate(context, "treePruningRequests"),
               onPress: ()=>NavigatorUtils.navigateToComplaintsScreen(context,kind: 7),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(
+                vertical: 15
+            ),
+            child: CustomButton(
+              label: translate(context, "lightingRequests"),
+              onPress: ()=>NavigatorUtils.navigateToComplaintsScreen(context,kind: 8),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(
+                vertical: 15
+            ),
+            child: CustomButton(
+              label: translate(context, "lightingRequests")+" /${translate(context, "maintenance")}",
+              onPress: ()=>NavigatorUtils.navigateToComplaintsScreen(context,kind: 9),
             ),
           ),
 
@@ -102,74 +120,94 @@ class ServicesScreen extends StatelessWidget {
             color: Colors.white,
             borderRadius: BorderRadius.vertical(top: Radius.circular(size.height*0.03))
         ),
-        child: Column(
-          children: [
-            SizedBox(height: size.height*0.05,),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                vertical: size.height*0.015
-              ),
-              child: CustomButton(
-                  label: translate(context, "questions"),
-                  onPress: ()=>NavigatorUtils.navigateToComplaintsScreen(context,kind: 1),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: size.height*0.05,),
+              Padding(
+                padding: EdgeInsets.symmetric(
                   vertical: size.height*0.015
+                ),
+                child: CustomButton(
+                    label: translate(context, "questions"),
+                    onPress: ()=>NavigatorUtils.navigateToComplaintsScreen(context,kind: 1),
+                ),
               ),
-              child: CustomButton(
-                label: translate(context, "suggestions"),
-                onPress: ()=>NavigatorUtils.navigateToComplaintsScreen(context,kind: 2),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    vertical: size.height*0.015
+                ),
+                child: CustomButton(
+                  label: translate(context, "suggestions"),
+                  onPress: ()=>NavigatorUtils.navigateToComplaintsScreen(context,kind: 2),
+                ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  vertical: size.height*0.015
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    vertical: size.height*0.015
+                ),
+                child: CustomButton(
+                  label: translate(context, "complaints"),
+                  onPress: ()=>NavigatorUtils.navigateToComplaintsScreen(context,kind: 3),
+                ),
               ),
-              child: CustomButton(
-                label: translate(context, "complaints"),
-                onPress: ()=>NavigatorUtils.navigateToComplaintsScreen(context,kind: 3),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    vertical: size.height*0.015
+                ),
+                child: CustomButton(
+                  label: translate(context, "reports"),
+                  onPress: ()=>NavigatorUtils.navigateToComplaintsScreen(context,kind: 4),
+                ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  vertical: size.height*0.015
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    vertical: size.height*0.015
+                ),
+                child: CustomButton(
+                  label: translate(context, "tributes"),
+                  onPress: ()=>NavigatorUtils.navigateToComplaintsScreen(context,kind: 5),
+                ),
               ),
-              child: CustomButton(
-                label: translate(context, "reports"),
-                onPress: ()=>NavigatorUtils.navigateToComplaintsScreen(context,kind: 4),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    vertical: size.height*0.015
+                ),
+                child: CustomButton(
+                  label: translate(context, "trashContainerRequests"),
+                  onPress: ()=>NavigatorUtils.navigateToComplaintsScreen(context,kind: 6),
+                ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  vertical: size.height*0.015
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    vertical: size.height*0.015
+                ),
+                child: CustomButton(
+                  label: translate(context, "treePruningRequests"),
+                  onPress: ()=>NavigatorUtils.navigateToComplaintsScreen(context,kind: 7),
+                ),
               ),
-              child: CustomButton(
-                label: translate(context, "tributes"),
-                onPress: ()=>NavigatorUtils.navigateToComplaintsScreen(context,kind: 5),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    vertical: size.height*0.015
+                ),
+                child: CustomButton(
+                  label: translate(context, "lightingRequests"),
+                  onPress: ()=>NavigatorUtils.navigateToComplaintsScreen(context,kind: 8),
+                ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  vertical: size.height*0.015
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    vertical: size.height*0.015
+                ),
+                child: CustomButton(
+                  label: translate(context, "lightingRequests")+" /${translate(context, "maintenance")}",
+                  onPress: ()=>NavigatorUtils.navigateToComplaintsScreen(context,kind: 9),
+                ),
               ),
-              child: CustomButton(
-                label: translate(context, "trashContainerRequests"),
-                onPress: ()=>NavigatorUtils.navigateToComplaintsScreen(context,kind: 6),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                  vertical: size.height*0.015
-              ),
-              child: CustomButton(
-                label: translate(context, "lightingRequests"),
-                onPress: ()=>NavigatorUtils.navigateToComplaintsScreen(context,kind: 7),
-              ),
-            ),
 
-          ],
+            ],
+          ),
         ),
       ),
 

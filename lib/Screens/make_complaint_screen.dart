@@ -70,8 +70,12 @@ class _MakeComplaintScreenState extends State<MakeComplaintScreen> {
           :widget.kind==5
           ?translate(context, "tribute")
           :widget.kind==6
-          ?translate(context, "requestATrashContainerService")
-          :translate(context, "lightingServiceRequest"),
+          ?translate(context, "requestToPutAGarbageContainer")
+          :widget.kind==7
+          ?translate(context, "requestToPruneTreesOutsideTheHouse")
+          :widget.kind==8
+          ?translate(context, "lightingRequestInstallationOfACompleteArm")
+          :translate(context, "requestForLightingMaintenanceBurntOutLamp"),
       subTitle:widget.kind==3? translate(context, "pleaseFillOutTheFollowingFormToFileAComplaint"):null,
       body: Form(
         key: _formKey,
@@ -214,7 +218,7 @@ class _MakeComplaintScreenState extends State<MakeComplaintScreen> {
                   ],
                 )
             ),
-            widget.kind!=6&&widget.kind!=7?Padding(
+            widget.kind!=6&&widget.kind!=7&&widget.kind!=8&&widget.kind!=9?Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: CustomTextField(
                 labelText:widget.kind==1
@@ -273,8 +277,12 @@ class _MakeComplaintScreenState extends State<MakeComplaintScreen> {
             :widget.kind==5
             ?translate(context, "tribute")
             :widget.kind==6
-            ?translate(context, "requestATrashContainerService")
-            :translate(context, "lightingServiceRequest"),
+            ?translate(context, "requestToPutAGarbageContainer")
+            :widget.kind==7
+            ?translate(context, "requestToPruneTreesOutsideTheHouse")
+              :widget.kind==8
+          ?translate(context, "lightingRequestInstallationOfACompleteArm")
+            :translate(context, "requestForLightingMaintenanceBurntOutLamp"),
       ),
       body: Container(
         width: size.width,
@@ -424,7 +432,7 @@ class _MakeComplaintScreenState extends State<MakeComplaintScreen> {
                       ],
                     )
                   ),
-                  widget.kind!=6&&widget.kind!=7?
+                  widget.kind!=6&&widget.kind!=7&&widget.kind!=8&&widget.kind!=9?
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: size.height*0.01),
                     child: CustomTextField(

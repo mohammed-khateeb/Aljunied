@@ -190,47 +190,135 @@ class _AboutWebScreenState extends State<AboutWebScreen> {
                       Padding(
                         padding: EdgeInsetsDirectional.only(
                             start: 8),
-                        child: CustomInkwell(
-                          onTap: (){
-                            NavigatorUtils
-                                .navigateToMakeComplaintScreen(context,kind: 6);
-                          },
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        child: ExpandablePanel(
+                          controller: ExpandableController(),
+
+                          header: Text(
+                            translate(context, "publicServices"),
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                          expanded: ListView(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
                             children: [
-                              Text(
-                                translate(context, "requestATrashContainerService"),
-                                style: TextStyle(
-                                  fontSize: 16,
+
+                              Padding(
+                                padding: EdgeInsetsDirectional.only(
+                                    start: 8),
+                                child: CustomInkwell(
+                                  onTap: (){
+                                    NavigatorUtils
+                                        .navigateToMakeComplaintScreen(context,kind: 6);
+                                  },
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        translate(context, "requestToPutAGarbageContainer"),
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      const Divider(),
+                                    ],
+                                  ),
                                 ),
                               ),
-                              const Divider(),
+                              Padding(
+                                padding: EdgeInsetsDirectional.only(
+                                    start: 8),
+                                child: CustomInkwell(
+                                  onTap: (){
+                                    NavigatorUtils
+                                        .navigateToMakeComplaintScreen(context,kind: 7);
+                                  },
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        translate(context, "requestToPruneTreesOutsideTheHouse"),
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      SizedBox(height: 15,)
+                                    ],
+                                  ),
+                                ),
+                              )
                             ],
                           ),
+                          collapsed: const SizedBox(),
                         ),
                       ),
                       Padding(
                         padding: EdgeInsetsDirectional.only(
                             start: 8),
-                        child: CustomInkwell(
-                          onTap: (){
-                            NavigatorUtils
-                                .navigateToMakeComplaintScreen(context,kind: 7);
-                          },
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                        child: ExpandablePanel(
+                          controller: ExpandableController(),
+
+                          header: Text(
+                            translate(context, "trafficOperationServices"),
+                            style: TextStyle(
+                              fontSize: 16,
+                            ),
+                          ),
+                          expanded: ListView(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
                             children: [
-                              Text(
-                                translate(context, "lightingServiceRequest"),
-                                style: TextStyle(
-                                  fontSize: 16,
+
+                              Padding(
+                                padding: EdgeInsetsDirectional.only(
+                                    start: 8),
+                                child: CustomInkwell(
+                                  onTap: (){
+                                    NavigatorUtils
+                                        .navigateToMakeComplaintScreen(context,kind: 8);
+                                  },
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        translate(context, "lightingRequestInstallationOfACompleteArm"),
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      const Divider(),
+                                    ],
+                                  ),
                                 ),
                               ),
-                              SizedBox(height: 15,)
+                              Padding(
+                                padding: EdgeInsetsDirectional.only(
+                                    start: 8),
+                                child: CustomInkwell(
+                                  onTap: (){
+                                    NavigatorUtils
+                                        .navigateToMakeComplaintScreen(context,kind: 9);
+                                  },
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        translate(context, "requestForLightingMaintenanceBurntOutLamp"),
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      SizedBox(height: 15,)
+                                    ],
+                                  ),
+                                ),
+                              )
                             ],
                           ),
+                          collapsed: const SizedBox(),
                         ),
-                      )
+                      ),
                     ],
                   ),
                   collapsed: const SizedBox(),

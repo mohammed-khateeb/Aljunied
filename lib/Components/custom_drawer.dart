@@ -360,43 +360,151 @@ class CustomDrawer extends StatelessWidget {
                     Padding(
                       padding: EdgeInsetsDirectional.only(
                           start: size.width * 0.1),
-                      child: CustomInkwell(
-                        onTap: (){
-                          NavigatorUtils
-                              .navigateToMakeComplaintScreen(context,kind: 6);
-                        },
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                      child: ExpandablePanel(
+                        controller: ExpandableController(),
+                        theme: const ExpandableThemeData(
+                          iconColor: Colors.white,
+                          expandIcon: Icons.add,
+                          collapseIcon: Icons.remove,
+                        ),
+                        header: Padding(
+                          padding: EdgeInsetsDirectional.only(
+                              start: size.width * 0.05),
+                          child: Text(
+                            translate(context, "publicServices"),
+                            style: TextStyle(
+                                fontSize: size.height * 0.018,
+                                color: Colors.white),
+                          ),
+                        ),
+                        expanded: ListView(
+                          shrinkWrap: true,
+                          padding: EdgeInsets.zero,
+                          physics: const NeverScrollableScrollPhysics(),
                           children: [
-                            Text(translate(context, "requestATrashContainerService"),
-                              style: TextStyle(
-                                  fontSize: size.height * 0.018,
-                                  color: Colors.white),
+
+                            Padding(
+                              padding: EdgeInsetsDirectional.only(
+                                  start: size.width * 0.1),
+                              child: CustomInkwell(
+                                onTap: (){
+                                  NavigatorUtils
+                                      .navigateToMakeComplaintScreen(context,kind: 6);
+                                },
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(translate(context, "requestToPutAGarbageContainer"),
+                                      style: TextStyle(
+                                          fontSize: size.height * 0.018,
+                                          color: Colors.white),
+                                    ),
+                                    Divider(),
+                                  ],
+                                ),
+                              ),
                             ),
-                            Divider(),
+                            Padding(
+                              padding: EdgeInsetsDirectional.only(
+                                  start: size.width * 0.1),
+                              child: CustomInkwell(
+                                onTap: (){
+                                  NavigatorUtils
+                                      .navigateToMakeComplaintScreen(context,kind: 7);
+                                },
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(translate(context, "requestToPruneTreesOutsideTheHouse"),
+                                      style: TextStyle(
+                                          fontSize: size.height * 0.018,
+                                          color: Colors.white),
+                                    ),
+                                    Divider(),
+                                  ],
+                                ),
+                              ),
+                            ),
+
+
                           ],
                         ),
+                        collapsed: const SizedBox(),
                       ),
                     ),
                     Padding(
                       padding: EdgeInsetsDirectional.only(
                           start: size.width * 0.1),
-                      child: CustomInkwell(
-                        onTap: (){
-                          NavigatorUtils
-                              .navigateToMakeComplaintScreen(context,kind: 7);
-                        },
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                      child: ExpandablePanel(
+                        controller: ExpandableController(),
+                        theme: const ExpandableThemeData(
+                          iconColor: Colors.white,
+                          expandIcon: Icons.add,
+                          collapseIcon: Icons.remove,
+                        ),
+                        header: Padding(
+                          padding: EdgeInsetsDirectional.only(
+                              start: size.width * 0.05),
+                          child: Text(
+                            translate(context, "trafficOperationServices"),
+                            style: TextStyle(
+                                fontSize: size.height * 0.018,
+                                color: Colors.white),
+                          ),
+                        ),
+                        expanded: ListView(
+                          shrinkWrap: true,
+                          padding: EdgeInsets.zero,
+                          physics: const NeverScrollableScrollPhysics(),
                           children: [
-                            Text(translate(context, "lightingServiceRequest"),
-                              style: TextStyle(
-                                  fontSize: size.height * 0.018,
-                                  color: Colors.white),
+
+                            Padding(
+                              padding: EdgeInsetsDirectional.only(
+                                  start: size.width * 0.1),
+                              child: CustomInkwell(
+                                onTap: (){
+                                  NavigatorUtils
+                                      .navigateToMakeComplaintScreen(context,kind: 8);
+                                },
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(translate(context, "lightingRequestInstallationOfACompleteArm"),
+                                      style: TextStyle(
+                                          fontSize: size.height * 0.018,
+                                          color: Colors.white),
+                                    ),
+                                    Divider(),
+                                  ],
+                                ),
+                              ),
                             ),
-                            Divider(),
+                            Padding(
+                              padding: EdgeInsetsDirectional.only(
+                                  start: size.width * 0.1),
+                              child: CustomInkwell(
+                                onTap: (){
+                                  NavigatorUtils
+                                      .navigateToMakeComplaintScreen(context,kind: 9);
+                                },
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(translate(context, "requestForLightingMaintenanceBurntOutLamp"),
+                                      style: TextStyle(
+                                          fontSize: size.height * 0.018,
+                                          color: Colors.white),
+                                    ),
+                                    Divider(),
+                                  ],
+                                ),
+                              ),
+                            ),
+
+
                           ],
                         ),
+                        collapsed: const SizedBox(),
                       ),
                     ),
 
