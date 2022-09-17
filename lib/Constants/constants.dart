@@ -43,6 +43,8 @@ class CollectionsKey {
   static const about = "About";
   static const terms = "Terms";
   static const category = "Category";
+  static const member = "Member";
+
   static const city = "City";
   static const department = "Department";
   static const notification = "Notification";

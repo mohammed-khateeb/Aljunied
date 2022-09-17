@@ -31,6 +31,8 @@ class _AppBarWebState extends State<AppBarWeb> {
           color: Colors.grey[200],
           padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 5),
           child: Row(
+            textDirection: TextDirection.rtl,
+
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               if(CurrentUser.userId !=null)

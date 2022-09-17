@@ -22,6 +22,7 @@ class Extension<T>{
 
 }
 
+
 extension EmailValidator on String {
   bool isValidEmail() {
     return RegExp(

@@ -276,6 +276,10 @@
   "employeeInformation": "معلومات الموظف",
   "placeOfEntry": "مكان الدخول",
   "entryTime": "وقت الدخول",
+  "municipalityMembers": "أعضاء البلدية",
+  "addNewMember": "إضافة عضو جديد",
+  "mayor": "رئيس البلدية",
+
   "pleaseEnterAValidNationalNumber": "الرجاء إدخال رقم وطني صحيح",
   "currentStage": "المرحلة الحالية",
   "createATransaction": "انشاء معاملة",

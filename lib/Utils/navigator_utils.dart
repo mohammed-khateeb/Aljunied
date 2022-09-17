@@ -46,6 +46,7 @@ import '../Screens/Admin_Section/bids_screen.dart';
 import '../Screens/Admin_Section/complaint_types_screen.dart';
 import '../Screens/Admin_Section/complaints_screen.dart';
 import '../Screens/Admin_Section/headlines_screen.dart';
+import '../Screens/Admin_Section/members_screen.dart';
 import '../Screens/Admin_Section/send_notification_screen.dart';
 import '../Screens/home_screen.dart';
 import '../Screens/login_screen.dart';
@@ -57,8 +58,7 @@ import '../Screens/transactions_screen.dart';
 class NavigatorUtils {
 
   static void navigateToSplashScreen(context) {
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const SplashScreen()));
+    openNewPage(context, const SplashScreen());
   }
 
   static void navigateToLoginScreen(context) {
@@ -209,6 +209,10 @@ class NavigatorUtils {
 
   static void navigateToAdminCategoriesScreen(context) {
     openNewPage(context, const AdminCategoriesScreen());
+  }
+
+  static void navigateToMembersScreen(context) {
+    openNewPage(context, const MembersScreen());
   }
 
 

@@ -21,7 +21,7 @@ import '../Utils/res.dart';
 import '../Utils/util.dart';
 
 class SplashScreen extends StatefulWidget {
-  static const String id = 'splash_screen';
+  static const String id = '/';
 
   const SplashScreen({Key? key}) : super(key: key);
 

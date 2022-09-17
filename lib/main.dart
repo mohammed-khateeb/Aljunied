@@ -5,6 +5,8 @@ import 'package:aljunied/Controller/complaint_controller.dart';
 import 'package:aljunied/Controller/headline_controller.dart';
 import 'package:aljunied/Controller/investment_controller.dart';
 import 'package:aljunied/Controller/news_controller.dart';
+import 'package:aljunied/Screens/login_screen.dart';
+import 'package:aljunied/Utils/extension.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
@@ -197,6 +199,8 @@ class _MyAppState extends State<MyApp> {
             initialRoute: SplashScreen.id,
             routes: {
               SplashScreen.id: (context) => const SplashScreen(),
+              LoginScreen.id: (context) => const LoginScreen(),
+
 
             },
           ),
@@ -204,6 +208,9 @@ class _MyAppState extends State<MyApp> {
       }),
     );
   }
+
+
+
 }
 
 class MyHttpOverrides extends HttpOverrides {

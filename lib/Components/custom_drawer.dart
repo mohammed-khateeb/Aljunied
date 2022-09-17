@@ -181,28 +181,7 @@ class CustomDrawer extends StatelessWidget {
                     );
                   },
                 ),
-              CustomInkwell(
-                onTap: (){
-                  NavigatorUtils.navigateToLanguageScreen(context);
-                },
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      height: size.height * 0.04,
-                      padding: EdgeInsetsDirectional.only(start: size.width * 0.05),
-                      child: Text(
-                       translate(context,"language"),
-                        style: TextStyle(
-                            fontSize: size.height * 0.018,
-                            color: Colors.white),
-                      ),
-                    ),
-                    Divider(height: size.height*0.01,),
 
-                  ],
-                ),
-              ),
 
               ExpandablePanel(
                 theme: const ExpandableThemeData(
@@ -513,11 +492,9 @@ class CustomDrawer extends StatelessWidget {
                 ),
                 collapsed: const SizedBox(),
               ),
-              if(CurrentUser.department==null)
-
-                CustomInkwell(
+              CustomInkwell(
                 onTap: (){
-                  NavigatorUtils.navigateToMakeComplaintScreen(context);
+                  NavigatorUtils.navigateToLanguageScreen(context);
                 },
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -526,7 +503,7 @@ class CustomDrawer extends StatelessWidget {
                       height: size.height * 0.04,
                       padding: EdgeInsetsDirectional.only(start: size.width * 0.05),
                       child: Text(
-                        translate(context,"complaints"),
+                        translate(context,"language"),
                         style: TextStyle(
                             fontSize: size.height * 0.018,
                             color: Colors.white),

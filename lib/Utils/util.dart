@@ -709,25 +709,27 @@ T enumValueFromString<T>(String key, List<T> values) =>
 
 
 Future<dynamic> openNewPage(BuildContext context, Widget widget,
-    {bool popPreviousPages = false,bool replacement = false}) {
-  if(replacement){
-    return Navigator.pushReplacement<void, void>(
-      context,
-      MaterialPageRoute<void>(
-        builder: (BuildContext context) =>  widget,
-      ),
-    );
-  }
-  else {
+    {bool popPreviousPages = false,String? routeName}) {
     if (!popPreviousPages) {
+      if(routeName!=null) {
+        return Navigator.pushNamed(context, routeName);
+      }
       return Navigator.push(context,PageTransition(type: PageTransitionType.fade, child: widget));
     } else {
       return Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => widget),
               (Route<dynamic> route) => false);
     }
-  }
 }
+
+Future<dynamic> navigateTo(String routeName,
+    {Map<String, String>? queryParams}) {
+  if (queryParams != null) {
+    routeName = Uri(path: routeName, queryParameters: queryParams).toString();
+  }
+  return Utils.navKey.currentState!.pushNamed(routeName);
+}
+
 void showSnackBar(
     BuildContext context, String title, String desc, String type) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(

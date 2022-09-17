@@ -97,7 +97,7 @@ class CustomScaffoldWeb extends StatelessWidget {
                                   horizontal: 20,
                                   vertical: 10
                                ),
-                                margin: EdgeInsets.symmetric(
+                                margin: const EdgeInsets.symmetric(
                                     horizontal: 15,
                                 ),
                                 decoration: BoxDecoration(

@@ -1,5 +1,6 @@
 import 'package:aljunied/Models/bid.dart';
 import 'package:aljunied/Models/department.dart';
+import 'package:aljunied/Models/member.dart';
 import 'package:aljunied/Models/terms_conditions.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -176,6 +177,21 @@ class AdminApi{
     }
   }
 
+  static Future addNewMember(
+      {required Member member}) async {
+    try {
+      DocumentReference reference = db.collection(CollectionsKey.member).doc();
+
+      member.id = reference.id;
+
+      await reference.set(member.toJson());
+
+    } catch (e) {
+      debugPrint(e.toString());
+      return null;
+    }
+  }
+
 
   static Future addNewCity(
       {required City city}) async {
@@ -239,6 +255,31 @@ class AdminApi{
 
     categories = snapshot.docs.map((e) => Category.fromJson(e.data() as Map<String, dynamic>)).toList();
     return categories;
+  }
+
+  static Future getAllMembers()async{
+    List<Member>? members  = [];
+    QuerySnapshot snapshot = await db.collection(CollectionsKey.member).get();
+
+    members = snapshot.docs.map((e) => Member.fromJson(e.data() as Map<String, dynamic>)).toList();
+    return members;
+  }
+
+
+  static Future getBoss()async{
+    List<Member>? members  = [];
+    QuerySnapshot snapshot = await db.collection(CollectionsKey.member).where("isBoss",isEqualTo: true).get();
+
+    members = snapshot.docs.map((e) => Member.fromJson(e.data() as Map<String, dynamic>)).toList();
+    return members.first;
+  }
+
+  static Future getMembersWithoutBoss()async{
+    List<Member>? members  = [];
+    QuerySnapshot snapshot = await db.collection(CollectionsKey.member).where("isBoss",isEqualTo: false).get();
+
+    members = snapshot.docs.map((e) => Member.fromJson(e.data() as Map<String, dynamic>)).toList();
+    return members;
   }
 
   static Future addNewDepartment(
@@ -372,6 +413,11 @@ class AdminApi{
 
   static removeCategory(String categoryId){
     DocumentReference doc = db.collection(CollectionsKey.category).doc(categoryId);
+    doc.delete();
+  }
+
+  static removeMember(String memberId){
+    DocumentReference doc = db.collection(CollectionsKey.member).doc(memberId);
     doc.delete();
   }
 

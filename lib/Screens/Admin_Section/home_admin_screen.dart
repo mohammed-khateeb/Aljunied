@@ -223,6 +223,9 @@ class HomeAdminScreen extends StatelessWidget {
       case 14: {
         return translate(context, "termsAndConditions");
       }
+      case 15: {
+        return translate(context, "municipalityMembers");
+      }
 
       default: {
         return translate(context, "sendNotifications");
@@ -276,6 +279,9 @@ class HomeAdminScreen extends StatelessWidget {
 
       case 14: {
         return "terms.png";
+      }
+      case 15: {
+        return "group.png";
       }
 
       default: {
@@ -349,6 +355,10 @@ class HomeAdminScreen extends StatelessWidget {
 
       case 14: {
         NavigatorUtils.navigateToAddEditTermsScreen(context);
+        break;
+      }
+      case 15: {
+        NavigatorUtils.navigateToMembersScreen(context);
         break;
       }
 

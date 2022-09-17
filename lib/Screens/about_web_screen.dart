@@ -433,7 +433,7 @@ class _AboutWebScreenState extends State<AboutWebScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        height: 20,
+                        height: 40,
                         color: Colors.transparent,
                         child: Text(
                           Localizations.localeOf(context).languageCode=="ar"? context

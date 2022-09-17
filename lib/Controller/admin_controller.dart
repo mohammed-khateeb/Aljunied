@@ -1,6 +1,7 @@
 import 'package:aljunied/Models/bid.dart';
 import 'package:aljunied/Models/complaint.dart';
 import 'package:aljunied/Models/department.dart';
+import 'package:aljunied/Models/member.dart';
 import 'package:flutter/cupertino.dart';
 import '../Apis/admin_services.dart';
 import '../Apis/notification_api.dart';
@@ -14,6 +15,8 @@ class AdminController with ChangeNotifier{
 
   bool waiting = true;
   bool waitingCategories = true;
+  bool waitingMembers = true;
+
   bool waitingCities = true;
   bool waitingDepartment = true;
   bool waitingBidType = true;
@@ -33,6 +36,9 @@ class AdminController with ChangeNotifier{
   List<BidType>? bidTypes;
   List<ComplaintType>? complaintTypes;
   List<Category>? categories;
+  List<Member>? members;
+  List<Member>? membersWithoutBoss;
+  Member? boss;
   List<City>? cities;
   AdminInfo? adminInfo;
 
@@ -140,6 +146,26 @@ class AdminController with ChangeNotifier{
     notifyListeners();
   }
 
+  Future getAllMembers()async{
+    waitingMembers = true;
+    members = await AdminApi.getAllMembers();
+    waitingMembers = false;
+    notifyListeners();
+  }
+
+  Future getMembersWithoutBoss()async{
+    waitingMembers = true;
+    membersWithoutBoss = await AdminApi.getMembersWithoutBoss();
+    waitingMembers = false;
+    notifyListeners();
+  }
+  Future getBoss()async{
+    waitingMembers = true;
+    boss = await AdminApi.getBoss();
+    waitingMembers = false;
+    notifyListeners();
+  }
+
   Future getAllDepartments()async{
     waitingDepartment = true;
     departments = await AdminApi.getAllDepartments();
@@ -183,6 +209,13 @@ class AdminController with ChangeNotifier{
     AdminApi.addNewCategory(category: category);
     categories ??= [];
     categories!.add(category);
+    notifyListeners();
+  }
+
+  addNewMember(Member member){
+    AdminApi.addNewMember(member: member);
+    members ??= [];
+    members!.add(member);
     notifyListeners();
   }
 
@@ -251,6 +284,12 @@ class AdminController with ChangeNotifier{
   removeCategory(String categoryId){
     AdminApi.removeCategory(categoryId);
     categories!.removeWhere((element) => element.id==categoryId);
+    notifyListeners();
+  }
+
+  removeMember(String memberId){
+    AdminApi.removeMember(memberId);
+    members!.removeWhere((element) => element.id==memberId);
     notifyListeners();
   }
 

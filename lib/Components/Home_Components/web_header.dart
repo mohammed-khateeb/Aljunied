@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -65,27 +67,30 @@ class _WebHeaderState extends State<WebHeader> {
                 ],
               ),
             ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Image.asset(
-                  "images/up_path.png",
-                  width: size.width*0.25,
-                  //height: size.height*0.27,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Image.asset(
-                      "images/white_down_path_web.png",
-                      width: size.width*0.25,
+            child: Directionality(
+              textDirection: TextDirection.rtl,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Image.asset(
+                    "images/up_path.png",
+                    width: size.width*0.25,
+                    //height: size.height*0.27,
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Image.asset(
+                        "images/white_down_path_web.png",
+                        width: size.width*0.25,
 
-                      //height: size.height*0.27,
-                    ),
-                  ],
-                ),
-              ],
+                        //height: size.height*0.27,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
           Center(
