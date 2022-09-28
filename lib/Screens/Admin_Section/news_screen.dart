@@ -36,7 +36,7 @@ class _NewsScreenState extends State<NewsScreen> {
         ?CustomScaffoldWeb(
       title: translate(context, "news"),
       buttonLabel: translate(context, "add"),
-      onPressButton: ()=>NavigatorUtils.navigateToAddEditNewsScreen(context),
+      onPressButton: ()=>NavigatorUtils.navigateToAddEditNewsScreen(context,orderIndex: context.read<NewsController>().news!.length+1),
       body: Consumer<NewsController>(builder: (context, newsController, child) {
         return !newsController.waiting
             ? ListView.builder(
@@ -88,7 +88,7 @@ class _NewsScreenState extends State<NewsScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add,color: Colors.white,),
-        onPressed: () => NavigatorUtils.navigateToAddEditNewsScreen(context),
+        onPressed: () => NavigatorUtils.navigateToAddEditNewsScreen(context,orderIndex: context.read<NewsController>().news!.length+1),
       ),
       body: Container(
         width: size.width,

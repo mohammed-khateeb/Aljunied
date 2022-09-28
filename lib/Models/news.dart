@@ -10,11 +10,13 @@ class News{
   String? twitterLink;
   String? instagramLink;
   String? snapchatLink;
+  int? orderIndex;
 
   Timestamp? createAt;
 
 
   News({this.id, this.title,this.details,this.imageUrl,
+    this.orderIndex,
     this.facebookLink,this.snapchatLink,this.twitterLink,this.instagramLink,
     this.createAt});
 
@@ -23,6 +25,7 @@ class News{
     title = json['title'];
     imageUrl = json['imageUrl'];
     details = json['details'];
+    orderIndex = json['orderIndex'];
     createAt = json['createAt'];
     facebookLink = json['facebookLink'];
     snapchatLink = json['snapchatLink'];
@@ -36,6 +39,7 @@ class News{
     data['id'] = id;
     data['title'] = title;
     data['imageUrl'] = imageUrl;
+    data['orderIndex'] = orderIndex;
     data['details'] = details;
     data['createAt'] = createAt;
     data['facebookLink'] = facebookLink;

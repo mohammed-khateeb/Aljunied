@@ -19,6 +19,17 @@ class NewsController with ChangeNotifier{
     notifyListeners();
   }
 
+  changeOrderIndex(int index,int currentIndex){
+    News newsReplacement = news!.elementAt(index-1);
+    newsReplacement.orderIndex = currentIndex;
+    News currentNews = news!.elementAt(currentIndex-1);
+    currentNews.orderIndex = index;
+    NewsApi.updateNews(news: newsReplacement);
+    NewsApi.updateNews(news: currentNews);
+    news!.sort((a, b) => a.orderIndex!.compareTo(b.orderIndex!));
+    notifyListeners();
+    }
+
   Future resetWaiting()async{
     waiting = true;
     notifyListeners();

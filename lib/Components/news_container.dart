@@ -1,8 +1,10 @@
+import 'package:aljunied/Controller/news_controller.dart';
 import 'package:aljunied/Models/news.dart';
 import 'package:aljunied/Utils/navigator_utils.dart';
 import 'package:aljunied/Utils/util.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../Widgets/custom_inkwell.dart';
 import '../Widgets/reusable_cache_network_image.dart';
@@ -21,7 +23,7 @@ class NewsContainer extends StatelessWidget {
           NavigatorUtils.navigateToNewsDetailsScreen(context, news: news);
         }
         else{
-          NavigatorUtils.navigateToAddEditNewsScreen(context,news: news);
+          NavigatorUtils.navigateToAddEditNewsScreen(context,news: news,orderIndex: context.read<NewsController>().news!.length+1);
         }
       },
       child: SizedBox(

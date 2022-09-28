@@ -33,6 +33,8 @@ class NewsApi{
 
   }
 
+
+
   static deleteNews(String newsId){
     db.collection(CollectionsKey.news).doc(newsId).delete();
   }
@@ -42,7 +44,7 @@ class NewsApi{
 
     QuerySnapshot snapshot = await db
         .collection(CollectionsKey.news)
-        .orderBy('createAt', descending: true)
+        .orderBy('orderIndex',)
         .get();
 
     news = snapshot.docs.map((e) => News.fromJson(e.data() as Map<String, dynamic>)).toList() ;

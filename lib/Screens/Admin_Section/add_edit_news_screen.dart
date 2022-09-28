@@ -19,19 +19,25 @@ import '../../Apis/general_api.dart';
 
 class AddEditNewsScreen extends StatefulWidget {
   final News? news;
-  const AddEditNewsScreen({Key? key, this.news}) : super(key: key);
+  final int? orderIndex;
+
+  const AddEditNewsScreen({Key? key, this.news, this.orderIndex}) : super(key: key);
 
   @override
   State<AddEditNewsScreen> createState() => _AddEditNewsScreenState();
 }
 
 class _AddEditNewsScreenState extends State<AddEditNewsScreen> {
+
+  int? orderIndex;
+
   TextEditingController newsTitleController = TextEditingController();
   TextEditingController newsDetailsController = TextEditingController();
   TextEditingController facebookUrlController = TextEditingController();
   TextEditingController twitterUrlController = TextEditingController();
   TextEditingController instagramUrlController = TextEditingController();
   TextEditingController snapchatUrlController = TextEditingController();
+  TextEditingController orderController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -55,6 +61,10 @@ class _AddEditNewsScreenState extends State<AddEditNewsScreen> {
         twitterUrlController.text = widget.news!.twitterLink??"";
         snapchatUrlController.text = widget.news!.snapchatLink??"";
         instagramUrlController.text = widget.news!.instagramLink??"";
+        orderIndex = widget.news!.orderIndex;
+        orderController.text = widget.news!.orderIndex.toString();
+
+
 
       });
     }
@@ -145,6 +155,18 @@ class _AddEditNewsScreenState extends State<AddEditNewsScreen> {
               withValidation: true,
 
             ),
+            SizedBox(height: size.height*0.02,),
+            if(widget.news!=null&&widget.orderIndex!=null)
+              CustomTextField(
+                borderRadius: 10,
+                controller: orderController,
+                readOnly: true,
+                onChanged: (str){
+                  orderIndex = int.tryParse(str);
+                },
+                dropList: List<String>.generate(widget.orderIndex!-1, (i) => "${i + 1}"),
+                hintText: translate(context, "order"),
+              ),
             SizedBox(height: size.height*0.02,),
             CustomTextField(
               labelText: translate(context, "facebookLink"),
@@ -289,6 +311,19 @@ class _AddEditNewsScreenState extends State<AddEditNewsScreen> {
 
                   ),
                   SizedBox(height: size.height*0.02,),
+                  if(widget.news!=null&&widget.orderIndex!=null)
+                    CustomTextField(
+                      height: size.height*0.05,
+                      borderRadius: size.height*0.01,
+                      controller: orderController,
+                      readOnly: true,
+                      onChanged: (str){
+                        orderIndex = int.tryParse(str);
+                      },
+                      dropList: List<String>.generate(widget.orderIndex!-1, (i) => "${i + 1}"),
+                      hintText: translate(context, "order"),
+                    ),
+                  SizedBox(height: size.height*0.02,),
                   CustomTextField(
                     labelText: translate(context, "facebookLink"),
                     controller: facebookUrlController,
@@ -382,7 +417,14 @@ class _AddEditNewsScreenState extends State<AddEditNewsScreen> {
     news.instagramLink =instagramUrlController.text.isNotEmpty? instagramUrlController.text:null;
     news.twitterLink =twitterUrlController.text.isNotEmpty? twitterUrlController.text:null;
     news.snapchatLink =snapchatUrlController.text.isNotEmpty? snapchatUrlController.text:null;
-
+    if(widget.news==null) {
+      news.orderIndex = widget.orderIndex;
+    }
+    else if(orderIndex!=null&&orderIndex!=widget.news!.orderIndex){
+      context.read<NewsController>().changeOrderIndex(
+          orderIndex!,widget.news!.orderIndex!
+      );
+    }
     widget.news!=null
         ?await context.read<NewsController>().updateNews(news)
         :await context.read<NewsController>().insertNews(news: news);

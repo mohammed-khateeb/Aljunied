@@ -228,8 +228,8 @@ class NavigatorUtils {
     openNewPage(context, EmployeeDetailsScreen(employee: employee,));
   }
 
-  static void navigateToAddEditNewsScreen(context,{News? news}) {
-    openNewPage(context, AddEditNewsScreen(news: news,));
+  static void navigateToAddEditNewsScreen(context,{News? news,int? orderIndex}) {
+    openNewPage(context, AddEditNewsScreen(news: news,orderIndex: orderIndex,));
   }
 
   static void navigateToNewsScreen(context) {
