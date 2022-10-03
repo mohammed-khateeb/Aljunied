@@ -56,12 +56,12 @@ class TransactionApi{
 
   }
 
-  static Future<List<TransactionModel>> getUnFinishEmployeeTasks(String departmentId) async {
+  static Future<List<TransactionModel>> getUnFinishEmployeeTasks() async {
     List<TransactionModel> transactions = [];
 
     QuerySnapshot snapshot = await db
         .collection(CollectionsKey.transaction)
-        .where("convertToId",isEqualTo: departmentId)
+        .where("convertToId",isEqualTo: CurrentUser.userId)
         .orderBy('createAt', descending: true)
         .get();
 

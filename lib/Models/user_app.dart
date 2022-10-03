@@ -8,9 +8,11 @@ class UserApp {
   String? email;
   City? city;
   bool? isAdmin;
+  bool? isDepartmentBoss;
+
   String? token;
   Department? department;
-
+  String? departmentId;
   String? mobileNumber;
   Timestamp? registerAt;
   bool? isSuperAdmin;
@@ -26,6 +28,8 @@ class UserApp {
         this.mobileNumber,
         this.registerAt,
         this.department,
+        this.isDepartmentBoss,
+        this.departmentId,
         this.isAdmin = false,
         this.blocked,
       });
@@ -34,9 +38,14 @@ class UserApp {
     id = json['id'];
     name = json['name'];
     email = json['email'];
+    departmentId = json['departmentId'];
+
+
     isSuperAdmin = json['isSuperAdmin']??false;
     department =json['department']!=null? Department.fromJson(json['department']):null;
     blocked = json['blocked'] ??false;
+    isDepartmentBoss = json['isDepartmentBoss'] ??false;
+
     //city = City.fromJson(json['city']);
     isAdmin = json['isAdmin']??false;
     token = json['token'];
@@ -49,9 +58,11 @@ class UserApp {
     data['id'] = id;
     data['name'] = name;
     data['email'] = email;
+    data['isDepartmentBoss'] = isDepartmentBoss;
    // data['city'] = city!.toJson();
     data['isSuperAdmin'] = isSuperAdmin;
     data['department'] = department!=null?department!.toJson():null;
+    data['departmentId'] = departmentId;
 
     data['isAdmin'] = isAdmin;
     data['token'] = token;

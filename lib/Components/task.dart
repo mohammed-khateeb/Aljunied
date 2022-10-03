@@ -49,8 +49,7 @@ class TaskWidget extends StatelessWidget {
                     ),
                     Text(
                         transactionModel.convertTo=="انتهاء المعاملة"?"انتهت المعاملة":translate(context, "transaction") +
-                          " " +
-                          transactionModel.convertTo! +
+
                           " " +
                           transactionModel.currentStage!,
                       style: TextStyle(

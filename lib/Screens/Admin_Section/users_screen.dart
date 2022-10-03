@@ -19,7 +19,6 @@ class UsersScreen extends StatefulWidget {
 }
 
 class _UsersScreenState extends State<UsersScreen> {
-
   @override
   void initState() {
     context.read<AdminController>().getUsers();
@@ -30,55 +29,59 @@ class _UsersScreenState extends State<UsersScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return kIsWeb&&size.width>520
-        ?CustomScaffoldWeb(
-      title: translate(context, "citizens"),
-      body: Consumer<AdminController>(builder: (context, adminController, child) {
-        return !adminController.waitingAllUsers
-            ? ListView.builder(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          padding: EdgeInsets.symmetric(
-              horizontal: 15,
-              vertical: 10),
-          itemCount: adminController.allUser!.length,
-          itemBuilder: (_, index) {
-            return UserContainer(employee: adminController.allUser![index],);
-          },
-        )
-            : const WaitingWidget();
-      }),
-    )
-        :Scaffold(
-      backgroundColor: kPrimaryColor,
-      appBar: CustomAppBar(
-        titleColor: Colors.white,
-        title: translate(context, "citizens"),
-        arrowColor: Colors.white,
-      ),
-      body: Container(
-        width: size.width,
-        height: size.height,
-        margin: EdgeInsets.only(top: size.height*0.02),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(size.height*0.03))
-        ),
-        child: Consumer<AdminController>(builder: (context, adminController, child) {
-          return !adminController.waitingAllUsers
-              ? ListView.builder(
-            padding: EdgeInsets.symmetric(
-                horizontal: size.width * 0.03,
-                vertical: size.height * 0.02),
-            itemCount: adminController.allUser!.length,
-            itemBuilder: (_, index) {
-              return UserContainer(employee: adminController.allUser![index],);
-            },
+    return kIsWeb && size.width > 520
+        ? CustomScaffoldWeb(
+            title: translate(context, "citizens"),
+            body: Consumer<AdminController>(
+                builder: (context, adminController, child) {
+              return !adminController.waitingAllUsers
+                  ? ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                      itemCount: adminController.allUser!.length,
+                      itemBuilder: (_, index) {
+                        return UserContainer(
+                          employee: adminController.allUser![index],
+                        );
+                      },
+                    )
+                  : const WaitingWidget();
+            }),
           )
-              : const WaitingWidget();
-        }),
-      ),
-    );
+        : Scaffold(
+            backgroundColor: kPrimaryColor,
+            appBar: CustomAppBar(
+              titleColor: Colors.white,
+              title: translate(context, "citizens"),
+              arrowColor: Colors.white,
+            ),
+            body: Container(
+              width: size.width,
+              height: size.height,
+              margin: EdgeInsets.only(top: size.height * 0.02),
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(size.height * 0.03))),
+              child: Consumer<AdminController>(
+                  builder: (context, adminController, child) {
+                return !adminController.waitingAllUsers
+                    ? ListView.builder(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: size.width * 0.03,
+                            vertical: size.height * 0.02),
+                        itemCount: adminController.allUser!.length,
+                        itemBuilder: (_, index) {
+                          return UserContainer(
+                            employee: adminController.allUser![index],
+                          );
+                        },
+                      )
+                    : const WaitingWidget();
+              }),
+            ),
+          );
   }
-
 }

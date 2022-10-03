@@ -32,12 +32,14 @@ class AdminApi{
     return users;
   }
 
-  static void appointmentAsAnEmployee({required String employeeId,Department? department}){
+  static void appointmentAsAnEmployee({required String employeeId,Department? department,bool isBoss = false}){
     DocumentReference employeeDoc =
     db.collection(CollectionsKey.user).doc(employeeId);
 
     employeeDoc.update({
       "department":department?.toJson(),
+      "departmentId":department?.id,
+      "isDepartmentBoss" : isBoss,
     });
   }
 
@@ -71,6 +73,30 @@ class AdminApi{
         .get();
 
     users = snapshot.docs.map((e) => UserApp.fromJson(e.data() as Map<String, dynamic>)).toList().where((element) => element.department ==null).toList();
+    return users;
+  }
+
+  static Future<List<UserApp>> getUsersByDepartmentId(String departmentId) async {
+    List<UserApp> users = [];
+    QuerySnapshot snapshot = await db
+        .collection(CollectionsKey.user)
+        .where("departmentId",isEqualTo: departmentId)
+        .get();
+
+    users = snapshot.docs.map((e) => UserApp.fromJson(e.data() as Map<String, dynamic>)).toList();
+
+    return users;
+  }
+
+  static Future<List<UserApp>> getDepartmentBossUsers() async {
+    List<UserApp> users = [];
+
+    QuerySnapshot snapshot = await db
+        .collection(CollectionsKey.user)
+        .where("isDepartmentBoss",isEqualTo: true)
+        .get();
+
+    users = snapshot.docs.map((e) => UserApp.fromJson(e.data() as Map<String, dynamic>)).toList();
     return users;
   }
 

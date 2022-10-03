@@ -2,6 +2,7 @@ import 'package:aljunied/Constants/constants.dart';
 import 'package:aljunied/Models/bid.dart';
 import 'package:aljunied/Models/complaint.dart';
 import 'package:aljunied/Models/department.dart';
+import 'package:aljunied/Models/user_app.dart';
 import 'package:aljunied/Utils/extension.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/foundation.dart';
@@ -44,7 +45,8 @@ class CustomTextField extends StatelessWidget {
   final List<String>? dropList;
   final List<Department>? dropDepartment;
   final Function(Department department)? onSelectDepartment;
-
+  final List<UserApp>? dropEmployee;
+  final Function(UserApp userApp)? onSelectEmployee;
   final List<City>? dropCities;
   final Function(City city)? onSelectCity;
   final List<BidType>? dropBidsTypes;
@@ -93,7 +95,7 @@ class CustomTextField extends StatelessWidget {
     this.dropList,
     this.onSelectCity,
     this.labelText,
-    this.withValidation = false, this.dropDepartment, this.onSelectDepartment, this.dropBidsTypes, this.onSelectBidType, this.dropComplaintsTypes, this.onSelectComplaintType,
+    this.withValidation = false, this.dropDepartment, this.onSelectDepartment, this.dropBidsTypes, this.onSelectBidType, this.dropComplaintsTypes, this.onSelectComplaintType, this.dropEmployee, this.onSelectEmployee,
   }) : super(key: key);
 
   @override
@@ -388,6 +390,85 @@ class CustomTextField extends StatelessWidget {
                           dropdownMaxHeight:kIsWeb?450: size.height * 0.3,
                           buttonHeight: height!=null?height:kIsWeb?50: size.height * 0.065,
                           buttonWidth: width!=null?width:kIsWeb?410: size.width * 0.9,
+                          itemHeight:kIsWeb?50: size.height * 0.06,
+                        ),
+                      ),
+                    ),
+                  ),
+                if ((dropEmployee != null && dropEmployee!.isNotEmpty))
+                  Positioned.fill(
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: DropdownButtonHideUnderline(
+                        child: DropdownButton2(
+                          isExpanded: true,
+                          dropdownWidth: width ?? (kIsWeb?410: size.width * 0.855),
+                          buttonElevation: 0,
+                          dropdownElevation: 1,
+                          iconSize: kIsWeb?20:size.height * 0.03,
+                          icon: Padding(
+                            padding: EdgeInsetsDirectional.only(
+                                end: kIsWeb?15:size.width * 0.015),
+                            child: Icon(
+                              Icons.keyboard_arrow_down,
+                              color: Colors.grey[800],
+                            ),
+                          ),
+                          hint: Text(
+                            '',
+                            style: TextStyle(
+                              fontSize:kIsWeb?17: size.height * 0.02,
+                              color: Theme.of(context).hintColor,
+                            ),
+                          ),
+                          items: dropEmployee!
+                              .map((item) => DropdownMenuItem<UserApp>(
+                            value: item,
+                            child: Column(
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  children: [
+                                    Text(
+                                      item.name!,
+                                      style: TextStyle(
+                                        fontSize:kIsWeb?16: size.height * 0.018,
+                                      ),
+                                    ),
+                                    if(item.department!=null&&item.department!.name!=null)
+                                    Text(
+                                      " (${item.department!.name!})",
+                                      style: TextStyle(
+                                        fontSize:kIsWeb?13: size.height * 0.012,
+                                      ),
+                                    ),
+                                    if(item.isDepartmentBoss==true)
+                                      Text(
+                                        " (${translate(context, "head")})",
+                                        style: TextStyle(
+                                          fontSize:kIsWeb?13: size.height * 0.012,
+                                          color: Colors.red
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                                const Divider(),
+                              ],
+                            ),
+                          ))
+                              .toList(),
+                          onChanged: (UserApp? value) {
+                            controller!.text = value!.name!;
+                            if (onSelectEmployee != null) {
+                              onSelectEmployee!(value);
+                            }
+                          },
+                          dropdownDecoration:
+                          BoxDecoration(color: Colors.grey[200]),
+                          dropdownMaxHeight:kIsWeb?450: size.height * 0.3,
+                          buttonHeight: height ?? (kIsWeb?50: size.height * 0.065),
+                          buttonWidth: width ?? (kIsWeb?410: size.width * 0.9),
                           itemHeight:kIsWeb?50: size.height * 0.06,
                         ),
                       ),

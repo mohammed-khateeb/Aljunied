@@ -8,7 +8,11 @@ class CurrentUser {
   static City? city;
   static String? token;
   static String? mobileNumber;
+  static String? departmentId;
+
   static Department? department;
   static bool? isAdmin;
+  static bool? isDepartmentBoss;
+
   static bool? isSuperAdmin;
 }

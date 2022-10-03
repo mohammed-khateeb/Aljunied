@@ -814,6 +814,10 @@
   "furnished": "مفروش",
   "enter": "ادخل",
   "yes": "نعم",
+  "appointedAsDepartmentHead": "تعيين كرئيس قسم",
+  "head": "رئيس",
+  "withinDepartment": "داخل القسم",
+
   "no": "لا",
   "buildingType": "نوع البناء",
   "garage": "كراج",

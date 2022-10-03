@@ -1,5 +1,6 @@
 import 'package:aljunied/Models/current_user.dart';
 import 'package:aljunied/Models/department.dart';
+import 'package:aljunied/Models/user_app.dart';
 import 'package:aljunied/Widgets/custom_inkwell.dart';
 import 'package:aljunied/Widgets/custom_text_field.dart';
 import 'package:flutter/cupertino.dart';
@@ -17,19 +18,17 @@ class StepFourTransaction extends StatefulWidget {
   final TextEditingController nameController;
   final TextEditingController currentStageController;
   final TextEditingController convertToController;
-  final TextEditingController convertFromController;
   final String? convertToId;
   final int duration;
   final Function(int,bool) onChangeDuration;
   final Function(bool) onChangeHourOrDay;
 
-  final List<Department>? departments;
-  final Function(Department department)? onSelectConvertFrom;
-  final Function(Department department)? onSelectConvertTo;
+  final List<UserApp>? targets;
+  final Function(UserApp userApp)? onSelectConvertTo;
 
   bool isDay;
 
-   StepFourTransaction({Key? key,this.edit = false, required this.onSubmit, required this.nameController, required this.currentStageController, required this.convertToController, required this.duration, required this.onChangeDuration, required this.isDay, required this.departments, this.onSelectConvertFrom, this.onSelectConvertTo, required this.convertFromController, required this.onEndTransaction, required this.onChangeHourOrDay, this.convertToId}) : super(key: key);
+   StepFourTransaction({Key? key,this.edit = false, required this.onSubmit, required this.nameController, required this.currentStageController, required this.convertToController, required this.duration, required this.onChangeDuration, required this.isDay, required this.targets, this.onSelectConvertTo, required this.onEndTransaction, required this.onChangeHourOrDay, this.convertToId}) : super(key: key);
 
   @override
   State<StepFourTransaction> createState() => _StepFourTransactionState();
@@ -37,15 +36,15 @@ class StepFourTransaction extends StatefulWidget {
 
 class _StepFourTransactionState extends State<StepFourTransaction> {
   late WeightSliderController _controller;
-  List<Department> nextStage = [];
+  List<UserApp> nextStage = [];
 
   @override
   void initState() {
+
     super.initState();
-    if(widget.departments!=null&&CurrentUser.department!=null) {
+    if(widget.targets!=null&&CurrentUser.department!=null) {
       nextStage = [];
-      nextStage.addAll(widget.departments!);
-      nextStage.removeWhere((element) => element.id == CurrentUser.department!.id);
+      nextStage.addAll(widget.targets!);
 
     }
     _controller = WeightSliderController(initialWeight: widget.duration.toDouble(), minWeight: 1, interval: 1);
@@ -61,7 +60,7 @@ class _StepFourTransactionState extends State<StepFourTransaction> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return widget.departments!=null?ListView(
+    return widget.targets!=null?ListView(
       children: [
 
         Text(
@@ -99,46 +98,47 @@ class _StepFourTransactionState extends State<StepFourTransaction> {
 
         ),
         SizedBox(height: kIsWeb?10:size.height*0.03,),
-        if(CurrentUser.isAdmin == true)
-        CustomTextField(
-          labelText: translate(context, "convertFrom"),
-          readOnly: true,
-          controller: widget.convertFromController,
-          withValidation: true,
-          onSelectDepartment: (dep){
-            setState(() {
-              if(widget.departments!=null) {
-                nextStage = [];
-                nextStage.addAll(widget.departments!);
-                nextStage.remove(dep);
-                if(CurrentUser.department!=null) {
-                  nextStage.removeWhere((element) => element.id == CurrentUser.department!.id);
-                }
-                widget.convertToController.clear();
-              }
-              if(widget.onSelectConvertFrom!=null) {
-                widget.onSelectConvertFrom!(dep);
-              }
-            });
-          },
-          dropDepartment: widget.departments!,
-        ),
-        SizedBox(height:kIsWeb?10: size.height*0.03,),
+        // if(CurrentUser.isAdmin == true)
+        // CustomTextField(
+        //   labelText: translate(context, "convertFrom"),
+        //   readOnly: true,
+        //   controller: widget.convertFromController,
+        //   withValidation: true,
+        //   onSelectEmployee: (employee){
+        //     setState(() {
+        //       if(widget.targets!=null) {
+        //         nextStage = [];
+        //         nextStage.addAll(widget.targets!);
+        //         nextStage.remove(employee);
+        //         if(CurrentUser.department!=null) {
+        //           nextStage.removeWhere((element) => element.id == CurrentUser.department!.id);
+        //         }
+        //         widget.convertToController.clear();
+        //       }
+        //       if(widget.onSelectConvertFrom!=null) {
+        //         widget.onSelectConvertFrom!(dep);
+        //       }
+        //     });
+        //   },
+        //   dropDepartment: widget.departments!,
+        // ),
+        // SizedBox(height:kIsWeb?10: size.height*0.03,),
         CustomTextField(
           labelText: translate(context, "convertTo"),
           readOnly: true,
           controller: widget.convertToController,
           withValidation: true,
-          dropDepartment: nextStage,
-          onSelectDepartment: (dep){
+          dropEmployee: nextStage,
+          onSelectEmployee: (employee){
             setState(() {
               if(widget.onSelectConvertTo!=null) {
-                widget.onSelectConvertTo!(dep);
+                widget.onSelectConvertTo!(employee);
               }
             });
           },
 
         ),
+
         SizedBox(height: kIsWeb?10:size.height*0.03,),
 
         Row(
@@ -245,7 +245,7 @@ class _StepFourTransactionState extends State<StepFourTransaction> {
                 },
               ),
             ),
-            if(widget.edit&&CurrentUser.department!=null&&CurrentUser.department!.id == widget.convertToId)
+            if(widget.edit&&CurrentUser.department!=null&&CurrentUser.userId == widget.convertToId)
             Row(
               children: [
                 SizedBox(width:kIsWeb?30: size.width*0.04,),

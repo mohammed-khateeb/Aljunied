@@ -163,7 +163,14 @@ class EmployeeDetailsScreen extends StatelessWidget {
                       Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-
+                          if(employee.isDepartmentBoss!=true)
+                          CustomButton(
+                            label: translate(context, "appointedAsDepartmentHead"),
+                            onPress: (){
+                                showDepartmentsDialog(context,isBoss: true);
+                            },
+                          ),
+                          SizedBox(height: size.height*0.01,),
                           CustomButton(
                             label:employee.department!=null?translate(context, "removeFromEmployees"): translate(context, "appointmentAsAnEmployee"),
                             onPress: (){
@@ -323,7 +330,14 @@ class EmployeeDetailsScreen extends StatelessWidget {
       floatingActionButton:CurrentUser.isAdmin == true? Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-
+          if(employee.isDepartmentBoss!=true)
+            CustomButton(
+              label: translate(context, "appointedAsDepartmentHead"),
+              onPress: (){
+                showDepartmentsDialog(context,isBoss: true);
+              },
+            ),
+          SizedBox(height: size.height*0.01,),
           CustomButton(
             label:employee.department!=null?translate(context, "removeFromEmployees"): translate(context, "appointmentAsAnEmployee"),
             onPress: (){
@@ -631,17 +645,17 @@ class EmployeeDetailsScreen extends StatelessWidget {
     );
   }
 
-  showDepartmentsDialog(BuildContext context) async {
+  showDepartmentsDialog(BuildContext context,{bool isBoss = false}) async {
     dynamic result = await showDialog(context: context,builder: (_) => DepartmentsDialog());
 
     if(result is Department){
       Utils.showSureAlertDialog(
         onSubmit: (){
-          context.read<AdminController>().appointmentAsAnEmployee(employeeId: employee.id!,department: result);
+          context.read<AdminController>().appointmentAsAnEmployee(employeeId: employee.id!,department: result,isBoss: isBoss);
           PushNotificationServices.sendMessageToAnyUser(
             title:"الادارة",
-            body: "تم تعيينك كموظف في "+result.name!+"\n"+"الرجاء تسجيل الخروج والدخول من جديد.",
-            to: employee.token!,
+            body:isBoss?"تم تعيينك كرئيس قسم في "+result.name!+"\n"+"الرجاء تسجيل الخروج والدخول من جديد.":"تم تعيينك كموظف في "+result.name!+"\n"+"الرجاء تسجيل الخروج والدخول من جديد.",
+            to: employee.token??"",
           );
           Navigator.pop(context);
         }

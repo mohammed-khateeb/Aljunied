@@ -2,6 +2,7 @@ import 'package:aljunied/Models/bid.dart';
 import 'package:aljunied/Models/complaint.dart';
 import 'package:aljunied/Models/department.dart';
 import 'package:aljunied/Models/member.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter/cupertino.dart';
 import '../Apis/admin_services.dart';
 import '../Apis/notification_api.dart';
@@ -32,6 +33,11 @@ class AdminController with ChangeNotifier{
   List<NotificationModel>? allNotification;
   List<UserApp>? allUser;
   List<UserApp>? employees;
+  List<UserApp>? employeeToDepartmentBoss;
+  List<UserApp>? departmentEmployee;
+  bool waitingDepartmentEmployee = true;
+  bool waitingDepartmentBossUsers = true;
+
   List<Department>? departments;
   List<BidType>? bidTypes;
   List<ComplaintType>? complaintTypes;
@@ -51,18 +57,37 @@ class AdminController with ChangeNotifier{
     notifyListeners();
   }
 
-  appointmentAsAnEmployee({required String employeeId,Department? department}){
-    AdminApi.appointmentAsAnEmployee(employeeId: employeeId,department: department);
+  appointmentAsAnEmployee({required String employeeId,Department? department,bool isBoss = false}){
+    AdminApi.appointmentAsAnEmployee(employeeId: employeeId,department: department,isBoss: isBoss);
+    if(!isBoss&&department!=null){
+      allUser!.firstWhere((element) => element.id == employeeId).isDepartmentBoss = false;
+    }
     try{
       allUser??=[];
+      if(!isBoss){
+        allUser!.firstWhere((element) => element.id == employeeId).isDepartmentBoss = false;
+      }
       allUser!.firstWhere((element) => element.id == employeeId).department = department;
+      allUser!.firstWhere((element) => element.id == employeeId).departmentId = department!.id;
+
+      if(isBoss){
+        allUser!.firstWhere((element) => element.id == employeeId).isDepartmentBoss = true;
+      }
     }
     catch(_){}
     try{
       employees??=[];
       employees!.firstWhere((element) => element.id == employeeId).department = department;
+      employees!.firstWhere((element) => element.id == employeeId).departmentId = department!.id;
+
+      if(isBoss){
+        employees!.firstWhere((element) => element.id == employeeId).isDepartmentBoss = true;
+      }
       if(department ==null){
         employees!.removeWhere((element) => element.id == employeeId);
+        if(isBoss){
+          employees!.firstWhere((element) => element.id == employeeId).isDepartmentBoss = false;
+        }
       }
     }
     catch(_){}
@@ -110,6 +135,26 @@ class AdminController with ChangeNotifier{
   Future getUsers()async{
     allUser = await AdminApi.getUsers();
     waitingAllUsers = false;
+    notifyListeners();
+  }
+
+  Future getUserByDepartmentId(String departmentId)async{
+    departmentEmployee = await AdminApi.getUsersByDepartmentId(departmentId);
+    waitingDepartmentEmployee = false;
+    notifyListeners();
+  }
+
+  Future getEmployeeToDepartmentBoss(String departmentId)async{
+    employeeToDepartmentBoss = [];
+    employeeToDepartmentBoss = await AdminApi.getDepartmentBossUsers();
+    List<UserApp> withinDepartment = await AdminApi.getUsersByDepartmentId(departmentId);
+    for(int i = 0;i<withinDepartment.length;i++){
+      if(employeeToDepartmentBoss!.firstWhereOrNull((element) => element.id == withinDepartment[i].id)==null){
+        employeeToDepartmentBoss!.add(withinDepartment[i]);
+      }
+    }
+    waitingDepartmentBossUsers = false;
+
     notifyListeners();
   }
 

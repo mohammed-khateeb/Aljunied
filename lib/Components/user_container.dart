@@ -1,6 +1,7 @@
 import 'package:aljunied/Constants/constants.dart';
 import 'package:aljunied/Models/user_app.dart';
 import 'package:aljunied/Utils/navigator_utils.dart';
+import 'package:aljunied/Utils/util.dart';
 import 'package:aljunied/Widgets/custom_inkwell.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -46,13 +47,25 @@ class UserContainer extends StatelessWidget {
                       fontSize:kIsWeb&&size.width>520?16: size.height*0.02,
                     ),
                   ),
-                  if(employee.department!=null)
-                  Text(
-                    employee.department!.name??"",
-                    style: TextStyle(
-                        fontSize:kIsWeb&&size.width>520?13: size.height*0.015,
-                      color: kSubTitleColor
-                    ),
+                  if(employee.department!=null&&employee.department!.name!=null)
+                  Row(
+                    children: [
+                      Text(
+                        employee.department!.name!,
+                        style: TextStyle(
+                            fontSize:kIsWeb&&size.width>520?13: size.height*0.015,
+                          color: kSubTitleColor
+                        ),
+                      ),
+                      Text(
+                          employee.isDepartmentBoss==true?" (${translate(context,"head")})":"",
+                        style: TextStyle(
+                            fontSize:kIsWeb&&size.width>520?13: size.height*0.015,
+                            color: Colors.red,
+                          fontWeight: FontWeight.bold
+                      )
+                      )
+                    ],
                   ),
                 ],
               ),

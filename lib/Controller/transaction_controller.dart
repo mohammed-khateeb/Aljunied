@@ -78,9 +78,9 @@ class TransactionController with ChangeNotifier {
     return await TransactionApi.checkIfTransactionNumberExist(number);
   }
 
-  Future getEmployeeTasks(String departmentId) async {
+  Future getEmployeeTasks() async {
     completedTasks = await TransactionApi.getCompletedEmployeeTasks();
-    unFinishTasks = await TransactionApi.getUnFinishEmployeeTasks(departmentId);
+    unFinishTasks = await TransactionApi.getUnFinishEmployeeTasks();
     if (completedTasks != null &&
         completedTasks!.isNotEmpty &&
         unFinishTasks != null &&

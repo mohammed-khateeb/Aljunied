@@ -34,7 +34,7 @@ class _HomeEmployeeScreenState extends State<HomeEmployeeScreen> {
       context.read<HeadlineController>().getHeadlines();
     }
     if(CurrentUser.department!=null) {
-      context.read<TransactionController>().getEmployeeTasks(CurrentUser.department!.id!);
+      context.read<TransactionController>().getEmployeeTasks();
     }
     super.initState();
   }
@@ -256,7 +256,7 @@ class _HomeEmployeeScreenState extends State<HomeEmployeeScreen> {
         ),
         child: RefreshIndicator(
           onRefresh: () async {
-            await context.read<TransactionController>().getEmployeeTasks(CurrentUser.department!.id!);
+            await context.read<TransactionController>().getEmployeeTasks();
           },
           child: ListView(
             padding: EdgeInsets.symmetric(vertical: size.height*0.02),

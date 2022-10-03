@@ -165,6 +165,8 @@ class _SplashScreenState extends State<SplashScreen> {
       isAdmin: CurrentUser.isAdmin,
       mobileNumber: CurrentUser.mobileNumber,
       isSuperAdmin:  CurrentUser.isSuperAdmin,
+      departmentId: CurrentUser.departmentId,
+      isDepartmentBoss:  CurrentUser.isDepartmentBoss,
 
     );
 

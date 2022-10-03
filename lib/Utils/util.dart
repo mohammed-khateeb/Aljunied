@@ -44,8 +44,10 @@ class Utils{
     CurrentUser.isAdmin = userApp.isAdmin;
     CurrentUser.token = userApp.token;
     CurrentUser.mobileNumber = userApp.mobileNumber;
+    CurrentUser.departmentId = userApp.departmentId;
+    CurrentUser.isDepartmentBoss = userApp.isDepartmentBoss;
+
     CurrentUser.department = userApp.department;
-    print(CurrentUser.department);
 
     fetchUserInformationToShared();
   }
@@ -56,11 +58,16 @@ class Utils{
     preferences!.setString("userId", CurrentUser.userId!);
     preferences!.setString("userName", CurrentUser.userName!);
     preferences!.setString("mobileNumber", CurrentUser.mobileNumber??"");
+    preferences!.setString("departmentId", CurrentUser.departmentId??"");
+
     preferences!.setString(
         "email", CurrentUser.email == null ? "" : CurrentUser.email!);
 
     preferences!.setBool("isSuperAdmin",
         CurrentUser.isSuperAdmin == null ? false : CurrentUser.isSuperAdmin!);
+    preferences!.setBool("isDepartmentBoss",
+        CurrentUser.isDepartmentBoss == null ? false : CurrentUser.isDepartmentBoss!);
+
     preferences!.setString(
         "token", CurrentUser.token == null ? "" : CurrentUser.token!);
     preferences!.setBool("isAdmin",
@@ -77,6 +84,8 @@ class Utils{
 
     String? userId = preferences!.getString("userId");
     String? userName = preferences!.getString("userName");
+    String? departmentId = preferences!.getString("departmentId");
+    bool? isDepartmentBoss = preferences!.getBool("isDepartmentBoss");
     String? email = preferences!.getString("email");
     String? mobileNumber = preferences!.getString("mobileNumber");
     bool? isSuperAdmin = preferences!.getBool("isSuperAdmin");
@@ -91,6 +100,9 @@ class Utils{
     CurrentUser.userId = userId;
     CurrentUser.userName = userName;
     CurrentUser.email = email;
+    CurrentUser.departmentId = departmentId;
+    CurrentUser.isDepartmentBoss = isDepartmentBoss;
+
     //CurrentUser.city = city;
     CurrentUser.isSuperAdmin = isSuperAdmin;
     CurrentUser.isAdmin = isAdmin;
@@ -132,6 +144,8 @@ class Utils{
     CurrentUser.isAdmin = null;
     CurrentUser.token = null;
     CurrentUser.department = null;
+    CurrentUser.departmentId = null;
+    CurrentUser.isDepartmentBoss = null;
 
 
   }

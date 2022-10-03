@@ -1,7 +1,7 @@
 {
   "hosting": {
     "public": "build/web",
-    "site": "aljunied",
+    "site": "Aljunied",
     "ignore": [
       "firebase.json",
       "**/.*",
