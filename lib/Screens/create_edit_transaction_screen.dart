@@ -855,6 +855,7 @@ class _CreateEditTransactionScreenState
         "معاملة جديدة",
         "تم تحويل معاملة جديدة لك",
           convertToToken!,
+          false,
       );
       }
       Utils.hideWaitingProgressDialog();
@@ -911,7 +912,6 @@ class _CreateEditTransactionScreenState
         context
             .read<TransactionController>()
             .convertTransaction(transaction: transaction);
-
         if (!end) {
           sendNotification(
             "المعاملة " + transaction.id!,
@@ -921,13 +921,16 @@ class _CreateEditTransactionScreenState
                 transaction.duration!.toString() +
                 (transaction.isDay == true ? "يوم" : "ساعة"),
             transaction.id!,
+            true
           );
           if(convertToToken!=null) {
             sendNotification(
             "المعاملة " + transaction.id!,
             "تم تحويل معاملة لك",
               convertToToken!,
+              false
           );
+
           }
         }
       }
@@ -939,6 +942,7 @@ class _CreateEditTransactionScreenState
           "المعاملة " + transaction.id!,
           "تم انهاء المعاملة",
           transaction.id!,
+          true
         );
       }
 
@@ -952,7 +956,7 @@ class _CreateEditTransactionScreenState
     }
   }
 
-  Future sendNotification(String title, String des, String to) async {
+  Future sendNotification(String title, String des, String to,bool topic) async {
     NotificationModel notificationModel = NotificationModel();
     notificationModel.title = title;
     notificationModel.des = des;
@@ -960,10 +964,21 @@ class _CreateEditTransactionScreenState
     await context
         .read<NotificationController>()
         .insertNewNotification(notificationModel);
-    await PushNotificationServices.sendMessageToTopic(
+    if(topic) {
+      await PushNotificationServices.sendMessageToTopic(
       title: title,
       body: des,
       topicName: to,
     );
+    }
+    else{
+      PushNotificationServices.sendMessageToAnyUser(
+        title: title,
+        body: des,
+        to: to,
+        withLoading: false,
+
+      );
+    }
   }
 }

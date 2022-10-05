@@ -38,7 +38,7 @@ dependencies:
   font_awesome_flutter: ^10.1.0
   expandable: ^5.0.1
   firebase_core: ^1.2.0
-  firebase_messaging: ^11.4.4
+  firebase_messaging: ^13.0.4
   cloud_firestore: ^3.1.6
   firebase_auth: ^3.3.5
 
@@ -46,7 +46,7 @@ dependencies:
   provider: ^6.0.1
   shared_preferences: ^2.0.8
 
-  flutter_local_notifications: ^9.5.3+1
+  flutter_local_notifications: ^11.0.1
   url_launcher: ^6.1.4
 
   simple_fontellico_progress_dialog: ^0.2.1

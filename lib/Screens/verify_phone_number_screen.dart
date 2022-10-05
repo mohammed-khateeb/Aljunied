@@ -94,7 +94,7 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
             name: 'Login Success UID: ${userCredential.user?.uid}',
           );
           },
-        onLoginFailed: (authException) {
+        onLoginFailed: (authException,_) {
           Utils.hideWaitingProgressDialog();
           if(authException.message!=null&&authException.message!.toLowerCase().contains(
             "create the phone auth credential is invalid"
@@ -366,12 +366,12 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> with CodeAutoFill {
 
           TextButton(
             child: Text(
-              widget.controller.timerIsActive
-                  ?translate(context, "resendCodeAt") + '${widget.controller.timerCount.inSeconds}s'
+              widget.controller.otpExpirationTimeLeft.inSeconds>0
+                  ?translate(context, "resendCodeAt") + '${widget.controller.otpExpirationTimeLeft.inSeconds}s'
                   : translate(context, "resend"),
               style: TextStyle(color: kPrimaryColor,fontWeight: FontWeight.normal, fontSize: size.height*0.018,),
             ),
-            onPressed: widget.controller.timerIsActive
+            onPressed: widget.controller.otpExpirationTimeLeft.inSeconds>0
                 ? null
                 : () async {
               log(VerifyPhoneNumberScreen.id, name: 'Resend OTP');
@@ -382,8 +382,8 @@ class _VerifyOTPScreenState extends State<VerifyOTPScreen> with CodeAutoFill {
           CustomButton(label: translate(context,"verify"), onPress: () async {
             if(codeValue.length!=6)return;
             Utils.showWaitingProgressDialog();
-              await widget.controller.verifyOTP(
-                otp: codeValue,
+              await widget.controller.verifyOtp(
+                codeValue,
               );
           }),
 

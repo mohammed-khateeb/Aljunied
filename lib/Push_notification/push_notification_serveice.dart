@@ -20,8 +20,8 @@ class PushNotificationServices {
     AndroidInitializationSettings('logo');
 
     //Initialization Settings for iOS
-    const IOSInitializationSettings initializationSettingsIOS =
-    IOSInitializationSettings(
+    const DarwinInitializationSettings initializationSettingsIOS =
+    DarwinInitializationSettings(
       requestSoundPermission: false,
       requestBadgePermission: false,
       requestAlertPermission: false,
@@ -55,7 +55,7 @@ class PushNotificationServices {
   static showNotification(String title, String message) async {
     AndroidNotificationDetails _androidNotificationDetails =
     const AndroidNotificationDetails(
-      'channel_ID', 'channel name',
+      'channel ID', 'channel name',
       importance: Importance.max,
       playSound: true,
       priority: Priority.high,
@@ -66,8 +66,8 @@ class PushNotificationServices {
 
     );
 
-    IOSNotificationDetails _iosNotificationDetails =
-    const IOSNotificationDetails(
+    DarwinNotificationDetails _iosNotificationDetails =
+    const DarwinNotificationDetails(
         presentAlert: true,
         presentBadge: true,
         presentSound: true,
@@ -111,8 +111,8 @@ class PushNotificationServices {
 
     );
 
-    IOSNotificationDetails _iosNotificationDetails =
-    const IOSNotificationDetails(
+    DarwinNotificationDetails _iosNotificationDetails =
+    const DarwinNotificationDetails(
         presentAlert: true,
         presentBadge: true,
         presentSound: true,

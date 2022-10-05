@@ -116,35 +116,10 @@ class _MyAppState extends State<MyApp> {
   String? fcmToken;
 
 
-  void initFirebaseMessaging() async {
-    _messaging.getToken().then((token) {
-      fcmToken = token;
-
-
-      PushNotificationServices.fcmToken = fcmToken;
-
-    });
-
-    _messaging.onTokenRefresh.listen((newToken) {
-      PushNotificationServices.fcmToken = fcmToken;
-    });
-
-    FirebaseMessaging.onBackgroundMessage(
-        PushNotificationServices.firebaseMessagingBackgroundHandler);
-
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      PushNotificationServices.showNotification(
-          message.notification!.title!, message.notification!.body!);
-    });
-
-  }
 
   @override
   void initState() {
-    PushNotificationServices.initLocalNotification();
-    if(!kIsWeb) {
-      initFirebaseMessaging();
-    }
+
     super.initState();
   }
 

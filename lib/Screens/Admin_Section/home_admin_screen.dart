@@ -129,7 +129,7 @@ class HomeAdminScreen extends StatelessWidget {
             SizedBox(height: size.height*0.05,),
             Expanded(
               child: GridView.builder(
-                itemCount: 16,
+                itemCount: 17,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 3,
                     mainAxisExtent: 150,

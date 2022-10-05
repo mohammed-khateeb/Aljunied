@@ -38,19 +38,50 @@ class _SplashScreenState extends State<SplashScreen> {
   String? fcmToken;
 
 
+  void initFirebaseMessaging() async {
+    _messaging.getToken().then((token) {
+      fcmToken = token;
+
+      print(token);
+      PushNotificationServices.fcmToken = fcmToken;
+
+
+      startSplashScreenTimer();
+
+
+    });
+
+    _messaging.onTokenRefresh.listen((newToken) {
+      PushNotificationServices.fcmToken = fcmToken;
+    });
+
+    FirebaseMessaging.onBackgroundMessage(
+        PushNotificationServices.firebaseMessagingBackgroundHandler);
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      print("DVvdv");
+      PushNotificationServices.showNotification(
+          message.notification!.title!, message.notification!.body!);
+    });
+
+  }
+
 
   @override
   void initState() {
     super.initState();
+    PushNotificationServices.initLocalNotification();
 
-    startSplashScreenTimer();
-
+    initFirebaseMessaging();
   }
 
 
 
   //////////////////////////////////////////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////
+
+
+
 
   startSplashScreenTimer() async {
     var _duration = const Duration(seconds: 2);
